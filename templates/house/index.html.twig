@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}House index{% endblock %}
+
+{% block body %}
+    <h1>House index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Full_address</th>
+                <th>Street_number</th>
+                <th>Street_sub_number</th>
+                <th>Street_label</th>
+                <th>City_name</th>
+                <th>Postal_code</th>
+                <th>Images</th>
+                <th>Nbr_accepted</th>
+                <th>Nbr_beds</th>
+                <th>Nbr_rooms</th>
+                <th>Nbr_showeroom</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Calendar_id</th>
+                <th>Equiments</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for house in houses %}
+            <tr>
+                <td>{{ house.id }}</td>
+                <td>{{ house.name }}</td>
+                <td>{{ house.type }}</td>
+                <td>{{ house.fullAddress }}</td>
+                <td>{{ house.streetNumber }}</td>
+                <td>{{ house.streetSubNumber }}</td>
+                <td>{{ house.streetLabel }}</td>
+                <td>{{ house.cityName }}</td>
+                <td>{{ house.postalCode }}</td>
+                <td>{{ house.images ? house.images|join(', ') : '' }}</td>
+                <td>{{ house.nbrAccepted }}</td>
+                <td>{{ house.nbrBeds }}</td>
+                <td>{{ house.nbrRooms }}</td>
+                <td>{{ house.nbrShoweroom }}</td>
+                <td>{{ house.description }}</td>
+                <td>{{ house.price }}</td>
+                <td>{{ house.calendarId }}</td>
+                <td>{{ house.equiments ? house.equiments|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_house_show', {'id': house.id}) }}">show</a>
+                    <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="19">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_house_new') }}">Create new</a>
+{% endblock %}
