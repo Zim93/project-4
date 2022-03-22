@@ -24,19 +24,31 @@ class HouseController extends AbstractController
     #[Route('/new', name: 'app_house_new', methods: ['GET', 'POST'])]
     public function new(Request $request, HouseRepository $houseRepository): Response
     {
-        $house = new House();
-        $form = $this->createForm(HouseType::class, $house);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $houseRepository->add($house);
-            return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        if(in_array('ROLE_HOST',$user->getRoles())){
+            $house = new House();
+            $form = $this->createForm(HouseType::class, $house);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $house->setHost($user);
+                $fullAdress= 'blabla';
+                $house->setFullAddress($fullAdress);
+                $house->setCalendarId(5);
+                $houseRepository->add($house);
+                return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
+            }
+    
+            return $this->renderForm('house/new.html.twig', [
+                'house' => $house,
+                'form' => $form,
+            ]);
         }
-
-        return $this->renderForm('house/new.html.twig', [
-            'house' => $house,
-            'form' => $form,
-        ]);
+        else{
+            return $this->redirectToRoute('app_house_index');
+        }
+       
     }
 
     #[Route('/{id}', name: 'app_house_show', methods: ['GET'])]
