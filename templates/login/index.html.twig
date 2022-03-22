@@ -3,18 +3,35 @@
 {% block title %}Hello LoginController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <main class="container">
+        <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 position-absolute top-50 start-50 translate-middle login">
+           <div>
+                <form action="{{ path('login') }}" method="post">
+                    <h3 class="text-center">Bienvenu</h1>
+                    <legend class="text-center" >Login</legend>
+                    {% if error %}
+                        <div class="alert alert-danger text-center">Vos identifiants sont incorrects</div>
+                    {% endif %}
+                    <div class="form-floating mb-3">      
+                        <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="_username"/> 
+                        <label for="username" class="form-label input-group">Email:</label>
+                    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                    <div class="form-floating mb-3"> 
+                        <input class="form-control" type="password" id="password" name="_password" placeholder="_password"/>
+                        <label for="password" class="form-label input-group">Mot de passe:</label>
+                    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/winsido/Desktop/Navigation/2.0/Php_OO/project-4/src/Controller/LoginController.php'|file_link(0) }}">src/Controller/LoginController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/winsido/Desktop/Navigation/2.0/Php_OO/project-4/templates/login/index.html.twig'|file_link(0) }}">templates/login/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="text-center">
+                        <button class="btn w-50 btn-primary mb-3" type="submit">login</button>
+                    </div>    
+                </form>
+                <div class="text-center mb-3">
+                    <a class="text-secondary" href="/register">S'inscrire</a>
+                </div>
+            </div>
+        </diV>
+    </main>
 {% endblock %}
