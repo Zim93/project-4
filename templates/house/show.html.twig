@@ -44,10 +44,6 @@
                 <td>{{ house.postalCode }}</td>
             </tr>
             <tr>
-                <th>Images</th>
-                <td>{{ house.images ? house.images|join(', ') : '' }}</td>
-            </tr>
-            <tr>
                 <th>Nbr_accepted</th>
                 <td>{{ house.nbrAccepted }}</td>
             </tr>
@@ -81,10 +77,18 @@
             </tr>
         </tbody>
     </table>
-
+    <div>
+        {% for image in house.attachments %}
+        <img src="/images/houses/{{image.url}}" height="200px" width="auto" />
+        {% endfor %}
+    </div>
+    
+    <div>
+        <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
+        {{ include('house/_delete_form.html.twig') }}
+    </div>
     <a href="{{ path('app_house_index') }}">back to list</a>
 
-    <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
 
-    {{ include('house/_delete_form.html.twig') }}
+    
 {% endblock %}

@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\HouseRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\HouseRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: HouseRepository::class)]
+
 class House
 {
     #[ORM\Id]
@@ -38,9 +39,6 @@ class House
 
     #[ORM\Column(type: 'string', length: 255)]
     private $postal_code;
-
-    #[ORM\Column(type: 'array', nullable: true)]
-    private $images = [];
 
     #[ORM\Column(type: 'integer')]
     private $nbr_accepted;
@@ -76,10 +74,14 @@ class House
     #[ORM\OneToMany(mappedBy: 'house', targetEntity: Comment::class)]
     private $comment;
 
+    #[ORM\OneToMany(mappedBy: 'house', targetEntity: Attachment::class, orphanRemoval: true)]
+    private $attachments;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
         $this->comment = new ArrayCollection();
+        $this->attachments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,18 +181,6 @@ class House
     public function setPostalCode(string $postal_code): self
     {
         $this->postal_code = $postal_code;
-
-        return $this;
-    }
-
-    public function getImages(): ?array
-    {
-        return $this->images;
-    }
-
-    public function setImages(?array $images): self
-    {
-        $this->images = $images;
 
         return $this;
     }
@@ -357,6 +347,36 @@ class House
             // set the owning side to null (unless already changed)
             if ($comment->getHouse() === $this) {
                 $comment->setHouse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Attachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(Attachment $attachment): self
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments[] = $attachment;
+            $attachment->setHouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(Attachment $attachment): self
+    {
+        if ($this->attachments->removeElement($attachment)) {
+            // set the owning side to null (unless already changed)
+            if ($attachment->getHouse() === $this) {
+                $attachment->setHouse(null);
             }
         }
 

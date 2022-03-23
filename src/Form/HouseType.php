@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\House;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -50,12 +51,9 @@ class HouseType extends AbstractType
                 'constraints'=>[
                     new Regex([
                         'pattern' => '/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/', 
-                        'message' => 'Country code must be exactly 2 character long upper case letters.'
+                        'message' => 'Veuiller entrer un code postal correcte'
                         ])
                 ]
-            ])
-            ->add('images', FileType::class,[
-                'multiple'=>true
             ])
             ->add('nbr_accepted', IntegerType::class,[
                 'label'=>'Nombre de voyageurs',
@@ -98,6 +96,17 @@ class HouseType extends AbstractType
                     'Equipement3' => 'Equipement3',
                 ]
             ])
+            ->add('images', FileType::class, [
+                'label' => 'Images',
+    
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+    
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+                'multiple' => true,
+            ]);
         ;
     }
 
