@@ -88,12 +88,32 @@ class HouseController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_house_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, House $house, HouseRepository $houseRepository): Response
+    public function edit(Request $request, House $house, HouseRepository $houseRepository,SluggerInterface $slugger,AttachmentRepository $attachmentRepository): Response
     {
         $form = $this->createForm(HouseType::class, $house);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $files = $form->get('images')->getData();
+
+                foreach($files as $file){
+
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $destination = $this->getParameter('kernel.project_dir').'/public/images/houses';
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+                    
+                    $file->move(
+                        $destination,
+                        $newFilename
+                    );
+
+                    $attachment = new Attachment();
+                    $attachment->setUrl($newFilename);
+
+                    $attachmentRepository->add($attachment);
+                    $house->addAttachment($attachment);
+                }
             $houseRepository->add($house);
             return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
         }

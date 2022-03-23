@@ -1,0 +1,18 @@
+<div>
+    <ul>
+        {% for image in house.attachments %}
+            <li>
+                <img id="{{image.id}}" src="/images/houses/{{image.url}}" height="200px" width="auto" />
+            <li>
+        {% endfor %}
+        <div class="btn btn-primary" id="delet-image">supprimer</div>
+    <ul>
+</div>
+
+<style>
+    ul { list-style: none; }
+    ul li { display: inline; } 
+    ul li img { border: 2px solid white; cursor: pointer; }
+    ul li img:hover { border: 2px solid red; }
+    ul li img.hover { border: 2px solid red; }
+</style>
