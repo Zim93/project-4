@@ -3,6 +3,11 @@
 {% block title %}House{% endblock %}
 
 {% block body %}
+    <style>
+        #map {
+        height: 400px;
+        }
+    </style>
     <h1>House</h1>
 
     <table class="table">
@@ -68,10 +73,6 @@
                 <td>{{ house.price }}</td>
             </tr>
             <tr>
-                <th>Calendar_id</th>
-                <td>{{ house.calendarId }}</td>
-            </tr>
-            <tr>
                 <th>Equiments</th>
                 <td>{{ house.equiments ? house.equiments|json_encode : '' }}</td>
             </tr>
@@ -89,6 +90,17 @@
     </div>
     <a href="{{ path('app_house_index') }}">back to list</a>
 
+    <div id="comment">
+        <span class="btn btn-primary">Ajouter un commentaire</span>
+    </div>
 
-    
+    <div id="map"></div>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3Bywnvy8j0eIl5zH4qwTmQ872S284u8E&callback=initMap"
+      async
+    ></script>
+
+
+
 {% endblock %}

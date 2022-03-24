@@ -1,18 +1,24 @@
 <div>
-    <ul>
+    <div class="d-flex row">
         {% for image in house.attachments %}
-            <li>
-                <img id="{{image.id}}" src="/images/houses/{{image.url}}" height="200px" width="auto" />
-            <li>
+            <div class="col-3 d-flex justify-content-center image-upload" data-id="{{image.id}}">
+                <img data-id="{{image.id}}" src="/images/houses/{{image.url}}" height="auto" width="200px" />
+                <span data-id="{{image.id}}" class="close-cross text-center">X</span>
+            </div>
         {% endfor %}
-        <div class="btn btn-primary" id="delet-image">supprimer</div>
-    <ul>
+    </div>
 </div>
 
 <style>
-    ul { list-style: none; }
-    ul li { display: inline; } 
-    ul li img { border: 2px solid white; cursor: pointer; }
-    ul li img:hover { border: 2px solid red; }
-    ul li img.hover { border: 2px solid red; }
+    .close-cross{
+        cursor:pointer;
+    } 
+    
+    .close-cross{
+        position: relative;
+        width: 20px;
+        margin: 0 !important;
+        top: 0px;
+        left: 0px;
+    }
 </style>

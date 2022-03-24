@@ -23,7 +23,6 @@
                 <th>Nbr_showeroom</th>
                 <th>Description</th>
                 <th>Price</th>
-                <th>Calendar_id</th>
                 <th>Equiments</th>
                 <th>actions</th>
             </tr>
@@ -46,7 +45,6 @@
                 <td>{{ house.nbrShoweroom }}</td>
                 <td>{{ house.description }}</td>
                 <td>{{ house.price }}</td>
-                <td>{{ house.calendarId }}</td>
                 <td>{{ house.equiments ? house.equiments|json_encode : '' }}</td>
                 <td>
                     <a href="{{ path('app_house_show', {'id': house.id}) }}">show</a>

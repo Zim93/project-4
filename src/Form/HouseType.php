@@ -22,14 +22,8 @@ class HouseType extends AbstractType
             ->add('name', TextType::class,[
                 'label'=>'Nom'
             ])
-            ->add('type',ChoiceType::class,[
-                'label'=>'Type d\'habitation',
-                'placeholder' => 'Choisissez un type d\'habitation',
-                'choices'  => [
-                    'Type1' => 'Type1',
-                    'Type2' => 'Type2',
-                    'Type3' => 'Type3',
-                ]
+            ->add('full_address', TextType::class,[
+                'label'=>'Adresse compléte'
             ])
             ->add('street_number', IntegerType::class,[
                 'label'=>'Numéro de voie',
@@ -38,7 +32,8 @@ class HouseType extends AbstractType
                 ]
             ])
             ->add('street_sub_number', TextType::class,[
-                'label'=>'Complément de numéro de voie'
+                'label'=>'Complément de numéro de voie',
+                'required'=>false
             ])
             ->add('street_label', TextType::class,[
                 'label'=>'Libellé de voie'
@@ -53,6 +48,18 @@ class HouseType extends AbstractType
                         'pattern' => '/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/', 
                         'message' => 'Veuiller entrer un code postal correcte'
                         ])
+                ]
+            ])
+            ->add('country', TextType::class,[
+                'label'=>'Pays'
+            ])
+            ->add('type',ChoiceType::class,[
+                'label'=>'Type d\'habitation',
+                'placeholder' => 'Choisissez un type d\'habitation',
+                'choices'  => [
+                    'Type1' => 'Type1',
+                    'Type2' => 'Type2',
+                    'Type3' => 'Type3',
                 ]
             ])
             ->add('nbr_accepted', IntegerType::class,[
@@ -79,7 +86,9 @@ class HouseType extends AbstractType
                     'min' => 1
                     ]
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class,[
+                'required'=>false,
+            ])
             ->add('price',IntegerType::class,[
                 'label'=>'Prix',
                 'attr' => [

@@ -58,9 +58,6 @@ class House
     #[ORM\Column(type: 'float')]
     private $price;
 
-    #[ORM\Column(type: 'integer')]
-    private $calendar_id;
-
     #[ORM\Column(type: 'json')]
     private $equiments = [];
 
@@ -77,11 +74,18 @@ class House
     #[ORM\OneToMany(mappedBy: 'house', targetEntity: Attachment::class, orphanRemoval: true)]
     private $attachments;
 
+    #[ORM\OneToMany(mappedBy: 'house', targetEntity: Event::class)]
+    private $events;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $country;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
         $this->comment = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,18 +261,6 @@ class House
         return $this;
     }
 
-    public function getCalendarId(): ?int
-    {
-        return $this->calendar_id;
-    }
-
-    public function setCalendarId(int $calendar_id): self
-    {
-        $this->calendar_id = $calendar_id;
-
-        return $this;
-    }
-
     public function getEquiments(): ?array
     {
         return $this->equiments;
@@ -379,6 +371,52 @@ class House
                 $attachment->setHouse(null);
             }
         }
+
+        return $this;
+    }
+
+    // public function __toString(){
+    //     return $this->name;
+    // }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setHouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getHouse() === $this) {
+                $event->setHouse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

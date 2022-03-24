@@ -42,8 +42,8 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private $house;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $google_event_id;
+    #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Event::class, cascade: ['persist', 'remove'])]
+    private $event;
 
     public function getId(): ?int
     {
@@ -158,14 +158,24 @@ class Reservation
         return $this;
     }
 
-    public function getGoogleEventId(): ?string
+    public function getEvent(): ?Event
     {
-        return $this->google_event_id;
+        return $this->event;
     }
 
-    public function setGoogleEventId(string $google_event_id): self
+    public function setEvent(?Event $event): self
     {
-        $this->google_event_id = $google_event_id;
+        // unset the owning side of the relation if necessary
+        if ($event === null && $this->event !== null) {
+            $this->event->setReservation(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($event !== null && $event->getReservation() !== $this) {
+            $event->setReservation($this);
+        }
+
+        $this->event = $event;
 
         return $this;
     }

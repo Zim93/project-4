@@ -12,4 +12,4 @@ import './styles/app.scss';
 import './bootstrap';
 
 import $ from 'jquery';
-import greet from './edit_houses';
+import './javascript/edit_houses';

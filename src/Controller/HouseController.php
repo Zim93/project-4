@@ -6,6 +6,7 @@ use App\Entity\House;
 use App\Form\HouseType;
 use App\Entity\Attachment;
 use App\Repository\HouseRepository;
+use App\Controller\CommentController;
 use App\Repository\AttachmentRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,9 +38,6 @@ class HouseController extends AbstractController
     
             if ($form->isSubmitted() && $form->isValid()) {
                 $house->setHost($user);
-                $fullAddress= 'blabla';
-                $house->setFullAddress($fullAddress);
-                $house->setCalendarId(5);
 
                 $files = $form->get('images')->getData();
 
@@ -57,9 +55,10 @@ class HouseController extends AbstractController
 
                     $attachment = new Attachment();
                     $attachment->setUrl($newFilename);
-
-                    $attachmentRepository->add($attachment);
+                    
                     $house->addAttachment($attachment);
+                    $attachmentRepository->add($attachment);
+                    
                 }
 
                 $houseRepository->add($house);
@@ -94,6 +93,21 @@ class HouseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $toDelete = $request->get("delete_attach");
+            $toDelete = explode(',',$toDelete);
+
+            if(count($toDelete) > 0 && $toDelete[0] != ""){
+                $filesystem = new Filesystem();
+                foreach($toDelete as $file){
+                    $attachment = $attachmentRepository->find($file);
+                    $house->removeAttachment($attachment);
+                    $attachmentName = $attachment->getUrl();
+                    $filesystem->remove(['images/houses/'.$attachmentName]);
+                }
+            }
+
+
             $files = $form->get('images')->getData();
 
                 foreach($files as $file){

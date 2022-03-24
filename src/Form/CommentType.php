@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class CommentType extends AbstractType
 {
@@ -13,10 +14,12 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('message')
-            ->add('note')
-            ->add('guest')
-            ->add('house')
-        ;
+            ->add('note', IntegerType::class,[
+                'attr' => [
+                    'min' => 1,
+                    'max' => 5
+                ]])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
