@@ -70,7 +70,8 @@
             </tr>
             <tr>
                 <th>Price</th>
-                <td>{{ house.price }}</td>
+                
+                <td >{{ house.price }}</td>
             </tr>
             <tr>
                 <th>Equiments</th>
@@ -78,6 +79,12 @@
             </tr>
         </tbody>
     </table>
+    <div class="for_map" data-id={{house.id}}>
+        <div class="price-pop">{{ house.price }}</div>
+        <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
+        <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
+    </div>
+    
     <div>
         {% for image in house.attachments %}
         <img src="/images/houses/{{image.url}}" height="200px" width="auto" />
@@ -90,17 +97,20 @@
     </div>
     <a href="{{ path('app_house_index') }}">back to list</a>
 
-    <div id="comment">
-        <span class="btn btn-primary">Ajouter un commentaire</span>
-    </div>
+    
+    <div class="w-50">
+        {{ form_start(form_reservation, {'action':'/reservation/new'}) }}
+            {{ form_row(form_reservation.nbr_voyagers) }}
+            <div id="date-picker">
+                <input id="reservation_start_date" name="start_date"/>
+                <input id="reservation_end_date" name="end_date"/>
+            </div>
+            <input type="hidden" name="house" value="{{house.id}}"/>
+            <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+        {{ form_end(form_reservation)}}
+    <div>
+
+    <script src="/javascript/calendar.js" />
 
     <div id="map"></div>
-
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3Bywnvy8j0eIl5zH4qwTmQ872S284u8E&callback=initMap"
-      async
-    ></script>
-
-
-
 {% endblock %}

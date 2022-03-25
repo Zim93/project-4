@@ -16,7 +16,6 @@
                 <th>Nbr_nights</th>
                 <th>Created_at</th>
                 <th>Updated_at</th>
-                <th>Google_event_id</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -31,7 +30,6 @@
                 <td>{{ reservation.nbrNights }}</td>
                 <td>{{ reservation.createdAt ? reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ reservation.updatedAt ? reservation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.googleEventId }}</td>
                 <td>
                     <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
                     <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>

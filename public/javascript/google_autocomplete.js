@@ -11,6 +11,10 @@ function initialize() {
 }
 function fillInAddress(){
     const place = autocomplete.getPlace();
+
+    lat=place.geometry.location.toJSON().lat;
+    lng=place.geometry.location.toJSON().lng;
+
     for(component of place.address_components){
         componentType = component.types[0];
         switch(componentType){
@@ -38,17 +42,29 @@ function fillInAddress(){
         
         }
     }
-    document.querySelector("#house_street_number").value=street_number;
+    $("#house_street_number").val(street_number);
     if(street_sub!==undefined){
-        document.querySelector("#house_street_sub_number").value=street_sub;
+        $("#house_street_sub_number").val(street_sub);
     }
-    document.querySelector("#house_street_label").value=street_label;
-    document.querySelector("#house_postal_code").value=postcode;
-    document.querySelector("#house_city_name").value=city;
-    document.querySelector("#house_country").value=country;
+    $("#house_street_label").val(street_label);
+    $("#house_postal_code").val(postcode);
+    $("#house_city_name").val(city);
+    $("#house_country").val(country);
+    $("#house_lat").val(lat);
+    $("#house_lng").val(lng);
 }
 
-
-
+    $('#house_full_address').keyup(function(){
+        if($(this).val() == ''){
+            $("#house_street_number").val('');
+            $("#house_street_sub_number").val('');           
+            $("#house_street_label").val('');
+            $("#house_postal_code").val('');
+            $("#house_city_name").val('');
+            $("#house_country").val('');
+            $("#house_lat").val('');
+            $("#house_lng").val('');
+        }
+    });
 
 google.maps.event.addDomListener(window, 'load', initialize);

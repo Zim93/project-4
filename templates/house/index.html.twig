@@ -3,6 +3,11 @@
 {% block title %}House index{% endblock %}
 
 {% block body %}
+    <style>
+        #map {
+        height: 400px;
+        }
+    </style>
     <h1>House index</h1>
 
     <table class="table">
@@ -51,6 +56,12 @@
                     <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
                 </td>
             </tr>
+            <div class="for_map">
+                <div class="price-pop">{{ house.price }}</div>
+                <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
+                <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
+            </div>
+            
         {% else %}
             <tr>
                 <td colspan="19">no records found</td>
@@ -58,6 +69,8 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <div class="zabi"></div>
     <a href="{{ path('app_house_new') }}">Create new</a>
+
+    <div id="map"></div>
 {% endblock %}

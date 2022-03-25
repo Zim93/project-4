@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\House;
 use App\Form\HouseType;
 use App\Entity\Attachment;
+use App\Entity\Reservation;
+use App\Form\ReservationType;
 use App\Repository\HouseRepository;
 use App\Controller\CommentController;
 use App\Repository\AttachmentRepository;
@@ -38,7 +40,6 @@ class HouseController extends AbstractController
     
             if ($form->isSubmitted() && $form->isValid()) {
                 $house->setHost($user);
-
                 $files = $form->get('images')->getData();
 
                 foreach($files as $file){
@@ -60,7 +61,7 @@ class HouseController extends AbstractController
                     $attachmentRepository->add($attachment);
                     
                 }
-
+                
                 $houseRepository->add($house);
 
                 
@@ -81,7 +82,12 @@ class HouseController extends AbstractController
     #[Route('/{id}', name: 'app_house_show', methods: ['GET'])]
     public function show(House $house): Response
     {
-        return $this->render('house/show.html.twig', [
+        $reservation= new Reservation();
+        $formReservation = $this->createForm(ReservationType::class, $reservation);
+
+        return $this->renderForm('house/show.html.twig', [
+            'form_reservation' => $formReservation,
+            'reservation' => $reservation,
             'house' => $house,
         ]);
     }

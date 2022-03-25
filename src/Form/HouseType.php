@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -28,21 +29,34 @@ class HouseType extends AbstractType
             ->add('street_number', IntegerType::class,[
                 'label'=>'Numéro de voie',
                 'attr' => [
-                    'min' => 1
+                    'readonly'=>"readonly",
+                    'min' => 1,
                 ]
             ])
             ->add('street_sub_number', TextType::class,[
                 'label'=>'Complément de numéro de voie',
-                'required'=>false
+                'required'=>false,
+                'attr' => [
+                    'readonly'=>"readonly",
+                ]
             ])
             ->add('street_label', TextType::class,[
-                'label'=>'Libellé de voie'
+                'label'=>'Libellé de voie',
+                'attr' => [
+                    'readonly'=>"readonly",
+                ]
             ])
             ->add('city_name', TextType::class,[
-                'label'=>'Nom de ville'
+                'label'=>'Nom de ville',
+                'attr' => [
+                    'readonly'=>"readonly",
+                ]
             ])
             ->add('postal_code',TextType::class,[
                 'label'=>'Code postal',
+                'attr' => [
+                    'readonly'=>"readonly",
+                ],
                 'constraints'=>[
                     new Regex([
                         'pattern' => '/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/', 
@@ -51,7 +65,10 @@ class HouseType extends AbstractType
                 ]
             ])
             ->add('country', TextType::class,[
-                'label'=>'Pays'
+                'label'=>'Pays',
+                'attr' => [
+                    'readonly'=>"readonly",
+                ]
             ])
             ->add('type',ChoiceType::class,[
                 'label'=>'Type d\'habitation',
@@ -115,7 +132,9 @@ class HouseType extends AbstractType
                 // every time you edit the Product details
                 'required' => false,
                 'multiple' => true,
-            ]);
+            ])
+            ->add('lat',HiddenType::class)
+            ->add('lng',HiddenType::class);
         ;
     }
 

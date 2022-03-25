@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\Event;
+use DateTimeImmutable;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Repository\EventRepository;
+use App\Repository\HouseRepository;
 use App\Repository\ReservationRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/reservation')]
 class ReservationController extends AbstractController
@@ -22,14 +27,41 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ReservationRepository $reservationRepository): Response
+    public function new(Request $request, ReservationRepository $reservationRepository, HouseRepository $houseRepository, EventRepository $eventRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $start = new DateTime($request->get('start_date'));
+            $end = new DateTime($request->get('end_date'));
+            $interval = date_diff($start,$end)->format('%a');
+
+            $reservation->setStartDate($start);
+            $reservation->setEndDate($end);
+            $reservation->setNbrNights($interval);
+
+            
+            $house = $houseRepository->find($request->get('house'));
+            $total = $house->getPrice()*$interval;
+
+            $event = new Event();
+            $event->setHouse($house);
+            $event->setStartAt($start);
+            $event->setEndAt($end);
+            $eventRepository->add($event);
+
+            $reservation->setEvent($event);
+            $reservation->setTotal($total);
+            $reservation->setHouse($house);
+            $reservation->setGuest($user);
+            $reservation->setCreatedAt(new DateTimeImmutable());
+
             $reservationRepository->add($reservation);
+
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
         }
 
