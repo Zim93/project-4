@@ -5,6 +5,8 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Event;
 use DateTimeImmutable;
+use App\Entity\Comment;
+use App\Form\CommentType;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\EventRepository;
@@ -31,6 +33,7 @@ class ReservationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
+
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
@@ -74,6 +77,18 @@ class ReservationController extends AbstractController
     #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response
     {
+        $user= $this->getUser();
+        $today = new DateTime();
+        if($reservation->getGuest() == $user && $reservation->getEndDate() < $today){
+            $comment = new Comment();
+            $formComment = $this->createForm(CommentType::class, $comment);
+            return $this->renderForm('reservation/show.html.twig', [
+                'form_comment' => $formComment,
+                'reservation' => $reservation,
+            ]);
+        }
+        
+
         return $this->render('reservation/show.html.twig', [
             'reservation' => $reservation,
         ]);

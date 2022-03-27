@@ -13,13 +13,13 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('message')
-            ->add('note', IntegerType::class,[
-                'attr' => [
-                    'min' => 1,
-                    'max' => 5
-                ]])
-            ;
+        ->add('note', IntegerType::class,[
+            'attr' => [
+                'min' => 1,
+                'max' => 5
+            ]])
+        ->add('message')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
