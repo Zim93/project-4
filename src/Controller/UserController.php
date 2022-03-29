@@ -21,15 +21,19 @@ class UserController extends AbstractController
     public function index(HouseRepository $houseRepository, ReservationRepository $reservationRepository): Response
     {
         $user= $this->getUser();
-        
-        $houses = $houseRepository->findBy(["host"=>$user->getId()]);
-        
-        $reservations = $reservationRepository->findBy(["guest"=>$user->getId()]);
-        
+        $houses= $user->getHouse();
+        $reservations = $user->getReservation();
+        if(in_array('ROLE_HOST',$user->getRoles())){
+            $host = true;
+        }
+        else{
+            $host = false;
+        }
         return $this->renderForm('user/index.html.twig',[
             'user' => $user,
             'houses' => $houses,
             'reservations' => $reservations,
+            'host' => $host
         ]);
     }
 

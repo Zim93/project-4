@@ -88,11 +88,19 @@ class HouseController extends AbstractController
         $reservation= new Reservation();
         $formReservation = $this->createForm(ReservationType::class, $reservation);
         $reservations = $house->getReservation();
+        $events = $house->getEvents();
         $toDisable = [];
+        $toEnable = [];
         
         if(count($reservations) > 0){
             forEach($reservations as $reservation){
                 $toDisable[] = ["start_date" => $reservation->getStartDate()->format("Y-m-d"), "end_date" => $reservation->getEndDate()->format("Y-m-d")];
+            }
+        }
+
+        if(count($events) > 0){
+            forEach($events as $event){
+                $toEnable[] = ["start_date" => $event->getStartAt()->format("Y-m-d"), "end_date" => $event->getEndAt()->format("Y-m-d")];
             }
         }
 
@@ -101,6 +109,7 @@ class HouseController extends AbstractController
             'reservation' => $reservation,
             'house' => $house,
             'to_disable' => $toDisable,
+            'to_enable' => $toEnable,
         ]);
     }
 
@@ -170,37 +179,59 @@ class HouseController extends AbstractController
             }
         }
 
+        $events = $house->getEvents();
+
+        if(count($events) > 0){
+            forEach($events as $event){
+                $toDisable[] = ["start_date" => $event->getStartAt()->format("Y-m-d"), "end_date" => $event->getEndAt()->format("Y-m-d")];
+            }
+        }
+
         if($request->get('submitted')== 'true'){
-            $dispoDates =$request->get('event-ranges');
+
+            $start =$request->get('start_date');
+            $end = $request->get('end_date');
+
             $house = $houseRepository->find($id);
 
-            foreach($dispoDates as $date){
-                if($date == NULL){
-                    return $this->render('house/edit_dispo.html.twig', [
-                        'alert' => 'Format de la date incorrect.',
-                        'house' => $house,
-                        'to_disable' => $toDisable,
-                    ]);
+            $event = new Event();
+            $event->setHouse($house);
+            $startData = new DateTime($start);
+            $endData = new DateTime($end);
+            $event->setStartAt($startData);
+            $event->setEndAt($endData);
+            $eventRepository->add($event);
+            $house->addEvent($event);
+
+            $events = $house->getEvents();
+
+            $toDisable = [];
+
+            if(count($events) > 0){
+                forEach($events as $event){
+                    $toDisable[] = ["start_date" => $event->getStartAt()->format("Y-m-d"), "end_date" => $event->getEndAt()->format("Y-m-d")];
                 }
-                $event = new Event();
-                $event->setHouse($house);
-                $a = explode('**',$date);
-                $start = new DateTime($a[0]);
-                $end = new DateTime($a[1]);
-                $event->setStartAt($start);
-                $event->setEndAt($end);
-                $eventRepository->add($event);
             }
-            return $this->render('house/edit_dispo.html.twig', [
+
+            if(count($reservations) > 0){
+                forEach($reservations as $reservation){
+                    $toDisable[] = ["start_date" => $reservation->getStartDate()->format("Y-m-d"), "end_date" => $reservation->getEndDate()->format("Y-m-d")];
+                }
+            }
+
+            return $this->render('house/_events_table.html.twig', [
                 'success' => 'Vos disponibilité ont été mis à jour',
                 'house' => $house,
                 'to_disable' => $toDisable,
+                'events' => $events
             ]);
         }
         
         return $this->render('house/edit_dispo.html.twig', [
+            'success' => null,
             'house' => $house,
             'to_disable' => $toDisable,
+            'events' => $events
         ]);
     }
     

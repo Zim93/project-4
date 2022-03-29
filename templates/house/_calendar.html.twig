@@ -1,0 +1,76 @@
+<form action="{{ path('app_house_edit_dispo', {'id': house.id}) }}" method="post">
+
+    <div class="flex row align-items-center">
+        <div class="range-picker-container col-5"></div>
+        <a class="btn-success btn add-range col-3">Ajouter un créneau</a>
+    </div>
+
+    <div class="date-picker d-flex flex-row justify-content-between" style="display:none;" >
+        <input type="hidden" class="dispo_start_date" name="start_date[]" autoComplete="off"/>
+        <input type="hidden" class="dispo_end_date" name="end_date[]" autoComplete="off"/>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function(){
+        function countDays(start, end) {
+            return Math.abs(moment(start).diff(moment(end), 'd')) + 1;
+        }
+
+        const toDisable = $("#disabled-date").data('dates');
+        const dateTable = [];
+        toDisable.forEach(function(event){
+            let interval = countDays(event["start_date"], event["end_date"]);
+
+            for(i=0;i < interval; i++){
+                let start = moment(event["start_date"]);
+                start = start.add(i,'days').format('YYYY-MM-DD');
+                dateTable.push(start);
+            }
+        });
+
+        $('.date-picker').dateRangePicker(
+            {
+                container:'.range-picker-container',
+                alwaysOpen:true,
+                beforeShowDay: function(t)
+                {
+                    const date = moment(t.toJSON()).format('YYYY-MM-DD');
+                    var valid = !(dateTable.includes(date));  //disable dates
+                    var _class = '';
+                    var _tooltip = valid ? '' : 'Date indisponible';
+                    return [valid,_class,_tooltip];
+                },
+                setValue: function(s,s1,s2)
+                {
+                    $('.dispo_start_date').val(s1);
+                    $('.dispo_end_date').val(s2);
+                }
+            }
+        );
+
+        
+        $('.add-range').click(function(e){
+            e.preventDefault();
+
+            const id = $('#house-id').val();
+            let start = $('.dispo_start_date').val();
+            let end = $('.dispo_end_date').val();
+
+            const data = {id: id, start_date: start, end_date:end, submitted: true};
+            const currentUrl = window.location.origin;
+            
+            $.ajax({
+                url: currentUrl+'/house/'+id+'/edit-dispo',
+                data: data,
+                method: 'post'
+            }).done(function(response){
+                $('#events-table').html(response);
+            }).fail(function(response){
+                $('#events-table').html(response);
+            });
+        });
+    });
+
+</script>

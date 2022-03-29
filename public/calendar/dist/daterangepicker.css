@@ -15,19 +15,14 @@
 }
 
 .date-picker-wrapper {
-  position: absolute;
-  z-index: 1;
-  border: 1px solid #bfbfbf;
-  background-color: #efefef;
   padding: 5px 12px;
   font-size: 12px;
   line-height: 20px;
   color: #aaa;
   font-family: Arial, sans-serif;
-  -webkit-box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-          box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
   -webkit-box-sizing: initial;
           box-sizing: initial;
+  width: 427.222px;
 }
 
 .dp-clearfix {

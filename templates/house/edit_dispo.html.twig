@@ -4,130 +4,13 @@
 
 {% block body %}
     <h1>Edit Disponibility</h1>
-    {% if success is defined %}
-        <div>{{success}}</div>
-    {% endif %}
-
-    {% if alert is defined %}
-        <div>{{alert}}</div>
-    {% endif %}
-
-    <input id="disabled-date" type="hidden" data-dates="{{to_disable | json_encode}}" />
-    
-    <form action="{{ path('app_house_edit_dispo', {'id': house.id}) }}" method="post">
-
-        <div class="ranges mb-5 d-flex flex-column">
-            <div class="range-field row" data-range="1">
-                <div class="date-picker d-flex flex-row justify-content-between" data-range="1">
-                    <input class="dispo_start_date" data-range="1" name="start_date[]" autoComplete="off"/>
-                    <input class="dispo_end_date" data-range="1" name="end_date[]" autoComplete="off"/>
-                    <input type="hidden" class="event-ranges" name="event-ranges[]" data-range="1"/>
-                </div>
-            </div>
-        </div>
 
 
-        <a class="btn-success btn add-range" data-displayed="1">Ajouter un créneau</a>
-        <input type="hidden"  name="submitted" value="true"/>
-        <button class="btn-warning btn" type="submit">Valider</button>
-    </form>
+    <input id="house-id" type="hidden" value="{{house.id}}" />
+
+    <div id="events-table">{{include("house/_events_table.html.twig",{'events': events,'to_disable': to_disable, 'success': success})}}</div>
 
     <a href="{{ path('app_house_index') }}">back to list</a>
 
-
-    <script>
-
-        $(document).ready(function(){
-
-            function countDays(start, end) {
-                return Math.abs(moment(start).diff(moment(end), 'd')) + 1;
-            }
-
-            const toDisable = $("#disabled-date").data('dates');
-            const dateTable = [];
-            toDisable.forEach(function(event){
-                let interval = countDays(event["start_date"], event["end_date"]);
-
-                for(i=0;i < interval; i++){
-                    let start = moment(event["start_date"]);
-                    start = start.add(i,'days').format('YYYY-MM-DD');
-                    dateTable.push(start);
-                }
-            });
-
-            //Gestion du formulaires de disponibilités 
-
-            $('.add-range').click(function(e){
-                e.preventDefault();
-                const nbr = parseInt($('.add-range').attr('data-displayed')) + 1;
-                $(this).attr('data-displayed',nbr);
-
-
-                const htmlContent = '<div class="range-field row" data-range="'+nbr+'"><div class="date-picker d-flex flex-row justify-content-between" data-range="'+nbr+'">'+
-                        '<input class="dispo_start_date" name="start_date[]" autoComplete="off" data-range="'+nbr+'"/>'+
-                        '<input class="dispo_end_date" name="end_date[]" autoComplete="off" data-range="'+nbr+'"/>'+
-                    '</div><span class="btn-danger btn remove-range mb-3" data-range="'+nbr+'">X</span></div>'+
-                    '<input type="hidden" class="event-ranges" name="event-ranges[]" data-range="'+nbr+'"/>';
-
-                $('.ranges').append($(htmlContent));
-
-                toDisable.forEach(function(event){
-                    let interval = countDays(event["start_date"], event["end_date"]);
-
-                    for(i=0;i < interval; i++){
-                        let start = moment(event["start_date"]);
-                        start = start.add(i,'days').format('YYYY-MM-DD');
-                        dateTable.push(start);
-                    }
-                });
-
-                $('.remove-range[data-range="'+nbr+'"]').click(function(e){
-                    e.preventDefault();
-
-                    let limit =  parseInt($('.add-range').attr('data-displayed'));
-                    $('.range-field[data-range="'+$(this).attr('data-range')+'"]').remove();
-                    $('.add-range').attr('data-displayed',limit - 1);
-                    //toDisable.pop();
-
-                });
-
-            });
-
-            $('.ranges').mousedown(function(){
-
-                $('.date-picker').each(function(){
-                    let nbr = parseInt($(this).attr('data-range'));
-                    console.log( $('.date-picker[data-range="'+nbr+'"]'));
-        
-                    $('.date-picker[data-range="'+nbr+'"]').dateRangePicker(
-                        {
-                            beforeShowDay: function(t)
-                            {
-                                const date = moment(t.toJSON()).format('YYYY-MM-DD');
-                                var valid = !(dateTable.includes(date));  //disable dates
-                                var _class = '';
-                                var _tooltip = valid ? '' : 'Date indisponible';
-                                return [valid,_class,_tooltip];
-                            },
-                            setValue: function(s,s1,s2)
-                            {
-                                console.log(nbr);
-                                $('.dispo_start_date[data-range="'+nbr+'"]').val(s1);
-                                $('.dispo_end_date[data-range="'+nbr+'"]').val(s2);
-                                $('.event-ranges[data-range="'+nbr+'"]').val(s1+'**'+s2);
-                                dates={'start_date':s1, 'end_date':s2};
-                                toDisable.push(dates);
-                            }
-                        
-                        }
-                    );
-
-                });
-
-            });
-
-        });
-
-    </script>
 
 {% endblock %}

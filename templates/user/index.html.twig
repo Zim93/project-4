@@ -48,7 +48,8 @@
             <a class="btn btn-warning text-decoration-none text-white my-2" href="{{ path('app_user_change_password')}}">Modifier mot le passe</a>
         </div>
 
-    {% if houses != [] %}
+    
+    {% if houses is not empty and host == true %}
         <div>My houses</div>
         <table class="table">
             <thead>
@@ -76,9 +77,13 @@
             {% endfor %}
             </tbody>
         </table>
+
+    {% elseif houses is empty and host == true %}
+         <div>My houses</div>
+         <p>Aucune annonce à afficher</p>
     {% endif %}
 
-    {% if reservations != [] %}
+    {% if reservations is not empty %}
         <div>My reservations</div>
         <table class="table">
             <thead>

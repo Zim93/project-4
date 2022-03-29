@@ -13,9 +13,6 @@ class Event
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToOne(inversedBy: 'event', targetEntity: Reservation::class, cascade: ['persist', 'remove'])]
-    private $reservation;
-
     #[ORM\ManyToOne(targetEntity: House::class, inversedBy: 'events')]
     private $house;
 
@@ -30,17 +27,6 @@ class Event
         return $this->id;
     }
 
-    public function getReservation(): ?Reservation
-    {
-        return $this->reservation;
-    }
-
-    public function setReservation(?Reservation $reservation): self
-    {
-        $this->reservation = $reservation;
-
-        return $this;
-    }
 
     public function getHouse(): ?House
     {

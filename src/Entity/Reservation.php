@@ -42,9 +42,6 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private $house;
 
-    #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Event::class, cascade: ['persist', 'remove'])]
-    private $event;
-
     #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private $comment;
 
@@ -157,28 +154,6 @@ class Reservation
     public function setHouse(?House $house): self
     {
         $this->house = $house;
-
-        return $this;
-    }
-
-    public function getEvent(): ?Event
-    {
-        return $this->event;
-    }
-
-    public function setEvent(?Event $event): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($event === null && $this->event !== null) {
-            $this->event->setReservation(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($event !== null && $event->getReservation() !== $this) {
-            $event->setReservation($this);
-        }
-
-        $this->event = $event;
 
         return $this;
     }

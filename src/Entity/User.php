@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->house = new ArrayCollection();
+        //$this->house = new ArrayCollection();
         $this->reservation = new ArrayCollection();
         $this->comment = new ArrayCollection();
     }

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use DateTime;
-use App\Entity\Event;
 use DateTimeImmutable;
 use App\Entity\Comment;
 use App\Form\CommentType;
@@ -51,13 +50,7 @@ class ReservationController extends AbstractController
             $house = $houseRepository->find($request->get('house'));
             $total = $house->getPrice()*$interval;
 
-            $event = new Event();
-            $event->setHouse($house);
-            $event->setStartAt($start);
-            $event->setEndAt($end);
-            $eventRepository->add($event);
-
-            $reservation->setEvent($event);
+            
             $reservation->setTotal($total);
             $reservation->setHouse($house);
             $reservation->setGuest($user);

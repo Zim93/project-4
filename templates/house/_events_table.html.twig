@@ -1,0 +1,63 @@
+{% if success is defined %}
+    <div>{{success}}</div>
+{% endif %}
+
+{% if alert is defined %}
+    <div>{{alert}}</div>
+{% endif %}
+
+<input id="disabled-date" type="hidden" data-dates="{{to_disable | json_encode}}" />
+{{include("house/_calendar.html.twig")}}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if events is not empty %}
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.startAt  | format_datetime() }}</td>
+                    <td>{{ event.endAt | format_datetime()  }}</td>
+                    <td><a class="btn btn-danger remove-range" data-id="{{event.id}}">X</a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td><p>Aucune disponibilité trouvée</p><td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+        $('.remove-range').each(function(){
+            const id = $(this).data('id');
+
+            $('.remove-range[data-id="'+id+'"]').click(function(e){
+                e.preventDefault();
+                
+                let id = $(this).data('id');
+                const data = {house_id: $("#house-id").val()};
+
+                const currentUrl = window.location.origin;
+                
+                $.ajax({
+                    url: currentUrl+'/event/'+id+'/delete',
+                    data: data,
+                    method: 'post'
+                }).done(function(response){
+                    $('#events-table').html(response);
+                }).fail(function(response){
+                    $('#events-table').html(response);
+                });
+            });
+        });
+       
+    });
+</script>
