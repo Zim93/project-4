@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.firstname }}{% endblock %}
+
+{% block body %}
+    <div class="col-10 col-md-8 col-lg-6 mx-2">
+    {% if app.session.flashBag.has('success') %}
+        <div class="alert alert-success">
+            {% for msg in app.session.flashBag.get('success') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+    {% endif %}
+        
+        <table class="table">
+
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ user.firstname }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ user.lastname }}</td>
+                </tr>
+                <tr>
+                    <th>E-mail</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Avatar</th>
+                    {% if user.avatar is not null %}
+                    <td><img src="\images\users\{{user.avatar}}" height="200px" width="auto"/></td>
+                    {% else %} 
+                    <td> <img src="\images\users\default.png" height="200px" width="auto"/> </td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ user.description }}</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div class="text-center">
+            <a class="btn btn-primary text-decoration-none text-white my-2" href="{{ path('app_user_edit')}}">Modifier</a>
+            <a class="btn btn-warning text-decoration-none text-white my-2" href="{{ path('app_user_change_password')}}">Modifier mot le passe</a>
+        </div>
+
+    {% if houses != [] %}
+        <div>My houses</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    
+                    <th>Name</th>
+                    
+                    <th>Full_address</th>
+                    
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+        
+            {% for house in houses %}
+                <tr>
+                    <td>{{ house.name }}</td>
+                    <td>{{ house.fullAddress }}</td>
+                    <td>
+                        <a href="{{ path('app_house_edit_dispo', {'id': house.id}) }}">Edit Dispo</a>
+                        <a href="{{ path('app_house_show', {'id': house.id}) }}">show</a>
+                        <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if reservations != [] %}
+        <div>My reservations</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nbr_voyagers</th>
+                    <th>Start_date</th>
+                    <th>End_date</th>
+                    <th>Total</th>
+                    <th>Nbr_nights</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    
+                    <td>{{ reservation.nbrVoyagers }}</td>
+                    <td>{{ reservation.startDate ? reservation.startDate|date('Y-m-d') : '' }}</td>
+                    <td>{{ reservation.endDate ? reservation.endDate|date('Y-m-d') : '' }}</td>
+                    <td>{{ reservation.total }}</td>
+                    <td>{{ reservation.nbrNights }}</td>
+                    <td>
+                        <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
+                        <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+  
+{% endblock %}

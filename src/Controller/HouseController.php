@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\Event;
 use App\Entity\House;
 use App\Form\HouseType;
 use App\Entity\Attachment;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Repository\EventRepository;
 use App\Repository\HouseRepository;
 use App\Controller\CommentController;
 use App\Repository\AttachmentRepository;
@@ -83,12 +86,21 @@ class HouseController extends AbstractController
     public function show(House $house): Response
     {
         $reservation= new Reservation();
-        $formReservation = $this->createForm(ReservationType::class, $reservation);        
+        $formReservation = $this->createForm(ReservationType::class, $reservation);
+        $reservations = $house->getReservation();
+        $toDisable = [];
+        
+        if(count($reservations) > 0){
+            forEach($reservations as $reservation){
+                $toDisable[] = ["start_date" => $reservation->getStartDate()->format("Y-m-d"), "end_date" => $reservation->getEndDate()->format("Y-m-d")];
+            }
+        }
 
         return $this->renderForm('house/show.html.twig', [
             'form_reservation' => $formReservation,
             'reservation' => $reservation,
             'house' => $house,
+            'to_disable' => $toDisable,
         ]);
     }
 
@@ -131,8 +143,9 @@ class HouseController extends AbstractController
                     $attachment = new Attachment();
                     $attachment->setUrl($newFilename);
 
-                    $attachmentRepository->add($attachment);
                     $house->addAttachment($attachment);
+                    $attachmentRepository->add($attachment);
+                    
                 }
             $houseRepository->add($house);
             return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
@@ -144,6 +157,54 @@ class HouseController extends AbstractController
         ]);
     }
 
+
+    #[Route('/{id}/edit-dispo', name: 'app_house_edit_dispo', methods: ["GET", 'POST'])]
+    public function editDispo(Request $request,House $house, HouseRepository $houseRepository, $id, EventRepository $eventRepository): Response
+    {
+        $reservations = $house->getReservation();
+        $toDisable = [];
+
+        if(count($reservations) > 0){
+            forEach($reservations as $reservation){
+                $toDisable[] = ["start_date" => $reservation->getStartDate()->format("Y-m-d"), "end_date" => $reservation->getEndDate()->format("Y-m-d")];
+            }
+        }
+
+        if($request->get('submitted')== 'true'){
+            $dispoDates =$request->get('event-ranges');
+            $house = $houseRepository->find($id);
+
+            foreach($dispoDates as $date){
+                if($date == NULL){
+                    return $this->render('house/edit_dispo.html.twig', [
+                        'alert' => 'Format de la date incorrect.',
+                        'house' => $house,
+                        'to_disable' => $toDisable,
+                    ]);
+                }
+                $event = new Event();
+                $event->setHouse($house);
+                $a = explode('**',$date);
+                $start = new DateTime($a[0]);
+                $end = new DateTime($a[1]);
+                $event->setStartAt($start);
+                $event->setEndAt($end);
+                $eventRepository->add($event);
+            }
+            return $this->render('house/edit_dispo.html.twig', [
+                'success' => 'Vos disponibilité ont été mis à jour',
+                'house' => $house,
+                'to_disable' => $toDisable,
+            ]);
+        }
+        
+        return $this->render('house/edit_dispo.html.twig', [
+            'house' => $house,
+            'to_disable' => $toDisable,
+        ]);
+    }
+    
+    
     #[Route('/{id}', name: 'app_house_delete', methods: ['POST'])]
     public function delete(Request $request, House $house, HouseRepository $houseRepository): Response
     {

@@ -47,6 +47,12 @@
                 <th>Voyageurs</th>
                 <td>{{reservation.guest.firstname}}</td>
             </tr>
+            <tr>
+                {% if reservation.comment is not null %}
+                    <th>Comment</th>
+                    <td>{{reservation.comment.message}}</td>
+                {% endif %}
+            </tr>
         </tbody>
     </table>
 
@@ -55,10 +61,14 @@
             {{ form_start(form_comment, {'action':'/comment/new'}) }}
                 {{ form_widget(form_comment) }}
                 <input type="hidden" name="house" value="{{reservation.house.id}}"/>
+                <input type="hidden" name="reservation" value="{{reservation.id}}"/>
+
                 <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
             {{ form_end(form_comment)}}
         </div>
     {% endif %}
+
+    
 
     <a href="{{ path('app_reservation_index') }}">back to list</a>
 

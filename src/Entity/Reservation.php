@@ -45,6 +45,9 @@ class Reservation
     #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Event::class, cascade: ['persist', 'remove'])]
     private $event;
 
+    #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -176,6 +179,23 @@ class Reservation
         }
 
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getComment(): ?Comment
+    {
+        return $this->comment;
+    }
+
+    public function setComment(Comment $comment): self
+    {
+        // set the owning side of the relation if necessary
+        if ($comment->getReservation() !== $this) {
+            $comment->setReservation($this);
+        }
+
+        $this->comment = $comment;
 
         return $this;
     }

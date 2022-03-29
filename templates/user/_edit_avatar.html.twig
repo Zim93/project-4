@@ -1,0 +1,23 @@
+{% if user.avatar is not null %}
+    <div>
+        <div class="d-flex row">
+            <div class="col-3 d-flex justify-content-center image-upload" >
+                <img  src="/images/users/{{user.avatar}}" height="auto" width="200px" />
+                <span class="close-cross text-center">X</span>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<style>
+    .close-cross{
+        cursor:pointer;
+    } 
+    
+    .close-cross{
+        position: relative;
+        width: 20px;
+        margin: 0 !important;
+        top: 0px;
+        left: 0px;
+    }
+</style>

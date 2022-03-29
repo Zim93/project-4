@@ -27,6 +27,10 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private $house;
 
+    #[ORM\OneToOne(inversedBy: 'comment', targetEntity: Reservation::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $reservation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +80,18 @@ class Comment
     public function setHouse(?House $house): self
     {
         $this->house = $house;
+
+        return $this;
+    }
+
+    public function getReservation(): ?Reservation
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(Reservation $reservation): self
+    {
+        $this->reservation = $reservation;
 
         return $this;
     }

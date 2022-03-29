@@ -10,6 +10,8 @@
     </style>
     <h1>House</h1>
 
+    <input id="disabled-date" type="hidden" data-dates="{{to_disable | json_encode}}" />
+
     <table class="table">
         <tbody>
             <tr>
@@ -102,15 +104,14 @@
         {{ form_start(form_reservation, {'action':'/reservation/new'}) }}
             {{ form_row(form_reservation.nbr_voyagers) }}
             <div id="date-picker">
-                <input id="reservation_start_date" name="start_date"/>
-                <input id="reservation_end_date" name="end_date"/>
+                <input id="reservation_start_date" name="start_date" autoComplete="off"/>
+                <input id="reservation_end_date" name="end_date" autoComplete="off"/>
             </div>
             <input type="hidden" name="house" value="{{house.id}}"/>
             <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
         {{ form_end(form_reservation)}}
     </div>
 
-    <script src="/javascript/calendar.js" />
 
     <div id="map"></div>
 {% endblock %}

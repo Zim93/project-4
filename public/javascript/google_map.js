@@ -4,7 +4,7 @@ $('.for_map').each(function(){
     lat= $($(this).find('.pos')[0]).val();
     lng= $($(this).find('.pos')[1]).val();
     price=$(this).find('.price-pop');
-    all.push([parseFloat(lat),parseFloat(lng),price])
+    all.push([parseFloat(lat),parseFloat(lng),price[0]])
 })
 
 function initMap() {
@@ -78,7 +78,7 @@ function initMap() {
     var myLatlng = new google.maps.LatLng(place[0],place[1]);
     let popup = new Popup(
       myLatlng,
-      place[2][0]
+      place[2]
     );
     popup.setMap(map);
   }

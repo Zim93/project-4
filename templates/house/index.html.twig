@@ -52,6 +52,7 @@
                 <td>{{ house.price }}</td>
                 <td>{{ house.equiments ? house.equiments|json_encode : '' }}</td>
                 <td>
+                    <a href="{{ path('app_house_edit_dispo', {'id': house.id}) }}">Edit Dispo</a>
                     <a href="{{ path('app_house_show', {'id': house.id}) }}">show</a>
                     <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
                 </td>

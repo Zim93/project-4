@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\HouseRepository;
 use App\Repository\CommentRepository;
+use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,7 @@ class CommentController extends AbstractController
     }
 
     #[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CommentRepository $commentRepository,HouseRepository $houseRepository): Response
+    public function new(Request $request, CommentRepository $commentRepository,HouseRepository $houseRepository, ReservationRepository $reservationRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -34,9 +35,11 @@ class CommentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $house = $houseRepository->find($request->get('house'));
+            $reservation = $reservationRepository->find($request->get('reservation'));
             $comment->setGuest($user);
 
             $comment->setHouse($house);
+            $comment->setReservation($reservation);
             $commentRepository->add($comment);
             return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
         }

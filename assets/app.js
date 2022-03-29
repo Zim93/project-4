@@ -13,3 +13,4 @@ import './bootstrap';
 
 //import $ from 'jquery';
 import './javascript/edit_houses';
+import './javascript/edit_avatar';

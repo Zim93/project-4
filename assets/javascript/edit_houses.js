@@ -1,12 +1,5 @@
 $(document).ready(function(){
-   
-    $("img").click(function() {
-
-        $(this).toggleClass("hover");
-
-    });
-
-    
+ 
     $('.close-cross').click(function() {
         let selectedImages;
 

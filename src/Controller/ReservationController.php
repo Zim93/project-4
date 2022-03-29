@@ -79,15 +79,16 @@ class ReservationController extends AbstractController
     {
         $user= $this->getUser();
         $today = new DateTime();
-        if($reservation->getGuest() == $user && $reservation->getEndDate() < $today){
-            $comment = new Comment();
+        $guest = $reservation->getGuest();
+        $comment = $reservation->getComment();
+        
+        if($comment == NULL && $guest == $user && $reservation->getEndDate() < $today){
             $formComment = $this->createForm(CommentType::class, $comment);
             return $this->renderForm('reservation/show.html.twig', [
                 'form_comment' => $formComment,
                 'reservation' => $reservation,
             ]);
-        }
-        
+        }      
 
         return $this->render('reservation/show.html.twig', [
             'reservation' => $reservation,
