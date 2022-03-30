@@ -1,0 +1,187 @@
+warning: LF will be replaced by CRLF in assets/controllers.json.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in composer.lock.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in config/bundles.php.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in symfony.lock.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in yarn.lock.
+The file will have its original line endings in your working directory
+[1mdiff --git a/.env b/.env[m
+[1mindex 7eb2c8f..fc75c20 100644[m
+[1m--- a/.env[m
+[1m+++ b/.env[m
+[36m@@ -27,7 +27,7 @@[m [mMESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0[m
+ # IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml[m
+ #[m
+ # DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"[m
+[31m-DATABASE_URL="mysql://root:nazim@127.0.0.1:3306/project-4?serverVersion=5.7&charset=utf8mb4"[m
+[32m+[m[32mDATABASE_URL="mysql://root:Root972jvV56Bd@127.0.0.1:3306/atypik?serverVersion=5.7&charset=utf8mb4"[m
+ # DATABASE_URL="postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&charset=utf8"[m
+ ###< doctrine/doctrine-bundle ###[m
+ [m
+[1mdiff --git a/assets/app.js b/assets/app.js[m
+[1mindex 1b97bec..e46e794 100644[m
+[1m--- a/assets/app.js[m
+[1m+++ b/assets/app.js[m
+[36m@@ -6,10 +6,10 @@[m
+  */[m
+ [m
+ // any CSS you import will output into a single css file (app.css in this case)[m
+[31m-import './styles/app.scss';[m
+[32m+[m[32mimport "./styles/app.css";[m
+ [m
+ // start the Stimulus application[m
+[31m-import './bootstrap';[m
+[32m+[m[32mimport "./bootstrap";[m
+ [m
+[31m-import $ from 'jquery';[m
+[31m-import './javascript/edit_houses';[m
+[32m+[m[32mimport $ from "jquery";[m
+[32m+[m[32mimport "./javascript/edit_houses";[m
+[1mdiff --git a/composer.json b/composer.json[m
+[1mindex a1939fa..33884f8 100644[m
+[1m--- a/composer.json[m
+[1m+++ b/composer.json[m
+[36m@@ -42,7 +42,7 @@[m
+         "symfony/validator": "6.0.*",[m
+         "symfony/web-link": "6.0.*",[m
+         "symfony/webapp-meta": "^1.0",[m
+[31m-        "symfony/webpack-encore-bundle": "^1.12",[m
+[32m+[m[32m        "symfony/webpack-encore-bundle": "^1.14",[m
+         "symfony/yaml": "6.0.*",[m
+         "twig/extra-bundle": "^2.12|^3.0",[m
+         "twig/twig": "^2.12|^3.0"[m
+[1mdiff --git a/composer.lock b/composer.lock[m
+[1mindex 79bea29..dc8def9 100644[m
+[1m--- a/composer.lock[m
+[1m+++ b/composer.lock[m
+[36m@@ -4,7 +4,7 @@[m
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",[m
+         "This file is @generated automatically"[m
+     ],[m
+[31m-    "content-hash": "f73d74b0bcf1003b574adfdacde50841",[m
+[32m+[m[32m    "content-hash": "3ce2aa0626af0256a402942ccf9e4a16",[m
+     "packages": [[m
+         {[m
+             "name": "doctrine/annotations",[m
+[36m@@ -1601,70 +1601,6 @@[m
+             ],[m
+             "time": "2022-03-02T09:29:19+00:00"[m
+         },[m
+[31m-        {[m
+[31m-            "name": "jms/metadata",[m
+[31m-            "version": "2.6.1",[m
+[31m-            "source": {[m
+[31m-                "type": "git",[m
+[31m-                "url": "https://github.com/schmittjoh/metadata.git",[m
+[31m-                "reference": "c3a3214354b5a765a19875f7b7c5ebcd94e462e5"[m
+[31m-            },[m
+[31m-            "dist": {[m
+[31m-                "type": "zip",[m
+[31m-                "url": "https://api.github.com/repos/schmittjoh/metadata/zipball/c3a3214354b5a765a19875f7b7c5ebcd94e462e5",[m
+[31m-                "reference": "c3a3214354b5a765a19875f7b7c5ebcd94e462e5",[m
+[31m-                "shasum": ""[m
+[31m-            },[m
+[31m-            "require": {[m
+[31m-                "php": "^7.2|^8.0"[m
+[31m-            },[m
+[31m-            "require-dev": {[m
+[31m-                "doctrine/cache": "^1.0",[m
+[31m-                "doctrine/coding-standard": "^8.0",[m
+[31m-                "mikey179/vfsstream": "^1.6.7",[m
+[31m-                "phpunit/phpunit": "^8.5|^9.0",[m
+[31m-                "psr/container": "^1.0",[m
+[31m-                "symfony/cache": "^3.1|^4.0|^5.0",[m
+[31m-                "symfony/dependency-injection": "^3.1|^4.0|^5.0"[m
+[31m-            },[m
+[31m-            "type": "library",[m
+[31m-            "extra": {[m
+[31m-                "branch-alias": {[m
+[31m-                    "dev-master": "2.x-dev"[m
+[31m-                }[m
+[31m-            },[m
+[31m-            "autoload": {[m
+[31m-                "psr-4": {[m
+[31m-                    "Metadata\\": "src/"[m
+[31m-                }[m
+[31m-            },[m
+[31m-            "notification-url": "https://packagist.org/downloads/",[m
+[31m-            "license": [[m
+[31m-                "MIT"[m
+[31m-            ],[m
+[31m-            "authors": [[m
+[31m-                {[m
+[31m-                    "name": "Johannes M. Schmitt",[m
+[31m-                    "email": "schmittjoh@gmail.com"[m
+[31m-                },[m
+[31m-                {[m
+[31m-                    "name": "Asmir Mustafic",[m
+[31m-                    "email": "goetas@gmail.com"[m
+[31m-                }[m
+[31m-            ],[m
+[31m-            "description": "Class/method/property metadata management in PHP",[m
+[31m-            "keywords": [[m
+[31m-                "annotations",[m
+[31m-                "metadata",[m
+[31m-                "xml",[m
+[31m-                "yaml"[m
+[31m-            ],[m
+[31m-            "support": {[m
+[31m-                "issues": "https://github.com/schmittjoh/metadata/issues",[m
+[31m-                "source": "https://github.com/schmittjoh/metadata/tree/2.6.1"[m
+[31m-            },[m
+[31m-            "time": "2021-11-22T12:27:42+00:00"[m
+[31m-        },[m
+         {[m
+             "name": "laminas/laminas-code",[m
+             "version": "4.5.1",[m
+[1mdiff --git a/config/packages/framework.yaml b/config/packages/framework.yaml[m
+[1mindex 7853e9e..3ef8da6 100644[m
+[1m--- a/config/packages/framework.yaml[m
+[1m+++ b/config/packages/framework.yaml[m
+[36m@@ -1,24 +1,24 @@[m
+ # see https://symfony.com/doc/current/reference/configuration/framework.html[m
+ framework:[m
+[31m-    secret: '%env(APP_SECRET)%'[m
+[31m-    #csrf_protection: true[m
+[31m-    http_method_override: false[m
+[32m+[m[32m  secret: "%env(APP_SECRET)%"[m
+[32m+[m[32m  #csrf_protection: true[m
+[32m+[m[32m  http_method_override: false[m
+ [m
+[31m-    # Enables session support. Note that the session will ONLY be started if you read or write from it.[m
+[31m-    # Remove or comment this section to explicitly disable session support.[m
+[31m-    session:[m
+[31m-        handler_id: null[m
+[31m-        cookie_secure: auto[m
+[31m-        cookie_samesite: lax[m
+[31m-        storage_factory_id: session.storage.factory.native[m
+[32m+[m[32m  # Enables session support. Note that the session will ONLY be started if you read or write from it.[m
+[32m+[m[32m  # Remove or comment this section to explicitly disable session support.[m
+[32m+[m[32m  session:[m
+[32m+[m[32m    handler_id: null[m
+[32m+[m[32m    cookie_secure: auto[m
+[32m+[m[32m    cookie_samesite: lax[m
+[32m+[m[32m    storage_factory_id: session.storage.factory.native[m
+ [m
+[31m-    #esi: true[m
+[31m-    #fragments: true[m
+[31m-    php_errors:[m
+[31m-        log: true[m
+[32m+[m[32m  #esi: true[m
+[32m+[m[32m  #fragments: true[m
+[32m+[m[32m  php_errors:[m
+[32m+[m[32m    log: true[m
+ [m
+ when@test:[m
+[31m-    framework:[m
+[31m-        test: true[m
+[31m-        session:[m
+[31m-            storage_factory_id: session.storage.factory.mock_file[m
+[32m+[m[32m  framework:[m
+[32m+[m[32m    test: true[m
+[32m+[m[32m    session:[m
+[32m+[m[32m      storage_factory_id: session.storage.factory.mock_file[m
+[1mdiff --git a/symfony.lock b/symfony.lock

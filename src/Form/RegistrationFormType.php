@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -19,9 +20,24 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstname')
-            ->add('lastname')
-            ->add('email',EmailType::class)
+            ->add('firstname', TextType::class, [
+                'constraints' => new Length([
+                    'min' => 2,
+                    'max' => 30
+                ]),
+            ])
+            ->add('lastname', TextType::class, [
+                'constraints' => new Length([
+                    'min' => 2,
+                    'max' => 30
+                ]),
+            ])
+            ->add('email', EmailType::class, [
+                'constraints' => new Length([
+                    'min' => 2,
+                    'max' => 55
+                ]),
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
