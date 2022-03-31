@@ -9,6 +9,7 @@ use App\Form\HouseType;
 use App\Entity\Attachment;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Form\SearchHouseType;
 use App\Repository\EventRepository;
 use App\Repository\HouseRepository;
 use App\Controller\CommentController;
@@ -26,27 +27,34 @@ class HouseController extends AbstractController
     #[Route('/', name: 'app_house_index', methods: ['GET'])]
     public function index(HouseRepository $houseRepository): Response
     {
-        return $this->render('house/index.html.twig', [
+        $searchForm = $this->createForm(SearchHouseType::class);
+        return $this->renderForm('house/index.html.twig', [
             'houses' => $houseRepository->findAll(),
+            'search_form' => $searchForm
         ]);
     }
 
+    //Création d'un nouveau habitat
     #[Route('/new', name: 'app_house_new', methods: ['GET', 'POST'])]
     public function new(Request $request, HouseRepository $houseRepository, AttachmentRepository $attachmentRepository,SluggerInterface $slugger): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
+
+        //Vérification que l'utilisateur est bien hôte
         if(in_array('ROLE_HOST',$user->getRoles())){
             $house = new House();
             $form = $this->createForm(HouseType::class, $house);
+            //Récupération des données du formulaire
             $form->handleRequest($request);
-    
+            
+            //Traitement des données du formulaire
             if ($form->isSubmitted() && $form->isValid()) {
                 $house->setHost($user);
                 $files = $form->get('images')->getData();
 
                 foreach($files as $file){
-
+                    //Ajout des photos dans le dossier public/images/houses
                     $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                     $destination = $this->getParameter('kernel.project_dir').'/public/images/houses';
                     $safeFilename = $slugger->slug($originalFilename);
@@ -82,9 +90,11 @@ class HouseController extends AbstractController
        
     }
 
+    //Affichage d'un habitat
     #[Route('/{id}', name: 'app_house_show', methods: ['GET'])]
     public function show(House $house): Response
     {
+        //Création du formulaire de réservation
         $reservation= new Reservation();
         $formReservation = $this->createForm(ReservationType::class, $reservation);
         $reservations = $house->getReservation();
@@ -92,12 +102,14 @@ class HouseController extends AbstractController
         $toDisable = [];
         $toEnable = [];
         
+        //Récupération des réservation disponible pour l'habitat pour les désactiver sur le calandrier affiché
         if(count($reservations) > 0){
             forEach($reservations as $reservation){
                 $toDisable[] = ["start_date" => $reservation->getStartDate()->format("Y-m-d"), "end_date" => $reservation->getEndDate()->format("Y-m-d")];
             }
         }
 
+        //Récupération des créneaux de disponiblité pour l'habitat pour les activer sur le calandrier affiché
         if(count($events) > 0){
             forEach($events as $event){
                 $toEnable[] = ["start_date" => $event->getStartAt()->format("Y-m-d"), "end_date" => $event->getEndAt()->format("Y-m-d")];
@@ -113,6 +125,7 @@ class HouseController extends AbstractController
         ]);
     }
 
+    //Modification d'un habitat
     #[Route('/{id}/edit', name: 'app_house_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, House $house, HouseRepository $houseRepository,SluggerInterface $slugger,AttachmentRepository $attachmentRepository): Response
     {
@@ -121,9 +134,10 @@ class HouseController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //Récupération des photos à supprimer 
             $toDelete = $request->get("delete_attach");
             $toDelete = explode(',',$toDelete);
-
+            //Suppresion des photos
             if(count($toDelete) > 0 && $toDelete[0] != ""){
                 $filesystem = new Filesystem();
                 foreach($toDelete as $file){
@@ -134,7 +148,7 @@ class HouseController extends AbstractController
                 }
             }
 
-
+            //Ajout de nouvelles photos
             $files = $form->get('images')->getData();
 
                 foreach($files as $file){
@@ -166,19 +180,22 @@ class HouseController extends AbstractController
         ]);
     }
 
-
+    //Modification des date de disponiblité de l'habitat
     #[Route('/{id}/edit-dispo', name: 'app_house_edit_dispo', methods: ["GET", 'POST'])]
     public function editDispo(Request $request,House $house, HouseRepository $houseRepository, $id, EventRepository $eventRepository): Response
     {
+       //Récupération des réservation disponible pour l'habitat pour les désactiver sur le calandrier affiché
         $reservations = $house->getReservation();
         $toDisable = [];
 
+        
         if(count($reservations) > 0){
             forEach($reservations as $reservation){
                 $toDisable[] = ["start_date" => $reservation->getStartDate()->format("Y-m-d"), "end_date" => $reservation->getEndDate()->format("Y-m-d")];
             }
         }
 
+        //Récupération des créneaux de disponiblité pour l'habitat pour les activer sur le calandrier affiché
         $events = $house->getEvents();
 
         if(count($events) > 0){
@@ -187,6 +204,7 @@ class HouseController extends AbstractController
             }
         }
 
+        //Ajout des nouvelles dates de disponibilité
         if($request->get('submitted')== 'true'){
 
             $start =$request->get('start_date');
@@ -235,11 +253,12 @@ class HouseController extends AbstractController
         ]);
     }
     
-    
+    //Suppression d'un habitat
     #[Route('/{id}', name: 'app_house_delete', methods: ['POST'])]
     public function delete(Request $request, House $house, HouseRepository $houseRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$house->getId(), $request->request->get('_token'))) {
+            //Suppression des photos de l'habitat 
             $filesystem = new Filesystem();
             foreach( $house->getAttachments() as $image ){
                 $filesystem->remove(['images/houses/'.$image->getUrl()]);
@@ -248,5 +267,19 @@ class HouseController extends AbstractController
         }
 
         return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/search-render', name: 'app_house_search_render', methods: ['POSTS'])]
+    public function searchRender(): Response
+    {
+        return $this->render('house/_houses.html.twig', [
+            'houses' => $houseRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/search-primary', name: 'app_house_search_primary', methods: ['POSTS'])]
+    public function searchPrimary(): ResponseJSON
+    {
+        return new responseJSON();
     }
 }

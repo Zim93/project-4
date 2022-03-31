@@ -1,21 +1,27 @@
-let map, Popup;
-all=[];
-$('.for_map').each(function(){
-    lat= $($(this).find('.pos')[0]).val();
-    lng= $($(this).find('.pos')[1]).val();
-    price=$(this).find('.price-pop');
-    all.push([parseFloat(lat),parseFloat(lng),price[0]])
-})
-
+//Affichage du google map
 function initMap() {
   
+  all=[];
+  //Récupération des données de l'habitat
+  $('.for_map').each(function(){
+      lat= $($(this).find('.pos')[0]).val();
+      lng= $($(this).find('.pos')[1]).val();
+      price=$(this).find('.price-pop');
+      id = $(this).data('id');
+      all.push([parseFloat(lat),parseFloat(lng),price[0],id])
+  })
+  
   var mapOptions = {
-    zoom: 10,
+    zoom: 12,
     center: { lat: all[0][0], lng: all[0][1] },
   }
+
+  //Initialisation de la map
   var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+  //Image du marqueur
   const image = "../font/house-solid.svg";
   
+  //Class du popup de l'affichage du prix
   class Popup extends google.maps.OverlayView {
     position;
     containerDiv;
@@ -68,13 +74,32 @@ function initMap() {
     }
   }
 
+  //Affichage du marqueur et du prix de chaque habitat
   for (let i = 0; i < all.length; i++) {
-    place=all[i];
-    new google.maps.Marker({
+    const place=all[i];
+
+    const marker = new google.maps.Marker({
       position: { lat: place[0], lng: place[1] },
-      map,
       icon: image,
     });
+
+    marker.setMap(map);
+
+    //Centrer la map sur l'habitat cliqué dans la map
+    marker.addListener("click", () => {
+      map.setZoom(13);
+      map.setCenter(marker.getPosition());
+      $('html, body').animate({
+        scrollTop: $('.house-card[data-id="'+place[3]+'"').offset().top
+      });
+    });
+
+     //Centrer la map sur l'habitat cliqué dans la liste des habitats affichées
+    $('.house-card[data-id="'+place[3]+'"').on("click", () => {
+      map.setZoom(13);
+      map.setCenter(marker.getPosition());
+    });
+
     var myLatlng = new google.maps.LatLng(place[0],place[1]);
     let popup = new Popup(
       myLatlng,
@@ -82,4 +107,6 @@ function initMap() {
     );
     popup.setMap(map);
   }
+
+
 }

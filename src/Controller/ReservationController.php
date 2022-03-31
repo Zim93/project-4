@@ -27,19 +27,23 @@ class ReservationController extends AbstractController
         ]);
     }
 
+    //Ajout d'une nouvelle réservation
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ReservationRepository $reservationRepository, HouseRepository $houseRepository, EventRepository $eventRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
-
+        
+        //Création d'une nouvelle réservation
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //Récupération des données du formulaire
             $start = new DateTime($request->get('start_date'));
             $end = new DateTime($request->get('end_date'));
+            //Nombre de nuit
             $interval = date_diff($start,$end)->format('%a');
 
             $reservation->setStartDate($start);
@@ -48,6 +52,7 @@ class ReservationController extends AbstractController
 
             
             $house = $houseRepository->find($request->get('house'));
+            //Calcule du prix de la réservation
             $total = $house->getPrice()*$interval;
 
             
@@ -75,6 +80,8 @@ class ReservationController extends AbstractController
         $guest = $reservation->getGuest();
         $comment = $reservation->getComment();
         
+        //Ajout d'un nouveau commentaire à la réservation
+        //Vérification que la réservation est bien terminé pour pouvoir ajouter un commentaire
         if($comment == NULL && $guest == $user && $reservation->getEndDate() < $today){
             $formComment = $this->createForm(CommentType::class, $comment);
             return $this->renderForm('reservation/show.html.twig', [

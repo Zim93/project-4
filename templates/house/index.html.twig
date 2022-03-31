@@ -1,77 +1,132 @@
 {% extends 'base.html.twig' %}
 
+{% block more_scripts %}
+    <link href="https://cdn.jsdelivr.net/npm/flickity@latest/dist/flickity.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flickity@2.2.1/dist/flickity.pkgd.min.js"></script>
+{% endblock %}
+
 {% block title %}House index{% endblock %}
 
 {% block body %}
     <style>
         #map {
-        height: 400px;
+        height: 90vh;
         }
     </style>
+    {% if app.session.flashBag.has('already-logged') %}
+        <div class="alert alert-success">
+            {% for msg in app.session.flashBag.get('already-logged') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+    {% endif %}
     <h1>House index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Full_address</th>
-                <th>Street_number</th>
-                <th>Street_sub_number</th>
-                <th>Street_label</th>
-                <th>City_name</th>
-                <th>Postal_code</th>
-                <th>Nbr_accepted</th>
-                <th>Nbr_beds</th>
-                <th>Nbr_rooms</th>
-                <th>Nbr_showeroom</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Equiments</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for house in houses %}
-            <tr>
-                <td>{{ house.id }}</td>
-                <td>{{ house.name }}</td>
-                <td>{{ house.type }}</td>
-                <td>{{ house.fullAddress }}</td>
-                <td>{{ house.streetNumber }}</td>
-                <td>{{ house.streetSubNumber }}</td>
-                <td>{{ house.streetLabel }}</td>
-                <td>{{ house.cityName }}</td>
-                <td>{{ house.postalCode }}</td>
-                <td>{{ house.nbrAccepted }}</td>
-                <td>{{ house.nbrBeds }}</td>
-                <td>{{ house.nbrRooms }}</td>
-                <td>{{ house.nbrShoweroom }}</td>
-                <td>{{ house.description }}</td>
-                <td>{{ house.price }}</td>
-                <td>{{ house.equiments ? house.equiments|json_encode : '' }}</td>
-                <td>
-                    <a href="{{ path('app_house_edit_dispo', {'id': house.id}) }}">Edit Dispo</a>
-                    <a href="{{ path('app_house_show', {'id': house.id}) }}">show</a>
-                    <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
-                </td>
-            </tr>
-            <div class="for_map">
-                <div class="price-pop">{{ house.price }}</div>
-                <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
-                <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
+    <div class="row">
+        <div class="col-6">
+            <div style="position: fixed; width:50%;">
+                <div id="map"></div>
             </div>
-            
-        {% else %}
-            <tr>
-                <td colspan="19">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="zabi"></div>
-    <a href="{{ path('app_house_new') }}">Create new</a>
+        </div>
+        <div class="col-6">
+            <div> 
+                {{include("house/_search.html.twig")}}
+            </div>
+            <div id="houses-list">
+                {{include("house/_houses.html.twig",{'houses': houses}) }}
+            </div>
+        </div>
+    </div>
 
-    <div id="map"></div>
+    <style>
+
+        .flickity-page-dots li{
+            display: block;
+            width: 10px;
+            height: 10px;
+            padding: 0;
+            margin: 0 8px;
+            background: hsl(0 0% 20% / 25%);
+            border-radius: 50%;
+            cursor: pointer;
+            appearance: none;
+            border: none;
+            text-indent: -9999px;
+            overflow: hidden;
+        }
+
+        .flickity-rtl .flickity-page-dots li {
+            text-indent: 9999px;
+        }
+
+        .flickity-page-dots li:focus {
+            outline: none;
+            box-shadow: 0 0 0 5px #19F;
+        }
+
+        .flickity-page-dots li.is-selected {
+            background: hsl(0 0% 20% / 100%);
+        }
+
+        .flickity-button{
+            width: 25px;
+            height: 25px;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $('.carousel').flickity({
+                cellAlign: 'center',
+                pageDots: true,
+                resize: true,
+                contain: true,
+                wrapAround: false
+            });
+
+            $('.search-btn').click(function(e){
+                e.preventDefault();
+
+                const dataPrimary = {lat:'',lng:'',start_date:'',end_date:'',nbr_voyagers:''};
+
+                const currentUrl = window.location.origin;
+                
+                $.ajax({
+                    url: currentUrl+'/house/search-primary',
+                    data: dataPrimary,
+                    method:'post'
+                }).done(function(res){
+
+                    const houseIdList = [];
+
+                    res.each(function(house){
+                        const currentHouseData = {lat:'',lng:'',id:''};
+                        const center = {lat: dataPrimary['lat'], lng: dataPrimary['lng']};
+                        houseIdList.push(checkGoogleZone(currentHouseData, center));
+                    });
+
+                    const dataRender = {ids: houseIdList};
+                    $.ajax({
+
+                        url: currentUrl+'/house/search-render',
+                        data: dataRender,
+                        method:'post'
+
+                    }).done(function(res){
+
+                        $('#houses-list').html(res);
+                        initMap();
+
+                    }).fail(function(res){
+
+                    });
+
+                }).fail(function(res){
+
+                });
+            })
+        });
+    </script>
+   
 {% endblock %}

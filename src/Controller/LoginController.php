@@ -10,10 +10,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
+
     #[Route('/login', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         $user= $this->getUser();
+        //Redirection vers la page index si l'utilisateur est déjà authentifié 
         if(isset($user)){
             $request->getSession()
                     ->getFlashBag()

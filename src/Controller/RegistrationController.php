@@ -14,6 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
+    //Inscription au site
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -25,11 +26,15 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_house_index');
         }
         else{
+
+        //Création du nouveau utilisateur 
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //Vérification de la confirmation du mot de passe
             if($form->get('plainPassword')->getData()!=$form->get('confirmPassword')->getData())
             {
                 return $this->render('registration/index.html.twig', [

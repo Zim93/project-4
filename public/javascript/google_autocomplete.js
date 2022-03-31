@@ -1,3 +1,4 @@
+//Google API autocompletion
 function initialize() {
     input = document.getElementById('house_full_address');
     autocomplete = new google.maps.places.Autocomplete(input,
@@ -9,6 +10,9 @@ function initialize() {
     
     autocomplete.addListener("place_changed", fillInAddress)
 }
+
+//Récupération de l'adresse et des coordonnée géographique
+//Remplissage automatique du formulaire
 function fillInAddress(){
     const place = autocomplete.getPlace();
 

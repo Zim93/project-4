@@ -1,0 +1,11 @@
+{{ form_start(search_form,{'action':'/house/search'}) }}
+    {{ form_widget(search_form) }}
+    <div id="date-picker-search">
+        <label for="start_date">Date de début</label>
+        <input id="reservation_start_date" name="start_date" autoComplete="off"/>
+        <label for="end_date">Date de fin</label>
+        <input id="reservation_end_date" name="end_date" autoComplete="off"/>
+    </div>
+    <div class="date-picker-container"  style="position:absolute; background-color:white;"></div>
+    <button class="btn btn-secondary search-btn">{{ button_label|default('Rechercher') }}</button>
+{{ form_end(search_form) }}

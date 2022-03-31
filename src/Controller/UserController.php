@@ -20,9 +20,11 @@ class UserController extends AbstractController
     #[Route('/user', name: 'app_user')]
     public function index(HouseRepository $houseRepository, ReservationRepository $reservationRepository): Response
     {
+        //Récupération des données de l'utilisateur, ses réservation et ses habitats
         $user= $this->getUser();
         $houses= $user->getHouse();
         $reservations = $user->getReservation();
+        //vérification si l'utilisateurs est bien un hôte 
         if(in_array('ROLE_HOST',$user->getRoles())){
             $host = true;
         }
@@ -37,14 +39,19 @@ class UserController extends AbstractController
         ]);
     }
 
+    //Modification des information de l'utilisateur
     #[Route('/user/edit', name: 'app_user_edit')]
     public function edit(Request $request, UserRepository $userRepository,SluggerInterface $slugger): Response
     {
         $user= $this->getUser();
         $form= $this->createForm(UserType::class, $user);
+        //Récupération des données du formulaire
         $form->handleRequest($request);
+        
+        //Traitement des données du formulaire
         $avatar= $form->get('avatar')->getData();
         if($form->isSubmitted() && $form->isValid()){
+            //Suppression de  l'avatar du dossier public/images/users
             if($request->get("delete_avatar") == 'true'){
                 $filesystem = new Filesystem();
                 $filesystem->remove(['images/users/'.$user->getAvatar()]);
@@ -52,13 +59,15 @@ class UserController extends AbstractController
             }
 
             if($avatar != null){
+                //Ajout de l'avatar
 
+                //En cas d'ajout d'un nouveau avatar, suppression de l'ancien
                 if($user->getAvatar() != $avatar && $user->getAvatar() != null ){
                     $filesystem = new Filesystem();
                     $filesystem->remove(['images/users/'.$user->getAvatar()]);
                     $user->setAvatar(NULL);
                 }
-
+                //Ajout du nouveau avatar dans le dossier public/images/users
                 $originalAvatarname = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
                 $destination = $this->getParameter('kernel.project_dir').'/public/images/users';
                 $safeAvatarname = $slugger->slug($originalAvatarname);
@@ -80,24 +89,29 @@ class UserController extends AbstractController
         ]);
     }
 
+    //Changement du mot de passe de l'utilisateurs
     #[Route('/user/edit/password', name: 'app_user_change_password')]
     public function changePassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepository): Response
     {
         $user= $this->getUser();
         $form= $this->createForm(ChangePasswordType::class);
+        //Récupération des données du formulaire
         $form->handleRequest($request);
-        
+
+        //Traitement des données du formulaire
         if ($form->isSubmitted() && $form->isValid()){
             $oldPwd=$form->get('oldPassword')->getData();
             $nenPwd=$form->get('newPassword')->getData();
             $newPwdConfirm = $form->get('confirmNewPassword')->getData();
             
+            //Vérification de l'ancien mot de passe
             if (!$userPasswordHasher->isPasswordValid($user,$oldPwd)){
                 return $this->renderForm('user/change_password.html.twig', [
                     'resetPasswordForm' => $form,
                     'alert_error_wrong_pwd' => 'Votre mot de passe est incorrect'
                 ]);    
             } else{
+                //Vérification de la confirmation du mot de passe 
                 if($nenPwd == $newPwdConfirm){
                     $user->setPassword(
                     $userPasswordHasher->hashPassword($user,$nenPwd));

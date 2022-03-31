@@ -23,6 +23,7 @@ class CommentController extends AbstractController
         ]);
     }
 
+    //Ajouter un commentaire aprés la fin de la réservatio
     #[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CommentRepository $commentRepository,HouseRepository $houseRepository, ReservationRepository $reservationRepository): Response
     {
@@ -34,10 +35,12 @@ class CommentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //Récupération de la maison et de la réservation du formulaire 
             $house = $houseRepository->find($request->get('house'));
             $reservation = $reservationRepository->find($request->get('reservation'));
+            
+            //Création et ajout des commentaires        
             $comment->setGuest($user);
-
             $comment->setHouse($house);
             $comment->setReservation($reservation);
             $commentRepository->add($comment);
