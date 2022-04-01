@@ -34,6 +34,7 @@
             {
                 container:'.range-picker-container',
                 alwaysOpen:true,
+                startDate: new Date(),
                 beforeShowDay: function(t)
                 {
                     const date = moment(t.toJSON()).format('YYYY-MM-DD');

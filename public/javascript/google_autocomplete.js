@@ -1,14 +1,32 @@
 //Google API autocompletion
 function initialize() {
     input = document.getElementById('house_full_address');
+    inputSearch = document.getElementById('search_house_address');
+    
     autocomplete = new google.maps.places.Autocomplete(input,
     {
         componentRestrictions: {'country':['FR']},
         fields: ["address_components", "geometry"],
         types: ["address"],
     });
+
+    autocompleteSearch =  new google.maps.places.Autocomplete(inputSearch,
+    {
+        componentRestrictions: {'country':['FR']},
+        fields: ["address_components", "geometry"],
+        types: ["(cities)"],
+    });
     
-    autocomplete.addListener("place_changed", fillInAddress)
+    autocomplete.addListener("place_changed", fillInAddress);
+    autocompleteSearch.addListener("place_changed", fillInPosition);
+}
+
+function fillInPosition(){
+    position = autocompleteSearch.getPlace();
+    lat=position.geometry.location.toJSON().lat;
+    lng=position.geometry.location.toJSON().lng;
+    $('#search_lat').val(lat);
+    $('#search_lng').val(lng);
 }
 
 //Récupération de l'adresse et des coordonnée géographique

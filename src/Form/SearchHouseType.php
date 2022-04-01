@@ -21,6 +21,7 @@ class SearchHouseType extends AbstractType
                 'label' => 'Nombre de voyageurs',
                 'attr'=>[
                     'min'=>1,
+                    'value'=>1,
                 ]
             ])
         ;

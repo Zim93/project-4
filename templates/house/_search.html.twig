@@ -6,6 +6,8 @@
         <label for="end_date">Date de fin</label>
         <input id="reservation_end_date" name="end_date" autoComplete="off"/>
     </div>
+    <input type="hidden" id="search_lat" name="search_lat"/>
+    <input type="hidden" id="search_lng" name="search_lng"/>
     <div class="date-picker-container"  style="position:absolute; background-color:white;"></div>
     <button class="btn btn-secondary search-btn">{{ button_label|default('Rechercher') }}</button>
 {{ form_end(search_form) }}

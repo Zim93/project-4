@@ -87,45 +87,70 @@
 
             $('.search-btn').click(function(e){
                 e.preventDefault();
+                lat = $('#search_lat').val();
+                lng = $('#search_lng').val();
+                start_date = $('#reservation_start_date').val();
+                end_date = $('#reservation_end_date').val();
+                nbr_voyagers = $('#search_house_nbr_voyagers').val();
 
-                const dataPrimary = {lat:'',lng:'',start_date:'',end_date:'',nbr_voyagers:''};
+                const dataPrimary = {lat:lat ,lng:lng , start_date:start_date, end_date:end_date ,nbr_voyagers:nbr_voyagers};
 
                 const currentUrl = window.location.origin;
-                
                 $.ajax({
-                    url: currentUrl+'/house/search-primary',
+                    url: currentUrl+'/search-primary',
                     data: dataPrimary,
                     method:'post'
                 }).done(function(res){
 
                     const houseIdList = [];
 
-                    res.each(function(house){
-                        const currentHouseData = {lat:'',lng:'',id:''};
-                        const center = {lat: dataPrimary['lat'], lng: dataPrimary['lng']};
-                        houseIdList.push(checkGoogleZone(currentHouseData, center));
+                    res.forEach(function(house){
+                        const currentHouseData = {lat:parseFloat(house.lat), lng:parseFloat(house.lng), id:house.id};
+                        const center = {lat: parseFloat(dataPrimary['lat']), lng: parseFloat(dataPrimary['lng'])};
+                        if(checkGoogleZone(currentHouseData, center) == true){
+                            houseIdList.push(currentHouseData.id);
+                        }
                     });
 
                     const dataRender = {ids: houseIdList};
                     $.ajax({
 
-                        url: currentUrl+'/house/search-render',
+                        url: currentUrl+'/search-render',
                         data: dataRender,
                         method:'post'
 
                     }).done(function(res){
-
+                        searchCenter=({lat: parseFloat($('#search_lat').val()) , lng: parseFloat($('#search_lng').val()) });
                         $('#houses-list').html(res);
-                        initMap();
+                        initMap(searchCenter);
 
                     }).fail(function(res){
-
+                        console.log('ko')
                     });
-
                 }).fail(function(res){
 
                 });
-            })
+            });
+
+            function checkGoogleZone(currentHouseData,center){
+                
+                //Initialisation du périmètre de recherche
+                const cityCircle = new google.maps.Circle({
+                    center: center,
+                    radius: 50000
+                });
+                
+                position = new google.maps.LatLng({lat: currentHouseData.lat, lng: currentHouseData.lng});
+               
+                //comparaison entre la distance entre le centre du périmètre et le diamètre
+                if(google.maps.geometry.spherical.computeDistanceBetween(position, center) <= 50000){
+                   
+                    return true;
+                }
+                else{
+                    return false;
+                }   
+            }
         });
     </script>
    

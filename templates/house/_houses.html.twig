@@ -1,30 +1,34 @@
-{% for house in houses %}
-    <div class="row house-card" data-id="{{house.id}}" style="cursor:pointer;">
-        <div class="col-3">
-            {% if house.attachments is not empty %}
-                <div class="carousel">
-                    {% for image in house.attachments %}
-                            <img src="/images/houses/{{image.url}}" class="carousel-cell img-fluid" max-height="auto"/>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <img src="/images/houses/default.jpg" class="img-fluid" max-height="auto"/>
-            {% endif %}
-        </div>
-        <div class="col-6">
-            <h3>{{house.name}}</h3>
-            <p>{{house.description}}</p>
-        </div>
-        <div class="col-3">
-            <p>Evaluation</p>
-            <p>{{house.price}}</p>
-            <a href="{{ path('app_house_show', {'id': house.id}) }}">Réserver</a>
-        </div>
+{% if houses is defined%}
+    {% for house in houses %}
+        <div class="row house-card" data-id="{{house.id}}" style="cursor:pointer;">
+            <div class="col-3">
+                {% if house.attachments is not empty %}
+                    <div class="carousel">
+                        {% for image in house.attachments %}
+                                <img src="/images/houses/{{image.url}}" class="carousel-cell img-fluid" max-height="auto"/>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <img src="/images/houses/default.jpg" class="img-fluid" max-height="auto"/>
+                {% endif %}
+            </div>
+            <div class="col-6">
+                <h3>{{house.name}}</h3>
+                <p>{{house.description}}</p>
+            </div>
+            <div class="col-3">
+                <p>Evaluation</p>
+                <p>{{house.price}}</p>
+                <a href="{{ path('app_house_show', {'id': house.id}) }}">Réserver</a>
+            </div>
 
-        <div class="for_map" data-id="{{house.id}}">
-            <div class="price-pop">{{ house.price }}</div>
-            <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
-            <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
+            <div class="for_map" data-id="{{house.id}}">
+                <div class="price-pop">{{ house.price }}</div>
+                <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
+                <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
+            </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% else %}
+<p>Aucun résultat trouvé</p>
+{% endif %}

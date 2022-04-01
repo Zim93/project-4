@@ -1,20 +1,31 @@
 //Affichage du google map
-function initMap() {
-  
-  all=[];
-  //Récupération des données de l'habitat
-  $('.for_map').each(function(){
-      lat= $($(this).find('.pos')[0]).val();
-      lng= $($(this).find('.pos')[1]).val();
-      price=$(this).find('.price-pop');
-      id = $(this).data('id');
-      all.push([parseFloat(lat),parseFloat(lng),price[0],id])
-  })
-  
-  var mapOptions = {
-    zoom: 12,
-    center: { lat: all[0][0], lng: all[0][1] },
+all=[];
+//Récupération des données de l'habitat
+$('.for_map').each(function(){
+    lat= $($(this).find('.pos')[0]).val();
+    lng= $($(this).find('.pos')[1]).val();
+    price=$(this).find('.price-pop');
+    id = $(this).data('id');
+    all.push([parseFloat(lat),parseFloat(lng),price[0],id])
+})
+
+const center = { lat: all[0][0], lng: all[0][1] }
+
+function initMap(center) {
+  if(typeof center == 'undefined'){
+    center = { lat: all[0][0], lng: all[0][1] };
+    var mapOptions = {
+      zoom: 12,
+      center: center,
+    }
+  } else{
+    var mapOptions = {
+      zoom: 12,
+      center: center,
+    }
   }
+
+  
 
   //Initialisation de la map
   var map = new google.maps.Map(document.getElementById("map"), mapOptions);

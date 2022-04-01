@@ -269,17 +269,4 @@ class HouseController extends AbstractController
         return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/search-render', name: 'app_house_search_render', methods: ['POSTS'])]
-    public function searchRender(): Response
-    {
-        return $this->render('house/_houses.html.twig', [
-            'houses' => $houseRepository->findAll(),
-        ]);
-    }
-
-    #[Route('/search-primary', name: 'app_house_search_primary', methods: ['POSTS'])]
-    public function searchPrimary(): ResponseJSON
-    {
-        return new responseJSON();
-    }
 }

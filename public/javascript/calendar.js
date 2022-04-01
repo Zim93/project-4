@@ -43,6 +43,7 @@ $(document).ready(function(){
                 container:'.date-picker-container',
                 separator : ' to ',
                 startDate: new Date(),
+                autoClose: true,
                 setValue: function(s,s1,s2)
                 {
                     $('#reservation_start_date').val(s1);
@@ -60,7 +61,7 @@ $(document).ready(function(){
                 container:'#date-picker',
                 separator : ' to ',
                 startDate: new Date(),
-                
+                autoClose: true,
                 //Activation et désactivation des dates 
                 beforeShowDay: function(t)
                 {
