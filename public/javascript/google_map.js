@@ -1,4 +1,5 @@
 //Affichage du google map
+function getHouses(){
 all=[];
 //Récupération des données de l'habitat
 $('.for_map').each(function(){
@@ -8,10 +9,12 @@ $('.for_map').each(function(){
     id = $(this).data('id');
     all.push([parseFloat(lat),parseFloat(lng),price[0],id])
 })
-
 const center = { lat: all[0][0], lng: all[0][1] }
+}
+
 
 function initMap(center) {
+  getHouses();
   if(typeof center == 'undefined'){
     center = { lat: all[0][0], lng: all[0][1] };
     var mapOptions = {
