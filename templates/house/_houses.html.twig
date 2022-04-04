@@ -1,4 +1,5 @@
 {% if houses is defined%}
+    <p>{{houses|length}} hébergements trouvés</p>
     {% for house in houses %}
         <div class="row house-card" data-id="{{house.id}}" style="cursor:pointer;">
             <div class="col-3">
@@ -30,5 +31,5 @@
         </div>
     {% endfor %}
 {% else %}
-<p>Aucun résultat trouvé</p>
+    <p>Aucun résultat trouvé</p>
 {% endif %}

@@ -32,19 +32,26 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
-
-            //Vérification de la confirmation du mot de passe
-            if($form->get('plainPassword')->getData()!=$form->get('confirmPassword')->getData())
+            //Vérification de la confirmation de l'email
+            if($form->get('email')->getData()!=$form->get('emailConfirmation')->getData())
             {
                 return $this->render('registration/index.html.twig', [
                     'registrationForm' => $form->createView(),
-                    'alert_error' => 'Les mots de passes ne sont pas identiques'
+                    'alert_error_email' => 'Les e-mails de passes ne sont pas identiques'
                 ]);
             }
-            
+            elseif($form->get('plainPassword')->getData()!=$form->get('confirmPassword')->getData())
+            {
+                return $this->render('registration/index.html.twig', [
+                    'registrationForm' => $form->createView(),
+                    'alert_error_password' => 'Les mots de passes ne sont pas identiques'
+                ]);
+            }
+           
             $user->setPassword(
-            $userPasswordHasher->hashPassword(
+                $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )

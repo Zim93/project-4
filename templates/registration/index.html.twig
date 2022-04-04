@@ -3,45 +3,137 @@
 {% block title %}Hello RegistrationController!{% endblock %}
 
 {% block body %}
+    <style>
+        #phone-code{
+            position: relative;
+            left: 10px;
+            top: 64px;
+            margin: 0 !important;
+            padding-right: 10px !important;
+            background-color: white;
+            border-right: 1px solid #5d5d5d;
+        }
+
+        #phone-number{
+            padding-left: 70px;
+        }
+    </style>
     <main class="container">
         <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 position-absolute top-50 start-50 translate-middle register">
             <h3 class="text-center">S'inscrire</h1>
             {{ form_start(registrationForm) }}  
-            <div class="form-group">
-                {{ form_label(registrationForm.firstname,'Prénom')}}
-                {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control'}})}}
-            </div>
-            <div class="form-group">
-                {{ form_label(registrationForm.lastname,'Nom')}}
-                {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control'}})}}
-            </div>
-            <div class="form-group">
-                {{ form_label(registrationForm.email,'E-mail')}}
-                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}})}}
-                {{ form_errors(registrationForm.email)}}
-            </div>
-                {{ form_label(registrationForm.plainPassword,'Mot de passe')}}
-                {{ form_errors(registrationForm.plainPassword)}}
-                {% if alert_error is defined %}
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control is-invalid'}})}}
-                    <div class="invalid-feedback d-block">{{alert_error}}</div>
-                {% else %}
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}})}}
-                {% endif %}
-            <div class="form-group">
-                {{ form_label(registrationForm.confirmPassword,'Confirmer le mot de passe')}}
-                {{ form_errors(registrationForm.confirmPassword)}}
-                {% if alert_error is defined %}
-                    {{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'form-control is-invalid'}})}}    
-                    <div class="invalid-feedback d-block">{{alert_error}}</div>
-                {% else %}
-                    {{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'form-control'}})}}
-                {% endif %}
-            </div>
-            <div class="text-center">
-            {{ form_widget(registrationForm.submit, {'label': 'Enregistrer', 'attr': {'class': 'btn btn-primary my-2'}})}}
-            </div>
+                {{ form_row(registrationForm.firstname)}}
+                {{ form_row(registrationForm.lastname)}}
+                <div class="form-group">
+                    {{ form_label(registrationForm.email,)}}
+                    {{ form_errors(registrationForm.email)}}
+                    {% if alert_error_email is defined %}
+                        {{ form_widget(registrationForm.email)}}    
+                        <div class="invalid-feedback d-block">{{alert_error_email}}</div>
+                    {% else %}
+                        {{ form_widget(registrationForm.email)}}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(registrationForm.emailConfirmation)}}
+                    {{ form_errors(registrationForm.emailConfirmation)}}
+                    {% if alert_error_email is defined %}
+                        {{ form_widget(registrationForm.emailConfirmation)}}    
+                        <div class="invalid-feedback d-block">{{alert_error_email}}</div>
+                    {% else %}
+                        {{ form_widget(registrationForm.emailConfirmation)}}
+                    {% endif %}
+                </div>
+                {{ form_row(registrationForm.address)}}
+                {{ form_row(registrationForm.postal_code)}}
+                {{ form_row(registrationForm.city)}}
+                {{ form_row(registrationForm.country)}}
+                <span id="phone-code" class="text-center"></span>
+                <div class="mb-3">
+                    <label for="phone-number" class="form-label required">Numéro de téléphone</label>
+                    <input type="text" id="phone-number" name="phone-number" required="required" class="form-control">        
+                </div>
+                <div style="display:none;">{{ form_row(registrationForm.phone)}}</div>
+                <div>
+                    {{ form_label(registrationForm.plainPassword)}}
+                    {{ form_errors(registrationForm.plainPassword)}}
+                    {% if alert_error_password is defined %}
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control is-invalid'}})}}
+                        <div class="invalid-feedback d-block">{{alert_error_password}}</div>
+                    {% else %}
+                        {{ form_widget(registrationForm.plainPassword)}}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(registrationForm.confirmPassword)}}
+                    {{ form_errors(registrationForm.confirmPassword)}}
+                    {% if alert_error_password is defined %}
+                        {{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'form-control is-invalid'}})}}    
+                        <div class="invalid-feedback d-block">{{alert_error_password}}</div>
+                    {% else %}
+                        {{ form_widget(registrationForm.confirmPassword)}}
+                    {% endif %}
+                </div>
+                <div class="text-center">
+                {{ form_widget(registrationForm.submit, {'attr': {'class': 'btn btn-primary my-2'}})}}
+                </div>
+                <div class="text-center">
+                    <p>
+                        Vous avez déjà un compte ? 
+                        <a href="{{ path('login') }}"> Connectez-vous </a>
+                    </p>
+                </div>
             {{ form_end(registrationForm) }}
         </div>
     </main>
+    <script>
+    $(document).ready(function(){
+        const country_code= {
+            "Autriche":	43,
+            "Belgique":	32,
+            "Bulgarie":	359,
+            "Croatie": 385,	
+            "Chypre": 357,
+            "République Tchèque": 420,
+            "Danemark":	45,
+            "Estonie": 372,	
+            "Finlande":	358,	
+            "France": 33,	
+            "Gibraltar": 350,	
+            "Allemagne": 49,	
+            "Grèce": 30,	
+            "Hongrie": 36,
+            "Islande": 354,	
+            "Irlande": 353,	
+            "Italie": 39,	
+            "Lettonie":	371,	
+            "Liechtenstein": 423,	
+            "Lituanie":	370,	
+            "Luxembourg": 352,
+            "Malte":	356,
+            "Pays-Bas":	31,
+            "Norvège":	47,
+            "Pologne":	48,
+            "Portugal":	351	,
+            "Roumanie":	40,
+            "Slovaquie": 421,
+            "Slovénie":	386,	
+            "Espagne":	34,
+            "Suède":	46,
+            "Royaume-Uni":	44
+        }
+
+        $('#phone-code').html("+"+country_code[$('#registration_form_country').val()]);
+
+         $('#phone-number').change(() => {
+            let newVal = '+'+country_code[$('#registration_form_country').val()]+''+$('#phone-number').val();
+            $('#registration_form_phone').val(newVal);
+         });
+
+        $('#registration_form_country').change(() => {
+            $('#phone-code').html("+"+country_code[$('#registration_form_country').val()]);
+        });
+        
+    })  
+</script>
 {% endblock %}

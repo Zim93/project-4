@@ -28,11 +28,17 @@ function initMap(center) {
     }
   }
 
+  const cityCircle = new google.maps.Circle({
+      center: center,
+      radius: 20000, 
+  });
+
   
 
   //Initialisation de la map
   var map = new google.maps.Map(document.getElementById("map"), mapOptions);
   //Image du marqueur
+  map.fitBounds(cityCircle.getBounds());
   const image = "../font/house-solid.svg";
   
   //Class du popup de l'affichage du prix
