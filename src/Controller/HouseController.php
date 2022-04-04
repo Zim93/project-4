@@ -13,6 +13,7 @@ use App\Form\SearchHouseType;
 use App\Repository\EventRepository;
 use App\Repository\HouseRepository;
 use App\Controller\CommentController;
+use App\Repository\CommentRepository;
 use App\Repository\AttachmentRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +48,6 @@ class HouseController extends AbstractController
             $form = $this->createForm(HouseType::class, $house);
             //Récupération des données du formulaire
             $form->handleRequest($request);
-            
             //Traitement des données du formulaire
             if ($form->isSubmitted() && $form->isValid()) {
                 $house->setHost($user);
@@ -92,7 +92,7 @@ class HouseController extends AbstractController
 
     //Affichage d'un habitat
     #[Route('/{id}', name: 'app_house_show', methods: ['GET'])]
-    public function show(House $house): Response
+    public function show(House $house, $id ,CommentRepository $commentRepository): Response
     {
         //Création du formulaire de réservation
         $reservation= new Reservation();
@@ -101,7 +101,8 @@ class HouseController extends AbstractController
         $events = $house->getEvents();
         $toDisable = [];
         $toEnable = [];
-        
+        $note= $commentRepository->findHouseNote($id)[0]["AVG(note)"];
+
         //Récupération des réservation disponible pour l'habitat pour les désactiver sur le calandrier affiché
         if(count($reservations) > 0){
             forEach($reservations as $reservation){
@@ -118,6 +119,7 @@ class HouseController extends AbstractController
 
         return $this->renderForm('house/show.html.twig', [
             'form_reservation' => $formReservation,
+            'note'=> $note,
             'reservation' => $reservation,
             'house' => $house,
             'to_disable' => $toDisable,

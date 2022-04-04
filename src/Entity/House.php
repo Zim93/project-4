@@ -86,6 +86,22 @@ class House
     #[ORM\Column(type: 'string', length: 255)]
     private $lng;
 
+    #[ORM\Column(type: 'integer')]
+    private $nbr_wc;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $wc_type;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $shower_room_type;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private $confort = [];
+
+ 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private $outside = [];
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -447,6 +463,67 @@ class House
     public function setLng(string $lng): self
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getNbrWc(): ?int
+    {
+        return $this->nbr_wc;
+    }
+
+    public function setNbrWc(int $nbr_wc): self
+    {
+        $this->nbr_wc = $nbr_wc;
+
+        return $this;
+    }
+
+    public function getWcType(): ?string
+    {
+        return $this->wc_type;
+    }
+
+    public function setWcType(string $wc_type): self
+    {
+        $this->wc_type = $wc_type;
+
+        return $this;
+    }
+
+    public function getShowerRoomType(): ?string
+    {
+        return $this->shower_room_type;
+    }
+
+    public function setShowerRoomType(string $shower_room_type): self
+    {
+        $this->shower_room_type = $shower_room_type;
+
+        return $this;
+    }
+
+    public function getConfort(): ?array
+    {
+        return $this->confort;
+    }
+
+    public function setConfort(?array $confort): self
+    {
+        $this->confort = $confort;
+
+        return $this;
+    }
+
+
+    public function getOutside(): ?array
+    {
+        return $this->outside;
+    }
+
+    public function setOutside(?array $outside): self
+    {
+        $this->outside = $outside;
 
         return $this;
     }

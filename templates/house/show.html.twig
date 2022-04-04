@@ -77,8 +77,17 @@
                 <td >{{ house.price }}</td>
             </tr>
             <tr>
+                <th>note</th>
+                
+                <td >{{ note }}</td>
+            </tr>
+            <tr>
                 <th>Equiments</th>
-                <td>{{ house.equiments ? house.equiments|json_encode : '' }}</td>
+                <td>
+                    {% for equiment in house.equiments %}
+                        {{ equiment }} </br>
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

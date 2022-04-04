@@ -73,10 +73,18 @@ class HouseType extends AbstractType
             ->add('type',ChoiceType::class,[
                 'label'=>'Type d\'habitation',
                 'placeholder' => 'Choisissez un type d\'habitation',
+                'expanded' => true,
                 'choices'  => [
-                    'Type1' => 'Type1',
-                    'Type2' => 'Type2',
-                    'Type3' => 'Type3',
+                    'Cabane dans les arbres' => 'Cabane dans les arbres',
+                    'Cabane sur pilotis' => 'Cabane sur pilotis',
+                    'Cabane sur l\'eau' => 'Cabane sur l\'eau',
+                    'Cabane' => 'Cabane',
+                    'Roulotte' => 'Roulotte',
+                    'Yourte' => 'Yourte',
+                    'Tente / Tipi' => 'Tente / Tipi',
+                    'Bulle' => 'Bulle',
+                    'Chalet' => 'Chalet',
+                    'Autre' => 'Autre',
                 ]
             ])
             ->add('nbr_accepted', IntegerType::class,[
@@ -97,11 +105,31 @@ class HouseType extends AbstractType
                     'min' => 1
                     ]
             ])
+            ->add('nbr_wc',IntegerType::class,[
+                'label'=>'Nombre de WC',
+                'attr' => [
+                    'min' => 1
+                    ]
+            ])
+            ->add('wc_type',ChoiceType::class,[
+                'expanded'=>true,
+                'choices'  => [
+                    'WC dans le logement'=>'WC dans le logement',
+                    'WC, hors du logement'=>'WC, hors du logement'
+                ]
+            ])           
             ->add('nbr_showeroom',IntegerType::class,[
                 'label'=>'Nombre de salle de bain',
                 'attr' => [
                     'min' => 1
                     ]
+            ])
+            ->add('shower_room_type',ChoiceType::class,[
+                'expanded'=>true,
+                'choices'  => [
+                    'SDB dans le logement'=>'SDB dans le logement',
+                    'SDB, hors du logement'=>'SDB, hors du logement'
+                ]
             ])
             ->add('description', TextareaType::class,[
                 'required'=>false,
@@ -113,13 +141,58 @@ class HouseType extends AbstractType
                     ]
             ])
             ->add('equiments',ChoiceType::class,[
-                'label'=>'Equipements disponible',
+                'label'=>'Logement avec cuisine',
                 'expanded' => true,
                 'multiple'=>true,
                 'choices'  => [
-                    'Equipement1' => 'Equipement1',
-                    'Equipement2' => 'Equipement2',
-                    'Equipement3' => 'Equipement3',
+                    'Four'=>'Four',
+                    'Plaque de cuission'=>'Plaque de cuission',
+                    'Micro onde'=>'Micro onde',
+                    'Réfrigérateur'=>'Réfrigérateur',
+                    'Cafetiere'=>'Cafetiere',
+                    'Bouilloire'=>'Bouilloire',
+                    'Table et chaise'=> 'Table et chaise',
+                    'Lave vaisselle'=>'Lave vaisselle',
+                    'Vaisselle'=>'Vaisselle'
+                ]                    
+            ])
+            ->add('outside',ChoiceType::class,[
+                'label'=>'Extérieur',
+                'expanded' => true,
+                'multiple'=>true,
+                'choices'  => [
+                    'Terrasse'=>'Terrasse',
+                    'Barbecue'=>'Barbecue',
+                    'Balcon'=>'Balcon',
+                    'Mobilier de jardin'=>'Mobilier de jardin',
+                    'Chaise longues'=>'Chaise longues',
+                ]
+            ])
+            ->add('confort',ChoiceType::class,[
+                'label'=>'Confort',
+                'expanded' => true,
+                'multiple'=>true,
+                'choices'  => [
+                    'Piscine partagé'=>'Piscine partagé',
+                    'Piscine privative'=>'Piscine privative',
+                    'Spa partagé'=>'Spa partagé',
+                    'Spa privatif'=>'Spa privatif',
+                    'Sauna'=>'Sauna',
+                    'Air conditionné'=>'Air conditionné',
+                    'Wifi'=>'Wifi',
+                    'TV'=>'TV',
+                    'Chauffage'=>'Chauffage',
+                    'Lit bébé'=>'Lit bébé',
+                    'Chaise bébé'=>'Chaise bébé',
+                    'Douche'=>'Douche',
+                    'Baignoire'=>'Baignoire',
+                    'Serviette fournis'=>'Serviette fournis',
+                    'Lave linges'=>'Lave linges',
+                    'Linge de lit'=>'Linge de lit',
+                    'Linge de lit non fournis'=>'Linge de lit non fournis',
+                    'Aspirateur'=>'Aspirateur',
+                    'Parking gratuit'=>'Parking en supplément',
+                    'Air de jeux'=>'Air de jeux',
                 ]
             ])
             ->add('images', FileType::class, [
