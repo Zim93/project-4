@@ -45,7 +45,7 @@ class HouseController extends AbstractController
         $user = $this->getUser();
 
         //Vérification que l'utilisateur est bien hôte
-        if(in_array('ROLE_HOST',$user->getRoles())){
+        if(in_array('ROLE_HOST',$user->getRoles()) && $user->getConfirmedHost() == true){
             $house = new House();
             $form = $this->createForm(HouseType::class, $house);
             //Récupération des données du formulaire

@@ -6,7 +6,9 @@ use App\Entity\User;
 use App\Entity\House;
 use App\Entity\Comment;
 use App\Entity\Reservation;
+use App\Repository\UserRepository;
 use App\Controller\Admin\UserCrudController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -37,6 +39,45 @@ class AdminController extends AbstractDashboardController
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
         // return $this->render('some/path/my-dashboard.html.twig');
+    }
+    
+    #[Route('/admin/confirm-host', name: 'admin_confirm_host')]
+    public function confirmHost(UserRepository $userRepository,Request $request): Response
+    {
+        $id= $request->get('id');
+        $user= $userRepository->find($id);
+        $user->setConfirmedHost(1);
+        $userRepository->add($user);
+        $users= $userRepository->findByRoleHost();
+
+        return $this->render('admin/_host_list.html.twig', [
+            "users" => $users,
+        ]);
+    }
+
+    #[Route('/admin/refuse-host', name: 'admin_refuse_host')]
+    public function refuseHost(UserRepository $userRepository,Request $request): Response
+    {
+        $id= $request->get('id');
+        $user= $userRepository->find($id);
+        $user->setRoles([]);
+        $userRepository->add($user);
+        $users= $userRepository->findByRoleHost();
+
+        return $this->render('admin/_host_list.html.twig', [
+            "users" => $users,
+        ]);
+    }
+
+    #[Route('/admin/confirm-host-list', name: 'admin_confirm_host_list')]
+    public function confirmHostList(UserRepository $userRepository): Response
+    {
+        
+        $users= $userRepository->findByRoleHost();
+        
+        return $this->render('/admin/hosts.html.twig', [
+            "users" => $users,
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -75,6 +116,7 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Habitations', 'fas fa-home', House::class);
         yield MenuItem::linkToCrud('Commentaire', 'fas fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Réservation', 'fas fa-list', Reservation::class);
+        yield MenuItem::linkToRoute('Confirmation des hôtes', 'fas fa-check-circle', 'admin_confirm_host_list',[]);
         
     }
 }

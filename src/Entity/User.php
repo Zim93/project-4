@@ -71,6 +71,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Favorite::class, orphanRemoval: true)]
     private $favorites;
 
+    #[ORM\Column(type: 'boolean')]
+    private $confirmed_host;
+
     public function __construct()
     {
         //$this->house = new ArrayCollection();
@@ -389,6 +392,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $favorite->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getConfirmedHost(): ?bool
+    {
+        return $this->confirmed_host;
+    }
+
+    public function setConfirmedHost(bool $confirmed_host): self
+    {
+        $this->confirmed_host = $confirmed_host;
 
         return $this;
     }

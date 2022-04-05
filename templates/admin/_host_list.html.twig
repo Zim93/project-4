@@ -1,0 +1,40 @@
+{% for user in users %}
+    <tr>                
+        <td>{{user.firstname}}</td>
+        <td>{{user.email}}</td>
+        <td>
+            <span class="btn btn-success accept" data-id={{user.id}}>Valider</span>
+            <span class="btn btn-danger refuse" data-id={{user.id}}>Annuler</span>
+        </td>
+    </tr>
+{% endfor %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+    $('.accept').click(function(){
+       id= $(this).data('id');
+       const currentUrl = window.location.origin;
+       console.log(currentUrl);
+       data={id:id}
+       $.ajax({
+           url:currentUrl+'/admin/confirm-host',
+           data:data,
+           method: "post",
+       }).done(function(res){
+           $('#list').html(res);
+       })
+    })
+
+    $('.refuse').click(function(){
+       id= $(this).data('id');
+       const currentUrl = window.location.origin;
+       data={id:id}
+       $.ajax({
+           url:currentUrl+'/admin/refuse-host',
+           data:data,
+           method: "post",
+       }).done(function(res){
+           $('#list').html(res);
+       })
+    })
+
+    </script>

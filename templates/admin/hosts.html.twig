@@ -1,0 +1,26 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block content_header %}
+    <div class="content-header-title">
+    <h1 class="title">
+        Confirmation des hôtes
+    </h1>
+    </div>
+
+{% endblock content_header %}
+
+{% block main %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Confirmation</th>
+            </tr>
+        </thead>
+        <tbody id="list">
+        {{include("admin/_host_list.html.twig",{'users': users})}}
+        </tbody>
+    <table>    
+{% endblock main %}
+
