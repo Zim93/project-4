@@ -102,12 +102,16 @@ class House
     #[ORM\Column(type: 'json', nullable: true)]
     private $outside = [];
 
+    #[ORM\OneToMany(mappedBy: 'house', targetEntity: Favorite::class, orphanRemoval: true)]
+    private $favorites;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
         $this->comment = new ArrayCollection();
         $this->attachments = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -524,6 +528,36 @@ class House
     public function setOutside(?array $outside): self
     {
         $this->outside = $outside;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favorite>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Favorite $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->setHouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Favorite $favorite): self
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            // set the owning side to null (unless already changed)
+            if ($favorite->getHouse() === $this) {
+                $favorite->setHouse(null);
+            }
+        }
 
         return $this;
     }

@@ -117,5 +117,30 @@
             </tbody>
         </table>
     {% endif %}
+
+    {% if favorites is not empty %}
+    <div>My favorites</div>
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>House</th>
+                    <th>House</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for favorite in favorites %}
+                <tr>
+                    <td>{{ favorite.house.name }}</td>
+                    <th><a href="{{path('app_house_show',{'id': favorite.house.id})}}">Show<a></th>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+     
+    {% endif %}
   
 {% endblock %}

@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Event;
 use App\Entity\House;
 use App\Form\HouseType;
+use App\Entity\Favorite;
 use App\Entity\Attachment;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
@@ -14,6 +15,7 @@ use App\Repository\EventRepository;
 use App\Repository\HouseRepository;
 use App\Controller\CommentController;
 use App\Repository\CommentRepository;
+use App\Repository\FavoriteRepository;
 use App\Repository\AttachmentRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,7 +94,7 @@ class HouseController extends AbstractController
 
     //Affichage d'un habitat
     #[Route('/{id}', name: 'app_house_show', methods: ['GET'])]
-    public function show(House $house, $id ,CommentRepository $commentRepository): Response
+    public function show(House $house, $id ,CommentRepository $commentRepository, FavoriteRepository $favoriteRepository): Response
     {
         //Création du formulaire de réservation
         $reservation= new Reservation();
@@ -116,15 +118,37 @@ class HouseController extends AbstractController
                 $toEnable[] = ["start_date" => $event->getStartAt()->format("Y-m-d"), "end_date" => $event->getEndAt()->format("Y-m-d")];
             }
         }
-
-        return $this->renderForm('house/show.html.twig', [
-            'form_reservation' => $formReservation,
-            'note'=> $note,
-            'reservation' => $reservation,
-            'house' => $house,
-            'to_disable' => $toDisable,
-            'to_enable' => $toEnable,
-        ]);
+        if($this->getUser()){
+            $user= $this->getUser();
+            $checkFavorite=$favoriteRepository->findByHouseUser($house->getId(),$user->getId());
+            if($checkFavorite !=[]){
+                $favorite=true;
+            }
+            else{
+                $favorite=false;
+            }
+            return $this->renderForm('house/show.html.twig', [
+                'form_reservation' => $formReservation,
+                'note'=> $note,
+                'reservation' => $reservation,
+                'house' => $house,
+                'to_disable' => $toDisable,
+                'to_enable' => $toEnable,
+                'favorite' =>$favorite
+            ]);
+        }           
+        else
+        {
+            return $this->renderForm('house/show.html.twig', [
+                'form_reservation' => $formReservation,
+                'note'=> $note,
+                'reservation' => $reservation,
+                'house' => $house,
+                'to_disable' => $toDisable,
+                'to_enable' => $toEnable,
+            ]);
+        }
+        
     }
 
     //Modification d'un habitat
@@ -271,4 +295,24 @@ class HouseController extends AbstractController
         return $this->redirectToRoute('app_house_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/favorite', name: 'app_house_favorite')]
+    public function favorite(House $house, HouseRepository $houseRepository,FavoriteRepository $favoriteRepository)
+    {
+        $user = $this->getUser();   
+        $favorite= new Favorite();
+        
+        $checkFavorite=$favoriteRepository->findByHouseUser($house->getId(),$user->getId());
+        if($checkFavorite == []){
+            $favorite->setHouse($house);
+            $favorite->setUser($user);
+            $favoriteRepository->add($favorite);
+            $response = ['action'=>'added'] ;
+            return $this->json($response);
+        }else{
+            $fav=$favoriteRepository->find($checkFavorite[0]['id']);
+            $favoriteRepository->remove($fav);
+            $response = ['action'=>'deleted'] ;
+            return $this->json($response);
+        }        
+    }
 }

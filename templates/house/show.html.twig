@@ -81,6 +81,16 @@
                 
                 <td >{{ note }}</td>
             </tr>
+            {% if favorite is defined%}
+             <tr>
+                <th>Favori</th>
+                {% if  favorite == true %}
+                <td ><span class="btn btn-success add-to-favorite" data-id={{house.id}}>Favori</span></td>
+                {% else %}
+                <td ><span class="btn btn-secondary add-to-favorite" data-id={{house.id}}>Favori</span></td>
+                {% endif %}
+            </tr>
+            {% endif %}
             <tr>
                 <th>Equiments</th>
                 <td>
@@ -124,4 +134,29 @@
 
 
     <div id="map"></div>
+
+    <script>
+    $(document).ready(function(){
+        $('.add-to-favorite').click(function(){
+            const id = $('.add-to-favorite').data('id');
+            const currentUrl = window.location.origin;
+            
+            $.ajax({
+                    url: currentUrl+'/house/'+id+'/favorite',
+                    method:'get'
+            }).done(function(res){
+                if(res.action == 'added'){
+                    $('.add-to-favorite').removeClass('btn-secondary');
+                    $('.add-to-favorite').addClass('btn-success');
+                }else{
+                    $('.add-to-favorite').removeClass('btn-success');
+                    $('.add-to-favorite').addClass('btn-secondary');
+                }
+            }).fail(function(res){
+                console.log(res);
+            });
+        })
+    })
+
+    </script>
 {% endblock %}

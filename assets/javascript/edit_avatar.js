@@ -1,7 +1,6 @@
 $(document).ready(function(){
-   
-    $('.close-cross').click(function() {
-        console.log('ok');
+    $('.close-cross-avatar').click(function() {
+       
         $("#delete-avatar").val('true');
      
         $(".image-upload").attr("style","display:none !important;");

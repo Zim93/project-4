@@ -22,6 +22,7 @@ class UserController extends AbstractController
     {
         //Récupération des données de l'utilisateur, ses réservation et ses habitats
         $user= $this->getUser();
+        $favorites= $user->getFavorites();
         $houses= $user->getHouse();
         $reservations = $user->getReservation();
         //vérification si l'utilisateurs est bien un hôte 
@@ -33,6 +34,7 @@ class UserController extends AbstractController
         }
         return $this->renderForm('user/index.html.twig',[
             'user' => $user,
+            'favorites'=>$favorites,
             'houses' => $houses,
             'reservations' => $reservations,
             'host' => $host
