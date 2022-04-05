@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Entity\House;
 use App\Entity\Comment;
+use App\Entity\Promotion;
 use App\Entity\Reservation;
 use App\Repository\UserRepository;
 use App\Controller\Admin\UserCrudController;
@@ -116,6 +117,7 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Habitations', 'fas fa-home', House::class);
         yield MenuItem::linkToCrud('Commentaire', 'fas fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Réservation', 'fas fa-list', Reservation::class);
+        yield MenuItem::linkToCrud('Code Promo', 'fas fa-percent', Promotion::class);
         yield MenuItem::linkToRoute('Confirmation des hôtes', 'fas fa-check-circle', 'admin_confirm_host_list',[]);
         
     }
