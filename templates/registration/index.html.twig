@@ -18,10 +18,11 @@
             padding-left: 70px;
         }
     </style>
-    <main class="container">
-        <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 position-absolute top-50 start-50 translate-middle register">
+    <main class="container d-flex justify-content-center">
+        <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 register my-3">
             <h3 class="text-center">S'inscrire</h1>
             {{ form_start(registrationForm) }}  
+                {{form_row(registrationForm.civility)}}
                 {{ form_row(registrationForm.firstname)}}
                 {{ form_row(registrationForm.lastname)}}
                 <div class="form-group">
@@ -74,6 +75,16 @@
                         {{ form_widget(registrationForm.confirmPassword)}}
                     {% endif %}
                 </div>
+
+                <div class="my-3">
+                    <div class="mb-2">
+                        <input  type="checkbox"><a href="#" class="ms-2">Recevoir les actualités</a></input>
+                    </div>
+                    <div>
+                        <input type="checkbox"><a href="#" class="ms-2">J'accepte les conditions générale de vente</a></input>
+                    </div>
+                </div>
+
                 <div class="text-center">
                 {{ form_widget(registrationForm.submit, {'attr': {'class': 'btn btn-primary my-2'}})}}
                 </div>
@@ -123,9 +134,11 @@
             "Royaume-Uni":	44
         }
 
-        $('#phone-code').html("+"+country_code[$('#registration_form_country').val()]);
+        if(typeof country_code[''] !== 'undefined'){
+            $('#phone-code').html("+"+country_code[$('#registration_form_country').val()]);
+        }   
 
-         $('#phone-number').change(() => {
+        $('#phone-number').change(() => {
             let newVal = '+'+country_code[$('#registration_form_country').val()]+''+$('#phone-number').val();
             $('#registration_form_phone').val(newVal);
          });

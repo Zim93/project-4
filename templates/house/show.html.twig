@@ -8,6 +8,7 @@
         height: 400px;
         }
     </style>
+    <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
     <h1>House</h1>
 
     <input id="disabled-date" type="hidden" data-dates="{{to_disable | json_encode}}" />
@@ -79,7 +80,7 @@
             <tr>
                 <th>note</th>
                 
-                <td >{{ note }}</td>
+                <td class="rating-comment" data-note="{{ house.note }}"></td>
             </tr>
             {% if favorite is defined%}
              <tr>
@@ -134,9 +135,21 @@
 
 
     <div id="map"></div>
-
+    <script src="/raty-master/lib/jquery.raty.js"></script>
     <script>
     $(document).ready(function(){
+
+        const score = parseFloat($($('.rating-comment')).data('note'));
+
+        $(".rating-comment").raty({
+            starOff:'/raty-master/lib/images/star-off.png',
+            starOn:'/raty-master/lib/images/star-on.png',
+            starHalf:'/raty-master/lib/images/star-half.png',
+            half: true,
+            readOnly: true, 
+            score: score
+        });
+
         $('.add-to-favorite').click(function(){
             const id = $('.add-to-favorite').data('id');
             const currentUrl = window.location.origin;

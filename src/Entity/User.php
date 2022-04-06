@@ -74,6 +74,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $confirmed_host;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $civility;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $status;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $fonction;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $company_name;
+
     public function __construct()
     {
         //$this->house = new ArrayCollection();
@@ -404,6 +416,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setConfirmedHost(bool $confirmed_host): self
     {
         $this->confirmed_host = $confirmed_host;
+
+        return $this;
+    }
+
+    public function getCivility(): ?string
+    {
+        return $this->civility;
+    }
+
+    public function setCivility(string $civility): self
+    {
+        $this->civility = $civility;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getFonction(): ?string
+    {
+        return $this->fonction;
+    }
+
+    public function setFonction(?string $fonction): self
+    {
+        $this->fonction = $fonction;
+
+        return $this;
+    }
+
+    public function getCompanyName(): ?string
+    {
+        return $this->company_name;
+    }
+
+    public function setCompanyName(?string $company_name): self
+    {
+        $this->company_name = $company_name;
 
         return $this;
     }

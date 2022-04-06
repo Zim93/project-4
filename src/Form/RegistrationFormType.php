@@ -19,6 +19,14 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('civility', ChoiceType::class,[
+                'label'=>'Civilité',
+                'choices'=>[
+                    'Madame'=>'madame',
+                    'Monsieur'=>'Monsieur'
+                ],
+                'placeholder' => ''
+            ])
             ->add('lastname', TextType::class, [
                 'label' =>  'Nom'
             ])
@@ -78,6 +86,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('country',ChoiceType::class,[
                 'label' =>  'Pays',
+                'placeholder' => '',
                 'choices'  => [
                     "Autriche"=>"Autriche",
                     "Belgique"=>"Belgique",

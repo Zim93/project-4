@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use DateTimeImmutable;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
+use App\Form\RegistrationHostFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,7 +59,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setCreatedAt(new DateTimeImmutable('now'));
-
+            $user->setConfirmedHost(0);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -70,20 +72,42 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register/host', name: 'app_register_host')]
-    public function registerHost(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function registerHost(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        $user= $this->getUser();
-        if(isset($user)){
-            $request->getSession()
-                    ->getFlashBag()
-                    ->add('already-registred', 'Vous êtes déjà enregistré');
-            return $this->redirectToRoute('app_house_index');
+        
+        if($this->getUser() && in_array("ROLE_USER",$this->getUser()->getRoles())){
+            if($request->request->all() != []){
+                $user=$this->getUser();
+                $formData= $request->request->all()['registration_host_form'];
+            
+                if($formData['status'] !=""){
+                    $user->setStatus($formData['status']);
+                }
+
+                if( $formData['fonction'] != ""){
+                    $user->setFonction($formData['fonction']);
+                }
+                if($formData['company_name'] !=""){
+                    $user->setCompanyName();
+                }
+
+                $user->setroles(['ROLE_HOST']);
+                $user->setConfirmedHost(0);
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_house_index');
+            }
+            
+            return $this->render('registration/indexHost.html.twig', [
+                'already_user'=> 'true'
+            ]);
         }
         else{
 
         //Création du nouveau utilisateur 
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationHostFormType::class, $user);
         $form->handleRequest($request);
 
         

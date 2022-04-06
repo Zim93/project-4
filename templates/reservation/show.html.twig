@@ -3,6 +3,8 @@
 {% block title %}Reservation{% endblock %}
 
 {% block body %}
+    <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
+
     <h1>Reservation</h1>
 
     <table class="table">
@@ -59,15 +61,34 @@
     {% if form_comment is defined %}
         <div class="w-50">
             {{ form_start(form_comment, {'action':'/comment/new'}) }}
-                {{ form_widget(form_comment) }}
+                <div  class="rating-comment"> </div>
+
+                {{form_row(form_comment.message)}}
+                {{form_widget(form_comment.note)}}
+
+
                 <input type="hidden" name="house" value="{{reservation.house.id}}"/>
                 <input type="hidden" name="reservation" value="{{reservation.id}}"/>
 
                 <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
             {{ form_end(form_comment)}}
         </div>
+        
     {% endif %}
-
+        
+        <script src="/raty-master/lib/jquery.raty.js"></script>
+        <script>
+            $(".rating-comment").raty({
+                starOff:'/raty-master/lib/images/star-off.png',
+                starOn:'/raty-master/lib/images/star-on.png',
+                starHalf:'/raty-master/lib/images/star-half.png',
+                half: true,
+                click: function(score) {
+                    console.log(score);
+                    $('#comment_note').val(score);
+                }
+            });
+        </script>
     
 
     <a href="{{ path('app_reservation_index') }}">back to list</a>

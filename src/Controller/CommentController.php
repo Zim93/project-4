@@ -44,6 +44,7 @@ class CommentController extends AbstractController
             $comment->setHouse($house);
             $comment->setReservation($reservation);
             $commentRepository->add($comment);
+            $commentRepository->setHouseNote($house->getId());
             return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
         }
 

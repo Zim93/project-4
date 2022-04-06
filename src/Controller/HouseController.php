@@ -103,7 +103,6 @@ class HouseController extends AbstractController
         $events = $house->getEvents();
         $toDisable = [];
         $toEnable = [];
-        $note= $commentRepository->findHouseNote($id)[0]["AVG(note)"];
 
         //Récupération des réservation disponible pour l'habitat pour les désactiver sur le calandrier affiché
         if(count($reservations) > 0){
@@ -129,7 +128,6 @@ class HouseController extends AbstractController
             }
             return $this->renderForm('house/show.html.twig', [
                 'form_reservation' => $formReservation,
-                'note'=> $note,
                 'reservation' => $reservation,
                 'house' => $house,
                 'to_disable' => $toDisable,
@@ -141,7 +139,6 @@ class HouseController extends AbstractController
         {
             return $this->renderForm('house/show.html.twig', [
                 'form_reservation' => $formReservation,
-                'note'=> $note,
                 'reservation' => $reservation,
                 'house' => $house,
                 'to_disable' => $toDisable,

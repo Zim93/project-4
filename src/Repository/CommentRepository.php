@@ -45,18 +45,19 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
-    public function findHouseNote($house_id): array
+    public function setHouseNote($house_id): void
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT AVG(note) 
+        $sql = 'UPDATE house  
+        SET note = (
+        SELECT AVG(note) 
         FROM COMMENT 
-        WHERE house_id= :house_id
-        LIMIT 1';
+        WHERE house_id= :house_id)
+        WHERE house.id = :house_id';
         
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery(['house_id' => $house_id]);
-        return $resultSet->fetchAllAssociative();
     }
 
     // /**

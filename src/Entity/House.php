@@ -105,6 +105,9 @@ class House
     #[ORM\OneToMany(mappedBy: 'house', targetEntity: Favorite::class, orphanRemoval: true)]
     private $favorites;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $note;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -558,6 +561,18 @@ class House
                 $favorite->setHouse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

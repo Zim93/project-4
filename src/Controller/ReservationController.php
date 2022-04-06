@@ -83,6 +83,7 @@ class ReservationController extends AbstractController
         //Ajout d'un nouveau commentaire à la réservation
         //Vérification que la réservation est bien terminé pour pouvoir ajouter un commentaire
         if($comment == NULL && $guest == $user && $reservation->getEndDate() < $today){
+        
             $formComment = $this->createForm(CommentType::class, $comment);
             return $this->renderForm('reservation/show.html.twig', [
                 'form_comment' => $formComment,
