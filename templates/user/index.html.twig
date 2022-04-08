@@ -3,144 +3,258 @@
 {% block title %}{{ user.firstname }}{% endblock %}
 
 {% block body %}
-    <div class="col-10 col-md-8 col-lg-6 mx-2">
-    {% if app.session.flashBag.has('success') %}
-        <div class="alert alert-success">
-            {% for msg in app.session.flashBag.get('success') %}
-                {{ msg }}
-            {% endfor %}
-        </div>
-    {% endif %}
-        
-        <table class="table">
+<style>
+    .compte, .pointer{
+          cursor: pointer;
+    }
+    .compte.active{
+        background-color: green;
+    }
+    .compte{
+        background-color:yellow;
+    }
+    #pro, #client, #reservation, #user-info, #favorite, #manage-houses {
+        background-color:aqua;
+    }   
+    #reservation, #user-info, #favorite, #manage-houses, #pro{
+        display:none;
+    }
+    body{
+        background-image:url("/images/backgrounds/contemporaine-salon.jpg");
+        background-size:cover;
+    }
+</style>
 
-            <tbody>
-                <tr>
-                    <th>Nom</th>
-                    <td>{{ user.firstname }}</td>
-                </tr>
-                <tr>
-                    <th>Prénom</th>
-                    <td>{{ user.lastname }}</td>
-                </tr>
-                <tr>
-                    <th>E-mail</th>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <th>Avatar</th>
-                    {% if user.avatar is not null %}
-                    <td><img src="\images\users\{{user.avatar}}" height="200px" width="auto"/></td>
-                    {% else %} 
-                    <td> <img src="\images\users\default.png" height="200px" width="auto"/> </td>
-                    {% endif %}
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ user.description }}</td>
-                </tr>
-            </tbody>
-
-        </table>
-
-        <div class="text-center">
-            <a class="btn btn-primary text-decoration-none text-white my-2" href="{{ path('app_user_edit')}}">Modifier</a>
-            <a class="btn btn-warning text-decoration-none text-white my-2" href="{{ path('app_user_change_password')}}">Modifier mot le passe</a>
-        </div>
-
+<main class="container d-flex flex-column justify-content-center">
     
-    {% if houses is not empty and host == true %}
-        <div>My houses</div>
-        <table class="table">
-            <thead>
-                <tr>
-                    
-                    <th>Name</th>
-                    
-                    <th>Full_address</th>
-                    
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="row ">
+            <span class="col-2 me-1 compte" data-id="1">Mon compte client </span>
+            {% if is_granted('ROLE_HOST') %}
+            <span class="col-2 ms-1 compte" data-id="2">Mon compte Pro </span>
+            {% endif %}
+    </div>
+    <div>
+        <div id="client" class="col-10 row hide">
+            
+            <div class="col-6 pointer" id="my-reservation">
+                <h3>Mes voyages</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+            </div>
+            <div class="col-6 pointer my-user-info">
+                <h3>Mes informations personnelles</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+            </div>
+            <div class="col-6 pointer">
+                <h3>Commentaires</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+            </div>
+            <div class="col-6 pointer">
+                <a href="{{ path('app_user_change_password')}}" class="text-decoration-none text-dark">
+                    <h3>Sécurité et mot de passe</h3>
+                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                </a>
+            </div>
+            <div class="col-6 pointer" id="my-favorite">
+                <h3>Mes favoris</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+            </div>
+            <div class="col-6 pointer">
+                <h3>informations de paiement</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+            </div>
+        </div>
+
+        <div id="reservation" class="col-10 row hide">
+            {% if reservations is not empty %}
+                <div>Mes voyages</div>
+                <table class="table">
+                    <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <th><a href="{{ path('app_house_show', {'id': reservation.house.id}) }}">{{reservation.house.name}}</a></th>
+                                <td>Date d'arrivée: {{ reservation.startDate ? reservation.startDate|date('d-m-Y') : '' }}</td>
+                                <td>Data de départ: {{ reservation.endDate ? reservation.endDate|date('d-m-Y') : '' }}</td>
+                                <td><a href="{{ path('app_reservation_show', {'id':reservation.id}) }}">Plus d'informations</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+            <p> Pas de réservations disponible</p>
+            {% endif %}
+        </div>
+
+        <div id="user-info" class="col-10 row hide">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ user.firstname }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prénom</th>
+                        <td>{{ user.lastname }}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Avatar</th>
+                        {% if user.avatar is not null %}
+                        <td><img src="\images\users\{{user.avatar}}" height="200px" width="auto"/></td>
+                        {% else %} 
+                        <td> <img src="\images\users\default.png" height="200px" width="auto"/> </td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ user.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <a class="btn btn-primary text-decoration-none text-white my-2" href="{{ path('app_user_edit')}}">Modifier</a>
+                <a  class="btn btn-primary text-decoration-none text-white my-2" href="{{ path('app_user_change_password')}}">Modifier mot de passe</a>
+                
+            </div>
+        </div>
+
+        <div id="favorite" class="col-10 row hide">
+            <div>Mes favoris</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mes favoris</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for favorite in favorites %}
+                    <tr>
+                        <td>{{ favorite.house.name }}</td>
+                        <th><a href="{{path('app_house_show',{'id': favorite.house.id})}}">Afficher<a></th>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10">Aucun favori trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if is_granted('ROLE_HOST') %}
+            <div>
+                <div id="pro" class="col-10 row hide">
+                    {% if user.confirmedHost ==1%}
+                        <div id="my-houses" class="col-6 pointer">
+                            <h3>Gérer mes logements</h3>
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
+                        <div class="col-6 pointer">
+                            <h3>Gerer les réservations</h3>
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
+                        <div class="col-6 pointer">
+                            <h3>Gestion des commentaires</h3>
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
+                        <div class="col-6 pointer my-user-info">
+                            <h3>Info personnelles et mot de passe</h3>
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
+                        <div class="col-6 pointer">
+                            <h3>Paiements clients</h3>
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
+                        <div class="col-6 pointer">
+                            <h3>Paiements clients</h3>
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
+                    {% else %}
+                        <p>Votre compte n'a pas été confimé encore</p>
+                    {% endif %}
+                </div>
+
+                <div id="manage-houses" class="col-10 row hide">
+                    <div class="d-flex justify-content-between">
+                        <span class="btn btn-dark text-white go-pro">Accueil mon compte pro</span>
+                        <a href="{{path('app_house_new')}}" class="btn btn-warning text-white">Ajouter un logement</a>
+                    </div>
+                    <div>
+                        {% for house in houses %}
+                            <div class="row my-3">
+                                <div class="col-3">
+                                {% for image in house.attachments |slice(0,1)  %}
+                                    
+                                    <img src="/images/houses/{{image.url}}" height="112" width="auto" alt="{{house.name}}-img">
+                                {% endfor %} 
+                                </div>
+                                <div class="col-6">
+                                    {{house.name}}
+                                </div>
+                                <div class="col-3">
+                                    <a href="{{path('app_house_edit',{'id':house.id})}}" class="btn btn-white border">Gérer ce logement</a>
+                                </div>                            
+                            </div>
+                        {% endfor %}
+                    <div>
+                </div>
+
+                <div id="manage-comment" class="col-10 row hide">
+
+                </div>
+            </div>
+        {% endif %}
         
-            {% for house in houses %}
-                <tr>
-                    <td>{{ house.name }}</td>
-                    <td>{{ house.fullAddress }}</td>
-                    <td>
-                        <a href="{{ path('app_house_edit_dispo', {'id': house.id}) }}">Edit Dispo</a>
-                        <a href="{{ path('app_house_show', {'id': house.id}) }}">show</a>
-                        <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    </div>
+</main>
 
-    {% elseif houses is empty and host == true %}
-         <div>My houses</div>
-         <p>Aucune annonce à afficher</p>
-    {% endif %}
+<script>
+    $(document).ready(function(){
+        $('.compte').click(function(){
+            const id = $(this).data('id');
+            if(id == 1 ){
+                $('.compte[data-id=1]').addClass('active');
+                $('.compte[data-id=2]').removeClass('active');
+                $('.hide').attr('style','display:none;');
+                $('#client').attr('style','display:flex;');       
+                $(document.body).css('background-image','url("/images/backgrounds/contemporaine-salon.jpg")');
+            }else{
+                $('.compte[data-id=2]').addClass('active');
+                $('.compte[data-id=1]').removeClass('active');
+                $('.hide').attr('style','display:none;');
+                $('#pro').attr('style','display:flex;');
+                $(document.body).css('background-image','url("/images/backgrounds/interieur-roulotte.jpg")');
+            }
+        });
+        $('.compte[data-id=1]').trigger( "click" );
 
-    {% if reservations is not empty %}
-        <div>My reservations</div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nbr_voyagers</th>
-                    <th>Start_date</th>
-                    <th>End_date</th>
-                    <th>Total</th>
-                    <th>Nbr_nights</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for reservation in reservations %}
-                <tr>
-                    
-                    <td>{{ reservation.nbrVoyagers }}</td>
-                    <td>{{ reservation.startDate ? reservation.startDate|date('Y-m-d') : '' }}</td>
-                    <td>{{ reservation.endDate ? reservation.endDate|date('Y-m-d') : '' }}</td>
-                    <td>{{ reservation.total }}</td>
-                    <td>{{ reservation.nbrNights }}</td>
-                    <td>
-                        <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
-                        <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="10">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+        $('#my-reservation').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#reservation').attr('style','display:block;');
+            
+        })
+        
+        $('.my-user-info').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#user-info').attr('style','display:block;');
+        })
 
-    {% if favorites is not empty %}
-    <div>My favorites</div>
-    <table class="table">
-            <thead>
-                <tr>
-                    <th>House</th>
-                    <th>House</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for favorite in favorites %}
-                <tr>
-                    <td>{{ favorite.house.name }}</td>
-                    <th><a href="{{path('app_house_show',{'id': favorite.house.id})}}">Show<a></th>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="10">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-     
-    {% endif %}
-  
+        $('#my-favorite').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#favorite').attr('style','display:block;');
+        })
+
+        $('#my-houses').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#manage-houses').attr('style','display:block;');
+        })
+
+        $('.go-pro').click(function(){
+            $('.compte[data-id=2]').trigger( "click" )
+        })
+    })
+</script>
 {% endblock %}

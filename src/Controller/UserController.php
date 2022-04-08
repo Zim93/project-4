@@ -20,6 +20,7 @@ class UserController extends AbstractController
     #[Route('/user', name: 'app_user')]
     public function index(HouseRepository $houseRepository, ReservationRepository $reservationRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         //Récupération des données de l'utilisateur, ses réservation et ses habitats
         $user= $this->getUser();
         $favorites= $user->getFavorites();
@@ -45,6 +46,7 @@ class UserController extends AbstractController
     #[Route('/user/edit', name: 'app_user_edit')]
     public function edit(Request $request, UserRepository $userRepository,SluggerInterface $slugger): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user= $this->getUser();
         $form= $this->createForm(UserType::class, $user);
         //Récupération des données du formulaire
@@ -95,6 +97,7 @@ class UserController extends AbstractController
     #[Route('/user/edit/password', name: 'app_user_change_password')]
     public function changePassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user= $this->getUser();
         $form= $this->createForm(ChangePasswordType::class);
         //Récupération des données du formulaire

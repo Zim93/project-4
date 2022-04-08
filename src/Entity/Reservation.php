@@ -47,9 +47,7 @@ class Reservation
     #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private $comment;
 
-    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Voyageur::class, orphanRemoval: true)]
-    private $voyageurs;
-
+   
     public function __construct()
     {
         $this->voyageurs = new ArrayCollection();
@@ -185,33 +183,4 @@ class Reservation
         return $this;
     }
 
-    /**
-     * @return Collection<int, Voyageur>
-     */
-    public function getVoyageurs(): Collection
-    {
-        return $this->voyageurs;
     }
-
-    public function addVoyageur(Voyageur $voyageur): self
-    {
-        if (!$this->voyageurs->contains($voyageur)) {
-            $this->voyageurs[] = $voyageur;
-            $voyageur->setReservation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVoyageur(Voyageur $voyageur): self
-    {
-        if ($this->voyageurs->removeElement($voyageur)) {
-            // set the owning side to null (unless already changed)
-            if ($voyageur->getReservation() === $this) {
-                $voyageur->setReservation(null);
-            }
-        }
-
-        return $this;
-    }
-}
