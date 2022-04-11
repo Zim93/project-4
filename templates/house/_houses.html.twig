@@ -1,5 +1,12 @@
 {% if houses is defined%}
     <p>{{houses|length}} hébergements trouvés</p>
+    
+    {% for id in page_ids %}
+        <input type="hidden" class="page-id-input" name="ids[]" value="{{id}}" />
+    {% endfor %}
+    <input type="hidden" id="pg" name="page" value="{{page}}" />
+
+    
     {% for house in houses %}
         <div class="row house-card" data-id="{{house.id}}" style="cursor:pointer;">
             <div class="col-3">
@@ -18,7 +25,7 @@
                 <p>{{house.description}}</p>
             </div>
             <div class="col-3">
-                <p>Evaluation</p>
+                <p class="rating-comment" data-note="{{ house.note }}">Commentaire</p>
                 <p>{{house.price}}</p>
                 <a href="{{ path('app_house_show', {'id': house.id}) }}">Réserver</a>
             </div>
@@ -30,6 +37,44 @@
             </div>
         </div>
     {% endfor %}
+    {{ knp_pagination_render(houses) }}
 {% else %}
     <p>Aucun résultat trouvé</p>
 {% endif %}
+
+<script>
+    $(document).ready(function(){
+        $('.pagination span').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            
+            let page_ids = [];
+            $('.page-id-input').each((i,obj) => {
+                console.log($(obj));
+                page_ids.push($(obj).val());
+            });
+
+
+            let page = $(this).find('a').html();
+
+            const data = { ids: page_ids, page: page};
+
+            const currentUrl = window.location.origin;
+
+            $.ajax({
+                url: currentUrl+'/search-render',
+                data: data,
+                method:'post'
+            }).
+            done(function(res){
+                searchCenter=({lat: parseFloat($('#search_lat').val()) , lng: parseFloat($('#search_lng').val()) });
+                $('#houses-list').html(res);
+                initMap(searchCenter);
+                carousel();
+            }).fail(function(res){
+
+            })
+        });
+    });
+
+</script>

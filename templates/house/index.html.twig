@@ -33,7 +33,7 @@
                 {{include("house/_search.html.twig")}}
             </div>
             <div id="houses-list">
-                {{include("house/_houses.html.twig",{'houses': houses}) }}
+                {{include("house/_houses.html.twig",{'houses': houses, 'page_ids': page_ids}) }}
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
         }
 
     </style>
-
+    <script src="/raty-master/lib/jquery.raty.js"></script>
     <script>
         $(document).ready(function(){
             function carousel(){
@@ -87,16 +87,69 @@
             });
             }
             carousel();
+            $('.less').click(function (){
+                let id = $(this).data('id');
+                
+                if (id==1){
+                    valueA = $('#adults').html();
+                    if(valueA >1){
+                    valueA--;
+                    $('#adults').html(valueA);
+                    }
+                }  else if (id==2){
+                    value = $('#kids').html();
+                    if(value >0){
+                    value--;
+                    $('#kids').html(value);
+                    }
+                }
+            });
+
+            $('.select-voy').mousedown(function(e){
+                e.preventDefault();
+                $(this).focus();
+                $('#nbr-voygeurs-ad-kid').toggle();
+            });
+
+            $('.more').click(function (){
+                let id = $(this).data('id');
+                if (id==1){
+                    valueA = $('#adults').html();
+                    valueA++;
+                    $('#adults').html(valueA);
+                } else if (id==2){
+                    value = $('#kids').html();
+                    value++;
+                    $('#kids').html(value);
+                }
+            });
+
+            $(".rating-comment").each(function(){
+                let score = parseFloat($(this).data('note'));
+                console.log(score);
+                $(this).raty({
+                    starOff:'/raty-master/lib/images/star-off.png',
+                    starOn:'/raty-master/lib/images/star-on.png',
+                    starHalf:'/raty-master/lib/images/star-half.png',
+                    half: true,
+                    readOnly: true, 
+                    score: score
+                });
+            });
+            
+
             $('.search-btn').click(function(e){
                 e.preventDefault();
+
                 lat = $('#search_lat').val();
                 lng = $('#search_lng').val();
                 start_date = $('#reservation_start_date').val();
                 end_date = $('#reservation_end_date').val();
-                nbr_voyagers = $('#search_house_nbr_voyagers').val();
+                nbr_voyagers =  parseInt($('#kids').html())+ parseInt($('#adults').html());
+                type= $('#search_house_type').val();
 
                 if(lat && lng && start_date && end_date && nbr_voyagers){
-                   const dataPrimary = {lat:lat ,lng:lng , start_date:start_date, end_date:end_date ,nbr_voyagers:nbr_voyagers};
+                   const dataPrimary = {lat:lat ,lng:lng , start_date:start_date, end_date:end_date ,nbr_voyagers:nbr_voyagers, type:type};
 
                     const currentUrl = window.location.origin;
                     $.ajax({

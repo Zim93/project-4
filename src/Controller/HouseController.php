@@ -17,6 +17,7 @@ use App\Controller\CommentController;
 use App\Repository\CommentRepository;
 use App\Repository\FavoriteRepository;
 use App\Repository\AttachmentRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,12 +29,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HouseController extends AbstractController
 {
     #[Route('/', name: 'app_house_index', methods: ['GET'])]
-    public function index(HouseRepository $houseRepository): Response
+    public function index(Request $request,HouseRepository $houseRepository, PaginatorInterface $paginator): Response
     {
+        $houses = $paginator->paginate(
+            $houseRepository->findAll(), 
+            $request->query->getInt('page', 1), 
+            5 
+        );
+
+        $ids = [];
+        
+        $housesIds = $houseRepository->findAll();
+        foreach($housesIds as $house){
+            array_push($ids,$house->getId());
+        }
+
         $searchForm = $this->createForm(SearchHouseType::class);
         return $this->renderForm('house/index.html.twig', [
-            'houses' => $houseRepository->findAll(),
-            'search_form' => $searchForm
+            'houses' => $houses,
+            'search_form' => $searchForm,
+            'page_ids' => $ids,
+            'page' => $request->query->getInt('page', 1)
         ]);
     }
 
@@ -312,4 +328,6 @@ class HouseController extends AbstractController
             return $this->json($response);
         }        
     }
+
+    
 }

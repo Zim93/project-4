@@ -46,37 +46,24 @@ class HouseRepository extends ServiceEntityRepository
     }
 
 
-    /**
-     * @return House[] Returns an array of House objects
-     */
-    public function findOneByNbrVoyagers($nbrVoyagers)
-    {
-        return $this->createQueryBuilder('h')
-            ->andWhere('h.nbr_accepted >= :nbr')
-            ->setParameter('nbr', $nbrVoyagers)
-            ->orderBy('h.id', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-
-    public function findAvailbleHouses($start, $end , $nbr_voyagers): array
+    public function findAvailbleHouses($start, $end , $nbr_voyagers,$type): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = 'SELECT DISTINCT house.id, house.lat, house.lng 
                 FROM `house`
                 INNER JOIN `event` ON event.house_id = house.id
+                AND house.nbr_accepted >= :nbr_voyagers
+                AND type = :type
                 LEFT JOIN `reservation` ON reservation.house_id = house.id
                 AND event.start_at <= :start
                 AND event.end_at >= :end 
-                AND house.nbr_accepted >= :nbr_voyagers
+                AND house.type = :type
                 AND reservation.start_date > :end 
                 AND reservation.end_date < :start';
 
         $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery(['start' => $start, 'end' => $end ,'nbr_voyagers' => $nbr_voyagers]);
+        $resultSet = $stmt->executeQuery(['start' => $start, 'end' => $end ,'nbr_voyagers' => $nbr_voyagers, 'type' => $type]);
 
         
         return $resultSet->fetchAllAssociative();

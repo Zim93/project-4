@@ -1,5 +1,28 @@
 {{ form_start(search_form,{'action':'/house/search'}) }}
-    {{ form_widget(search_form) }}
+    {{form_row(search_form.address)}}
+    
+    <div>
+        <select class="select-voy mb-3 form-select">
+            <option>
+                Nombre de personne
+            <option>
+        </select>
+
+        <div id="nbr-voygeurs-ad-kid" class="border" style="display:none; position:absolute; top:219px; background-color:white;">
+            <p>Adulte(s)à(12 et +)</p>
+            <span class="less btn btn-danger" data-id="1">-</span>
+            <span id="adults">1</span>
+            <span class="more btn btn-success" data-id="1">+</span>
+            <p>Enfants (- de 12)</p>
+            <span class="less btn btn-danger" data-id="2">-</span>
+            <span id="kids">0</span>
+            <span class="more btn btn-success" data-id="2">+</span>
+        </div>
+    </div>
+    <div style="display:none;">
+        {{form_row(search_form.nbr_voyagers)}}
+    </div>
+    {{form_row(search_form.type)}}
     <div id="date-picker-search">
         <label for="start_date">Date de début</label>
         <input id="reservation_start_date" name="start_date" autoComplete="off" />
@@ -8,6 +31,6 @@
     </div>
     <input type="hidden" id="search_lat" name="search_lat"/>
     <input type="hidden" id="search_lng" name="search_lng"/>
-    <div class="date-picker-container"  style="position:absolute; background-color:white;"></div>
+    <div class="date-picker-container"  style="position:absolute; background-color:white; z-index: 3;"></div>
     <button class="btn btn-secondary search-btn">{{ button_label|default('Rechercher') }}</button>
 {{ form_end(search_form) }}

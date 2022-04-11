@@ -47,10 +47,14 @@ class Reservation
     #[ORM\OneToOne(mappedBy: 'reservation', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private $comment;
 
+    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Notification::class)]
+    private $notifications;
+
    
     public function __construct()
     {
         $this->voyageurs = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +183,36 @@ class Reservation
         }
 
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getReservation() === $this) {
+                $notification->setReservation(null);
+            }
+        }
 
         return $this;
     }

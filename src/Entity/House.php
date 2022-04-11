@@ -108,6 +108,33 @@ class House
     #[ORM\Column(type: 'float', nullable: true)]
     private $note;
 
+    #[ORM\Column(type: 'float')]
+    private $house_area;
+
+    #[ORM\Column(type: 'time')]
+    private $arrival_time;
+
+    #[ORM\Column(type: 'time')]
+    private $departure_time;
+
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $strong_points = [];
+
+    #[ORM\Column(type: 'float')]
+    private $guarantee;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $breakfast_price;
+
+    #[ORM\Column(type: 'boolean')]
+    private $breakfast_dispo;
+
+    #[ORM\Column(type: 'time')]
+    private $arrival_time_max;
+
+    #[ORM\OneToMany(mappedBy: 'house', targetEntity: Notification::class, orphanRemoval: true)]
+    private $notifications;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -115,6 +142,7 @@ class House
         $this->attachments = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -573,6 +601,132 @@ class House
     public function setNote(?float $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getHouseArea(): ?float
+    {
+        return $this->house_area;
+    }
+
+    public function setHouseArea(float $house_area): self
+    {
+        $this->house_area = $house_area;
+
+        return $this;
+    }
+
+    public function getArrivalTime(): ?\DateTimeInterface
+    {
+        return $this->arrival_time;
+    }
+
+    public function setArrivalTime(\DateTimeInterface $arrival_time): self
+    {
+        $this->arrival_time = $arrival_time;
+
+        return $this;
+    }
+
+    public function getDepartureTime(): ?\DateTimeInterface
+    {
+        return $this->departure_time;
+    }
+
+    public function setDepartureTime(\DateTimeInterface $departure_time): self
+    {
+        $this->departure_time = $departure_time;
+
+        return $this;
+    }
+
+    public function getStrongPoints(): ?array
+    {
+        return $this->strong_points;
+    }
+
+    public function setStrongPoints(?array $strong_points): self
+    {
+        $this->strong_points = $strong_points;
+
+        return $this;
+    }
+
+    public function getGuarantee(): ?float
+    {
+        return $this->guarantee;
+    }
+
+    public function setGuarantee(float $guarantee): self
+    {
+        $this->guarantee = $guarantee;
+
+        return $this;
+    }
+
+    public function getBreakfastPrice(): ?float
+    {
+        return $this->breakfast_price;
+    }
+
+    public function setBreakfastPrice(?float $breakfast_price): self
+    {
+        $this->breakfast_price = $breakfast_price;
+
+        return $this;
+    }
+
+    public function getBreakfastDispo(): ?bool
+    {
+        return $this->breakfast_dispo;
+    }
+
+    public function setBreakfastDispo(bool $breakfast_dispo): self
+    {
+        $this->breakfast_dispo = $breakfast_dispo;
+
+        return $this;
+    }
+
+    public function getArrivalTimeMax(): ?\DateTimeInterface
+    {
+        return $this->arrival_time_max;
+    }
+
+    public function setArrivalTimeMax(\DateTimeInterface $arrival_time_max): self
+    {
+        $this->arrival_time_max = $arrival_time_max;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setHouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getHouse() === $this) {
+                $notification->setHouse(null);
+            }
+        }
 
         return $this;
     }

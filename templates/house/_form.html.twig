@@ -9,6 +9,7 @@
         display:none;
     }
 </style>
+
 {{ form_start(form) }}
     {{ form_row(form.name)}}
     {{ form_row(form.full_address)}}
@@ -21,6 +22,7 @@
     {{ form_row(form.type)}}
     {{ form_row(form.nbr_accepted)}}
     {{ form_row(form.nbr_beds)}}
+    {{ form_row(form.house_area)}}
     {{ form_row(form.nbr_rooms)}}
 
     <div class ="row">
@@ -212,7 +214,11 @@
             </div>
         </div>
     </div>
-
+    {{ form_row(form.arrival_time)}}
+    {{ form_row(form.arrival_time_max)}}
+    {{ form_row(form.departure_time)}}
+    {{ form_row(form.breakfast_dispo)}}
+    {{ form_row(form.strong_points)}}
     {{ form_row(form.images)}}
     {{ form_row(form.lat)}}
     {{ form_row(form.lng)}}
@@ -228,3 +234,22 @@
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
+<script>
+$(document).ready(function(){
+    $('input.strong_points').on('change', function(evt) {
+        const checkedNbr = parseInt($('#house_strong_points').attr('data-checked-nbr'));
+        if($(this).is(':checked') === false){
+                $('#house_strong_points').attr('data-checked-nbr',checkedNbr - 1);
+            }
+        if(checkedNbr < 5){
+            if($(this).is(':checked') === true){
+                $('#house_strong_points').attr('data-checked-nbr',checkedNbr + 1);
+            }
+        }
+        else{
+            this.checked = false;
+        }
+    });
+});
+
+</script>

@@ -10,9 +10,11 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class HouseType extends AbstractType
@@ -98,6 +100,9 @@ class HouseType extends AbstractType
                 'attr' => [
                     'min' => 1
                     ]
+            ])
+            ->add('house_area', IntegerType::class,[
+                'label'=>'Surface du logement en m²'
             ])
             ->add('nbr_rooms', IntegerType::class,[
                 'label'=>'Nombre de chambres',
@@ -194,6 +199,43 @@ class HouseType extends AbstractType
                     'Parking gratuit'=>'Parking en supplément',
                     'Air de jeux'=>'Air de jeux',
                 ]
+            ])
+            ->add('arrival_time', TimeType::class,[
+                'label'=>'Horraire d\'arrivée mini',
+            ])
+            ->add('arrival_time_max', TimeType::class,[
+                'label'=>'Horraire d\'arrivée maxi',
+            ])
+            ->add('departure_time', TimeType::class,[
+                'label'=>'Horraire de départ maxi',
+            ])
+            ->add('breakfast_dispo', CheckboxType::class,[
+                'label'=>'Petit déjeuné inclus',
+            ])
+            ->add('strong_points',ChoiceType::class,[
+                'label'=>'Point fort en évidence (max 5) :',
+                'expanded' => true,
+                'multiple'=>true,
+                'choices'  => [
+                    'Piscine'=>'Piscine',
+                    'Spa'=>'Spa',
+                    'Air conditionné'=>'Air conditionné',
+                    'Wifi'=>'Wifi',
+                    'TV'=>'TV',
+                    'Chauffage'=>'Chauffage',
+                    'Cuisine'=>'Cuisine',
+                    'Terasse'=>'Terasse',
+                    'Accessibilité'=>'Accessibilité',
+                    'Petit déjeuner'=>'Petit déjeuner',
+                    'Chauffage'=>'Chauffage',
+                    'Restauration sur place'=>'Restauration sur place',
+                ],
+                'attr' => [
+                    'data-checked-nbr' => 0
+                ],
+                'choice_attr' => function($choice) {
+                    return ['class' => 'strong_points'];
+                },
             ])
             ->add('images', FileType::class, [
                 'label' => 'Images',

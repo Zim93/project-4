@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class SearchHouseType extends AbstractType
@@ -22,6 +23,21 @@ class SearchHouseType extends AbstractType
                 'attr'=>[
                     'min'=>1,
                     'value'=>1,
+                ]
+            ])
+            ->add('type',ChoiceType::class,[
+                'label'=>'Type d\'habitation',
+                'placeholder' => 'Choisissez un type d\'habitation',
+                'choices'  => [
+                    'Cabane dans les arbres' => 'Cabane dans les arbres',
+                    'Cabane sur pilotis' => 'Cabane sur pilotis',
+                    'Cabane sur l\'eau' => 'Cabane sur l\'eau',
+                    'Cabane' => 'Cabane',
+                    'Roulotte' => 'Roulotte',
+                    'Yourte' => 'Yourte',
+                    'Tente / Tipi' => 'Tente / Tipi',
+                    'Bulle' => 'Bulle',
+                    'Chalet' => 'Chalet'
                 ]
             ])
         ;

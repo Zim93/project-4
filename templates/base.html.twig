@@ -22,7 +22,37 @@
 
         {% endblock %}
     </head>
+    <header>
+
+    </header>
     <body>
+        <header>
+            <img alt="logo">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="btn" href="/house">Effectuer une réservation</a>
+                {% if is_granted('ROLE_HOST') %}
+                    {% set reservation_count = 0 %}
+                    {% set comment_count = 0 %}
+
+                    {% for notification in app.user.notifications %}
+                        {% if notification.type == "reservation" and notification.opened == 0 %}
+                           {% set reservation_count = reservation_count + 1  %}
+                        {% elseif   notification.type == "comment" and notification.opened == 0 %}
+                            {% set comment_count = comment_count + 1  %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <a class="btn" href="#">Nouvelle réservation réservation {{reservation_count}}</a>
+                    <a class="btn" href="#">Nouveaux commentaires {{comment_count}}</a>
+                {% endif %}
+                <a class="btn" href="/logout">Déconnexion</a>
+            {% else %}
+                <a class="btn" href="/register/host">Ajouter un hébergement</a>
+                <a class="btn" href="/register">S'inscrire</a>
+                <a class="btn" href="/login">Connexion</a>
+            {% endif %}
+        </header>
+        
         {% block body %}{% endblock %}
         <script src="/javascript/google_map.js" ></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3Bywnvy8j0eIl5zH4qwTmQ872S284u8E&libraries=places,geometry&callback=initMap"></script>

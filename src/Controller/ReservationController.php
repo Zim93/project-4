@@ -7,10 +7,12 @@ use DateTimeImmutable;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Entity\Reservation;
+use App\Entity\Notification;
 use App\Form\ReservationType;
 use App\Repository\EventRepository;
 use App\Repository\HouseRepository;
 use App\Repository\ReservationRepository;
+use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +31,7 @@ class ReservationController extends AbstractController
 
     //Ajout d'une nouvelle réservation
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ReservationRepository $reservationRepository, HouseRepository $houseRepository, EventRepository $eventRepository): Response
+    public function new(Request $request, ReservationRepository $reservationRepository, HouseRepository $houseRepository, EventRepository $eventRepository, NotificationRepository $notificationRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -60,8 +62,17 @@ class ReservationController extends AbstractController
             $reservation->setHouse($house);
             $reservation->setGuest($user);
             $reservation->setCreatedAt(new DateTimeImmutable());
-
+            
             $reservationRepository->add($reservation);
+
+            $notification = new Notification();
+            $notification->setHouse($house);
+            $notification->setReservation($reservation);
+            $notification->setUser($user);
+            $notification->setType('reservation');
+            $notification->setOpened(0);
+
+            $notificationRepository->add($notification);
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
         }
