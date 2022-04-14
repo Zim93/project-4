@@ -117,9 +117,7 @@ class House
     #[ORM\Column(type: 'time')]
     private $departure_time;
 
-    #[ORM\Column(type: 'array', nullable: true)]
-    private $strong_points = [];
-
+    
     #[ORM\Column(type: 'float')]
     private $guarantee;
 
@@ -134,6 +132,9 @@ class House
 
     #[ORM\OneToMany(mappedBy: 'house', targetEntity: Notification::class, orphanRemoval: true)]
     private $notifications;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private $strong_points = [];
 
     public function __construct()
     {
@@ -641,18 +642,6 @@ class House
         return $this;
     }
 
-    public function getStrongPoints(): ?array
-    {
-        return $this->strong_points;
-    }
-
-    public function setStrongPoints(?array $strong_points): self
-    {
-        $this->strong_points = $strong_points;
-
-        return $this;
-    }
-
     public function getGuarantee(): ?float
     {
         return $this->guarantee;
@@ -727,6 +716,18 @@ class House
                 $notification->setHouse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStrongPoints(): ?array
+    {
+        return $this->strong_points;
+    }
+
+    public function setStrongPoints(?array $strong_points): self
+    {
+        $this->strong_points = $strong_points;
 
         return $this;
     }

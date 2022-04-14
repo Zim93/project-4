@@ -1,36 +1,53 @@
 {{ form_start(search_form,{'action':'/house/search'}) }}
-    {{form_row(search_form.address)}}
-    
-    <div>
-        <select class="select-voy mb-3 form-select">
-            <option>
-                Nombre de personne
-            <option>
-        </select>
-
-        <div id="nbr-voygeurs-ad-kid" class="border" style="display:none; position:absolute; top:219px; background-color:white;">
-            <p>Adulte(s)à(12 et +)</p>
-            <span class="less btn btn-danger" data-id="1">-</span>
-            <span id="adults">1</span>
-            <span class="more btn btn-success" data-id="1">+</span>
-            <p>Enfants (- de 12)</p>
-            <span class="less btn btn-danger" data-id="2">-</span>
-            <span id="kids">0</span>
-            <span class="more btn btn-success" data-id="2">+</span>
+    <div class="row">
+        <div class="col-6 mb-3">
+            {{form_widget(search_form.address,{'attr': {'placeholder': 'Destination'}})}}
         </div>
+
+        <div class="col-2">
+            {{form_widget(search_form.type)}}
+        </div>
+
+        <div class="col-4">
+            <div class="dropdown w-100 me-3" id="myDropdown">
+                <a class="btn btn-white border dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
+                    Nombre de voyageurs
+                </a>
+                <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink" >
+                    <p>Adulte(s)à(12 et +)</p>
+                    <span class="less btn btn-danger" data-id="1">-</span>
+                    <span id="adults">1</span>
+                    <span class="more btn btn-success" data-id="1">+</span>
+                    <p>Enfants (- de 12)</p>
+                    <span class="less btn btn-danger" data-id="2">-</span>
+                    <span id="kids">0</span>
+                    <span class="more btn btn-success" data-id="2">+</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="date-picker-search" class="row col-6 pe-0">
+            <div class="col-6">
+                <input id="reservation_start_date" name="start_date" autoComplete="off" class="form-control" placeholder="Arrivée" />
+            </div>
+            <div class="col-6 pe-0">
+                <input id="reservation_end_date" name="end_date" autoComplete="off" class="form-control w-100" placeholder="Départ"/>
+            </div>
+            <div class="date-picker-container" style="position:absolute;  z-index: 3;"></div>
+             <div style="display:none;">
+                {{form_row(search_form.nbr_voyagers)}}
+            </div>            
+        </div>
+
+        
+        <div class="col-2 ms-4">
+            <input type="hidden" id="search_lat" name="search_lat"/>
+            <input type="hidden" id="search_lng" name="search_lng"/>
+        </div>
+        <div class="col-4">
+            <button  class="btn search-btn w-100">{{ button_label|default('Rechercher un atypik home') }}</button>
+        </div>
+
     </div>
-    <div style="display:none;">
-        {{form_row(search_form.nbr_voyagers)}}
-    </div>
-    {{form_row(search_form.type)}}
-    <div id="date-picker-search">
-        <label for="start_date">Date de début</label>
-        <input id="reservation_start_date" name="start_date" autoComplete="off" />
-        <label for="end_date">Date de fin</label>
-        <input id="reservation_end_date" name="end_date" autoComplete="off" />
-    </div>
-    <input type="hidden" id="search_lat" name="search_lat"/>
-    <input type="hidden" id="search_lng" name="search_lng"/>
-    <div class="date-picker-container"  style="position:absolute; background-color:white; z-index: 3;"></div>
-    <button class="btn btn-secondary search-btn">{{ button_label|default('Rechercher') }}</button>
+
 {{ form_end(search_form) }}

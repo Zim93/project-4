@@ -1,6 +1,6 @@
-    {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Hello RegistrationController!{% endblock %}
+{% block title %}Devenir hôte{% endblock %}
 
 {% block body %}
     <style>
@@ -17,13 +17,15 @@
         #phone-number{
             padding-left: 70px;
         }
-        .fonction{
-            position:relative;
-            top:9px
+        .register-btn{
+            background:rgba(36,36,36,0.9)
+        }   
+        main{
+            background:rgba(242,239,186,0.9)
         }
     </style>
     <main>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center py-5">
             <div class="col-10">
                 <h1 class="text-center mb-5">
                     Vous souhaitez ajouter un hebergement atypique et connaitre nos conditions d'utilisations ?
@@ -33,159 +35,160 @@
                 </p>
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-3">
-            <div class="col-8 px-3 register">
-                
-        {% if already_user is defined %}
-        <form method="post" action="/register/host">
-            <div class="row">
-                <div class="col-2">
-                    <fieldset class="mb-3">
-                        <legend class="col-form-label required">Statut</legend>
-                        <div id="registration_host_form_status">
-                            <div class="form-check">
-                                <input type="radio" id="registration_host_form_status_0" name="registration_host_form[status]" required="required" class="form-check-input" value="Particulier">
-                                <label class="form-check-label required" for="registration_host_form_status_0">Particulier</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="radio" id="registration_host_form_status_1" name="registration_host_form[status]" required="required" class="form-check-input" value="Professionnel">
-                                <label class="form-check-label required" for="registration_host_form_status_1">Professionnel</label>
-                            </div>
-                        </div>        
-                    </fieldset>
-                </div>
-                <div class="col-10 fonction">
-                    <div class="mb-3">
-                        <label for="registration_host_form_fonction" class="form-label">Fonction</label>
-                        <input type="text" id="registration_host_form_fonction" name="registration_host_form[fonction]" class="form-control">        
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="registration_host_form_company_name" class="form-label">Nom de l'entreprise</label>
-                <input type="text" id="registration_host_form_company_name" name="registration_host_form[company_name]" class="form-control">        
-            </div>
-            <div class="text-center">
-                <input type="submit" class="btn btn-primary" value="Faire une demande d'inscription" >
-            </div>
-        </form>
-        {% else %}
-            {{ form_start(registrationForm) }} 
-                <div class="row">
-                    <div class="col-2">
-                        {{form_row(registrationForm.status)}}
-                    </div>
-                    <div class="col-10 fonction">
-                        {{form_row(registrationForm.fonction)}}
-                    </div>
-                </div>
-            {{form_row(registrationForm.company_name)}}
-            <div class="row">
-                <div class="col-2">
-                    {{form_row(registrationForm.civility)}}
-                </div>
-                <div class="col-5">
-                    {{ form_row(registrationForm.firstname)}}
-                </div>
-                <div class="col-5">
-                    {{ form_row(registrationForm.lastname)}}
-                </div>
-            </div>
-            {{ form_row(registrationForm.address)}}
-            <div class="row">
-                <div class="col-6">
-                    {{ form_row(registrationForm.postal_code)}}
-                </div>
-                <div class="col-6">
-                    {{ form_row(registrationForm.city)}}
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-6">
-                    {{ form_row(registrationForm.country)}}
-                </div>
-                <div class="col-6">
+        <div class="d-flex justify-content-center mt-3">
+            <div class="col-8 px-3 register-host mb-5">
+                {% if already_user is defined %}
+                    <form method="post" action="/register/host">
+                        <div class="row">
+                            <div class="col-2">
+                                <fieldset class="mb-3">
+                                    <legend class="col-form-label required">Statut</legend>
+                                    <div id="registration_host_form_status">
+                                        <div class="form-check">
+                                            <input type="radio" id="registration_host_form_status_0" name="registration_host_form[status]" required="required" class="form-check-input" value="Particulier">
+                                            <label class="form-check-label required" for="registration_host_form_status_0">Particulier</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" id="registration_host_form_status_1" name="registration_host_form[status]" required="required" class="form-check-input" value="Professionnel">
+                                            <label class="form-check-label required" for="registration_host_form_status_1">Professionnel</label>
+                                        </div>
+                                    </div>        
+                                </fieldset>
+                            </div>
+                            <div class="col-10 fonction">
+                                <div class="mb-3 mt-2">
+                                    <label for="registration_host_form_fonction" class="form-label">Fonction</label>
+                                    <input type="text" id="registration_host_form_fonction" name="registration_host_form[fonction]" class="form-control">        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registration_host_form_company_name" class="form-label">Nom de l'entreprise</label>
+                            <input type="text" id="registration_host_form_company_name" name="registration_host_form[company_name]" class="form-control">        
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" class="register-btn text-white btn py-2 px-3" value="Faire une demande d'inscription" >
+                        </div>
+                    </form>
+                {% else %}
+                    {{ form_start(registrationForm) }} 
+                        <div class="row">
+                            <div class="col-2">
+                                {{form_row(registrationForm.civility)}}
+                            </div>
+                            <div class="col-5">
+                                {{ form_row(registrationForm.firstname)}}
+                            </div>
+                            <div class="col-5">
+                                {{ form_row(registrationForm.lastname)}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                {{form_row(registrationForm.status)}}
+                            </div>
+                            <div class="col-10 fonction mt-2">
+                                {{form_row(registrationForm.fonction)}}
+                            </div>
+                        </div>
+                        {{form_row(registrationForm.company_name)}}
+                        
+                        {{ form_row(registrationForm.address)}}
+                        <div class="row">
+                            <div class="col-6">
+                                {{ form_row(registrationForm.postal_code)}}
+                            </div>
+                            <div class="col-6">
+                                {{ form_row(registrationForm.city)}}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                {{ form_row(registrationForm.country)}}
+                            </div>
+                            <div class="col-6">
+                                
+                                <div class="mb-3">
+                                    <label for="phone-number" class="form-label required">Numéro de téléphone</label>
+                                    <input type="text" id="phone-number" name="phone-number" required="required" class="form-control">        
+                                </div>
+                                <span id="phone-code" class="text-center"></span>
+                                <div style="display:none;">{{ form_row(registrationForm.phone)}}</div>
+                            </div>
+                        </div>
                     
-                    <div class="mb-3">
-                        <label for="phone-number" class="form-label required">Numéro de téléphone</label>
-                        <input type="text" id="phone-number" name="phone-number" required="required" class="form-control">        
-                    </div>
-                    <span id="phone-code" class="text-center"></span>
-                    <div style="display:none;">{{ form_row(registrationForm.phone)}}</div>
-                </div>
+                    
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                {{ form_label(registrationForm.email)}}
+                                {{ form_errors(registrationForm.email)}}
+                                {% if alert_error_email is defined %}
+                                    {{ form_widget(registrationForm.email)}}    
+                                    <div class="invalid-feedback d-block">{{alert_error_email}}</div>
+                                {% else %}
+                                    {{ form_widget(registrationForm.email)}}
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                {{ form_label(registrationForm.emailConfirmation)}}
+                                {{ form_errors(registrationForm.emailConfirmation)}}
+                                {% if alert_error_email is defined %}
+                                    {{ form_widget(registrationForm.emailConfirmation)}}    
+                                    <div class="invalid-feedback d-block">{{alert_error_email}}</div>
+                                {% else %}
+                                    {{ form_widget(registrationForm.emailConfirmation)}}
+                                {% endif %}
+                            </div>
+                        </div>
+                
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                {{ form_label(registrationForm.plainPassword)}}
+                                {{ form_errors(registrationForm.plainPassword)}}
+                                {% if alert_error_password is defined %}
+                                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control is-invalid'}})}}
+                                    <div class="invalid-feedback d-block">{{alert_error_password}}</div>
+                                {% else %}
+                                    {{ form_widget(registrationForm.plainPassword)}}
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                {{ form_label(registrationForm.confirmPassword)}}
+                                {{ form_errors(registrationForm.confirmPassword)}}
+                                {% if alert_error_password is defined %}
+                                    {{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'form-control is-invalid'}})}}    
+                                    <div class="invalid-feedback d-block">{{alert_error_password}}</div>
+                                {% else %}
+                                    {{ form_widget(registrationForm.confirmPassword)}}
+                                {% endif %}
+                            </div>
+                        </div>               
+                        
+                        <div class="d-flex justify-content-center">
+                            <div class="my-3">
+                                <div class="mb-2">
+                                    <input  type="checkbox"><a href="#" class="ms-2 text-dark">Recevoir les actualités</a></input>
+                                </div>
+                                <div>
+                                    <input type="checkbox"><a href="#" class="ms-2 text-dark">J'accepte les conditions générale de vente</a></input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            {{ form_widget(registrationForm.submit, {'attr': {'class': 'register-btn text-white btn py-2 px-3'}})}}
+                        </div>
+                        <div class="text-center">
+                            <p>
+                                Vous avez déjà un compte ? 
+                                <a href="{{ path('login') }}" class="text-dark"> Connectez-vous </a>
+                            </p>
+                        </div>
+                    {{ form_end(registrationForm) }}
+                {% endif %}
             </div>
-            
-            
-            <div class="row mb-3">
-                <div class="col-6">
-                    {{ form_label(registrationForm.email)}}
-                    {{ form_errors(registrationForm.email)}}
-                    {% if alert_error_email is defined %}
-                        {{ form_widget(registrationForm.email)}}    
-                        <div class="invalid-feedback d-block">{{alert_error_email}}</div>
-                    {% else %}
-                        {{ form_widget(registrationForm.email)}}
-                    {% endif %}
-                </div>
-                <div class="col-6">
-                    {{ form_label(registrationForm.emailConfirmation)}}
-                    {{ form_errors(registrationForm.emailConfirmation)}}
-                    {% if alert_error_email is defined %}
-                        {{ form_widget(registrationForm.emailConfirmation)}}    
-                        <div class="invalid-feedback d-block">{{alert_error_email}}</div>
-                    {% else %}
-                        {{ form_widget(registrationForm.emailConfirmation)}}
-                    {% endif %}
-                </div>
-            </div>
-        
-            <div class="row mb-3">
-                <div class="col-6">
-                    {{ form_label(registrationForm.plainPassword)}}
-                    {{ form_errors(registrationForm.plainPassword)}}
-                    {% if alert_error_password is defined %}
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control is-invalid'}})}}
-                        <div class="invalid-feedback d-block">{{alert_error_password}}</div>
-                    {% else %}
-                        {{ form_widget(registrationForm.plainPassword)}}
-                    {% endif %}
-                </div>
-                <div class="col-6">
-                    {{ form_label(registrationForm.confirmPassword)}}
-                    {{ form_errors(registrationForm.confirmPassword)}}
-                    {% if alert_error_password is defined %}
-                        {{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'form-control is-invalid'}})}}    
-                        <div class="invalid-feedback d-block">{{alert_error_password}}</div>
-                    {% else %}
-                        {{ form_widget(registrationForm.confirmPassword)}}
-                    {% endif %}
-                </div>
-            </div>               
-            
-            <div class="d-flex justify-content-center">
-                <div class="my-3">
-                    <div class="mb-2">
-                        <input  type="checkbox"><a href="#" class="ms-2">Recevoir les actualités</a></input>
-                    </div>
-                    <div>
-                        <input type="checkbox"><a href="#" class="ms-2">J'accepte les conditions générale de vente</a></input>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center">
-                {{ form_widget(registrationForm.submit, {'attr': {'class': 'btn btn-primary my-2'}})}}
-            </div>
-            <div class="text-center">
-                <p>
-                    Vous avez déjà un compte ? 
-                    <a href="{{ path('login') }}"> Connectez-vous </a>
-                </p>
-            </div>
-            {{ form_end(registrationForm) }}
-        {% endif %}
         </div>
-    </div>
     </main>
     <script>
     $(document).ready(function(){

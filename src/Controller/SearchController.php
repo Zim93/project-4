@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Form\SearchHouseType;
 use App\Repository\HouseRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,11 +17,10 @@ class SearchController extends AbstractController
     public function searchRender(Request $request, HouseRepository $houseRepository, PaginatorInterface $paginator): Response
     {
         $ids = $request->get('ids');
-
+        
         if($ids != null){
             $houses = [];
             $from = null;
-
 
             if($request->get('page') !== null ){
                 $page = $request->get('page');
@@ -33,24 +33,28 @@ class SearchController extends AbstractController
                 $houses[] = $houseRepository->find($id);
             }
 
-
             $houses_found = $paginator->paginate(
                 $houses, 
                 $page,
                 5
             );
            
-            return $this->render('house/_houses.html.twig', [
-                'houses' => $houses_found,
-                'page_ids' => $ids,
-                'page' => $request->query->getInt('page', 1)
-            ]);
+            if($request->get('source') == NULL){
+                return $this->render('house/_houses.html.twig', [
+                    'houses' => $houses_found,
+                    'page_ids' => $ids,
+                    'page' => $request->query->getInt('page', 1)
+                ]);
+            } 
         }
+
         else{
-            return $this->render('house/_houses.html.twig',[
-                'page_ids' => '',
-                'page' => $request->query->getInt('page', 1)
-            ]);
+            if($request->get('source') == NULL){
+                return $this->render('house/_houses.html.twig',[
+                    'page_ids' => '',
+                    'page' => $request->query->getInt('page', 1)
+                ]);
+            } 
         }
         
     }
@@ -65,7 +69,7 @@ class SearchController extends AbstractController
         $nbr_voyagers = $request->get('nbr_voyagers');
         $type= $request->get('type');
         $houses = $houseRepository->findAvailbleHouses($start_date,$end_date,$nbr_voyagers,$type);
-        
+
         return $this->json($houses);
     }
 }

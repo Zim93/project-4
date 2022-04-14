@@ -211,24 +211,26 @@ class HouseType extends AbstractType
             ])
             ->add('breakfast_dispo', CheckboxType::class,[
                 'label'=>'Petit déjeuné inclus',
+                'required'=>false,
             ])
             ->add('strong_points',ChoiceType::class,[
                 'label'=>'Point fort en évidence (max 5) :',
                 'expanded' => true,
                 'multiple'=>true,
                 'choices'  => [
-                    'Piscine'=>'Piscine',
-                    'Spa'=>'Spa',
-                    'Air conditionné'=>'Air conditionné',
-                    'Wifi'=>'Wifi',
-                    'TV'=>'TV',
-                    'Chauffage'=>'Chauffage',
-                    'Cuisine'=>'Cuisine',
-                    'Terasse'=>'Terasse',
-                    'Accessibilité'=>'Accessibilité',
-                    'Petit déjeuner'=>'Petit déjeuner',
-                    'Chauffage'=>'Chauffage',
-                    'Restauration sur place'=>'Restauration sur place',
+                    'Piscine'=> 'piscine',
+                    'Spa'=> 'spa',
+                    'Air conditionné'=> 'ac',
+                    'Wifi'=> 'Wifi',
+                    'TV'=> 'tv',
+                    'Chauffage'=> 'chauffage',
+                    'Cuisine'=> 'cuisine',
+                    'Terasse'=> 'terasse',
+                    'Accessibilité'=> 'acce',
+                    'Petit déjeuner'=> 'petit-dej',
+                    'Chauffage'=> 'chauffage',
+                    'Restauration sur place'=> 'resto',
+                    'Parking'=> 'parking'
                 ],
                 'attr' => [
                     'data-checked-nbr' => 0

@@ -58,7 +58,7 @@ $(document).ready(function(){
     if($('#date-picker').is('div')){
         $('#date-picker').dateRangePicker(
             {
-                container:'#date-picker',
+                container:'.date-picker-container',
                 separator : ' to ',
                 startDate: new Date(),
                 autoClose: true,

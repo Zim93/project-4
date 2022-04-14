@@ -16,7 +16,7 @@ class SearchHouseType extends AbstractType
     {
         $builder
             ->add('address', TextType::class,[
-                'label' => 'Destination'
+                'label' => 'Destination',
             ])
             ->add('nbr_voyagers', IntegerType::class,[
                 'label' => 'Nombre de voyageurs',
@@ -27,7 +27,7 @@ class SearchHouseType extends AbstractType
             ])
             ->add('type',ChoiceType::class,[
                 'label'=>'Type d\'habitation',
-                'placeholder' => 'Choisissez un type d\'habitation',
+                'placeholder' => 'Type d\'hébergement',
                 'choices'  => [
                     'Cabane dans les arbres' => 'Cabane dans les arbres',
                     'Cabane sur pilotis' => 'Cabane sur pilotis',

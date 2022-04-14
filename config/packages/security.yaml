@@ -24,7 +24,7 @@ security:
                 login_path: login
                 check_path: login
                 enable_csrf: true
-                default_target_path: app_house_index
+                default_target_path: app_index
             logout:
                 path: logout
                 target: login

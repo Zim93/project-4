@@ -3,173 +3,541 @@
 {% block title %}House{% endblock %}
 
 {% block body %}
-    <style>
-        #map {
-        height: 400px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
-    <h1>House</h1>
+
+    
+        
+    <div class="backdrop"></div>
 
     <input id="disabled-date" type="hidden" data-dates="{{to_disable | json_encode}}" />
     <input id="enabled-date" type="hidden" data-dates="{{to_enable | json_encode}}" />
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ house.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ house.name }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ house.type }}</td>
-            </tr>
-            <tr>
-                <th>Full_address</th>
-                <td>{{ house.fullAddress }}</td>
-            </tr>
-            <tr>
-                <th>Street_number</th>
-                <td>{{ house.streetNumber }}</td>
-            </tr>
-            <tr>
-                <th>Street_sub_number</th>
-                <td>{{ house.streetSubNumber }}</td>
-            </tr>
-            <tr>
-                <th>Street_label</th>
-                <td>{{ house.streetLabel }}</td>
-            </tr>
-            <tr>
-                <th>City_name</th>
-                <td>{{ house.cityName }}</td>
-            </tr>
-            <tr>
-                <th>Postal_code</th>
-                <td>{{ house.postalCode }}</td>
-            </tr>
-            <tr>
-                <th>Nbr_accepted</th>
-                <td>{{ house.nbrAccepted }}</td>
-            </tr>
-            <tr>
-                <th>Nbr_beds</th>
-                <td>{{ house.nbrBeds }}</td>
-            </tr>
-            <tr>
-                <th>Nbr_rooms</th>
-                <td>{{ house.nbrRooms }}</td>
-            </tr>
-            <tr>
-                <th>Nbr_showeroom</th>
-                <td>{{ house.nbrShoweroom }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ house.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                
-                <td >{{ house.price }}</td>
-            </tr>
-            <tr>
-                <th>note</th>
-                
-                <td class="rating-comment" data-note="{{ house.note }}"></td>
-            </tr>
-            {% if favorite is defined%}
-             <tr>
-                <th>Favori</th>
-                {% if  favorite == true %}
-                <td ><span class="btn btn-success add-to-favorite" data-id={{house.id}}>Favori</span></td>
-                {% else %}
-                <td ><span class="btn btn-secondary add-to-favorite" data-id={{house.id}}>Favori</span></td>
-                {% endif %}
-            </tr>
-            {% endif %}
-            <tr>
-                <th>Equiments</th>
-                <td>
-                    {% for equiment in house.equiments %}
-                        {{ equiment }} </br>
-                    {% endfor %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="for_map" data-id={{house.id}}>
-        <div class="price-pop">{{ house.price }}</div>
-        <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
-        <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
-    </div>
     
-    <div>
-        {% for image in house.attachments %}
-        <img src="/images/houses/{{image.url}}" height="200px" width="auto" />
-        {% endfor %}
+    <div id="reservation-form" class="d-flex align-items-center">
+        <div class="container">
+            {{ form_start(form_reservation, {'action':'/reservation/new'}) }}
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-2">
+                        <div class="dropdown" id="myDropdown">
+                            <a class="btn btn-white border dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
+                                Nombre de voyageurs
+                            </a>
+                            <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink" >
+                                <p>Adulte(s)à(12 et +)</p>
+                                <span class="less btn btn-danger" data-id="1">-</span>
+                                <span id="adults">1</span>
+                                <span class="more btn btn-success" data-id="1">+</span>
+                                <p>Enfants (- de 12)</p>
+                                <span class="less btn btn-danger" data-id="2">-</span>
+                                <span id="kids">0</span>
+                                <span class="more btn btn-success" data-id="2">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4" >
+                        <div style="display:none;">
+                            {{form_row(form_reservation.nbr_voyagers)}}
+                        </div>
+                        <div id="date-picker" class="d-flex flex-inline">
+                            <input id="reservation_start_date" class="form-control mx-3" name="start_date" autoComplete="off" placeholder="Arrivé"/>
+                            <input id="reservation_end_date" class="form-control" name="end_date" autoComplete="off" placeholder="Départ"/>
+                        </div>
+                        <div class="date-picker-container"  style="position:absolute; background-color:white; z-index: 3;"></div>
+                        <input type="hidden" name="house" value="{{house.id}}"/>
+                    </div>
+                    <button class="btn btn-reservation col-2">{{ button_label|default('Je reserve') }}</button>
+                </div>
+            {{ form_end(form_reservation)}}
+        </div>
     </div>
-    
-    <div>
-        <a href="{{ path('app_house_edit', {'id': house.id}) }}">edit</a>
-        {{ include('house/_delete_form.html.twig') }}
-    </div>
-    <a href="{{ path('app_house_index') }}">back to list</a>
-
-    
-    <div class="w-50">
-        {{ form_start(form_reservation, {'action':'/reservation/new'}) }}
-            {{ form_row(form_reservation.nbr_voyagers) }}
-            <div id="date-picker">
-                <input id="reservation_start_date" name="start_date" autoComplete="off"/>
-                <input id="reservation_end_date" name="end_date" autoComplete="off"/>
+    <div class="container mb-3">
+        <div>
+            <a href="#house-images" class="text-dark"><small>Images</small></a>
+            <a href="#house-description-container" class="text-dark"><small>Infos</small></a>
+            <a href="#map" class="text-dark"><small>Situation</small></a>
+            <a href="#comment-container" class="text-dark"><small>Commentaires</small></a>
+            <a href="#to-do" class="text-dark"><small>A voir et à faire</small></a>
+            <div>
+                <div class="d-flex">
+                    <span class="h3 d-flex align-items-center">{{house.name}}</span>
+                    {% if house.note is not null %}
+                        <div class="rating-comment ms-4 d-flex align-items-center" data-note="{{ house.note }}" data-id="{{house.id}}"></div>
+                    {% endif %}
+                    <div class=" ms-auto">
+                        <p class="total_price h-3 text-end" data-price="{{house.price}}">{{house.price}} €</p>
+                        <p class="nbr_of_nights text-end">Pour 1 nuit</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <span>{{house.fullAddress}}</span>
+                    {% if favorite is defined%}
+                        {% if  favorite == true %}
+                            <span class="add-to-favorite added ms-auto" data-id={{house.id}}><img class="favoris-img" src="/images/favoris/on.svg" width="30px" height="30px" style="cursor: pointer;"></span>
+                        {% else %}
+                            <span class="add-to-favorite not-added ms-auto" data-id={{house.id}}><img class="favoris-img" src="/images/favoris/off.svg" width="30px" height="30px" style="cursor: pointer;"></span>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
-            <input type="hidden" name="house" value="{{house.id}}"/>
-            <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
-        {{ form_end(form_reservation)}}
+        </div>
+        <div class="row" id="house-images">
+            <div class="col-9 d-flex justify-content-center">
+                {% if house.attachments[0] is defined %}
+                    <img height="595px" width="auto" src="/images/houses/{{house.attachments[0].url}}">
+                {% else %}
+                    <img height="595px" width="auto" src="/images/houses/default.jpg">
+                {% endif %}
+            </div>
+            <div class="col-3">
+                {% for image in house.attachments|slice(1,3) %}
+                    <img class="open-carousel" height="185px" width="auto" src="/images/houses/{{image.url}}">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <h1 class="my-5 container">Le logement</h1>
+    <div id="house-description-container" class="py-3">
+        <div class="container">
+            <p>Description du logement</p>
+            <p>{{house.description}}</p>
+        </div>
+    </div>
+    
+    <div class="container my-5">
+        <div class="row">
+            <h2 class="mb-3">Equiments et services</h2>
+            <div class="col-6 row">
+                {% if house.confort is not empty %}
+                    <p class="col-4">Confort</p>
+                    <div class="col-8">
+                        {% for confort in house.confort %}
+                            <p >{{confort}}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if house.equiments is not empty %}
+                <p class="col-4">Cuisine</p>
+                <div class="col-8">
+                    {% for equipment in house.equiments %}
+                        <p >{{equipment}}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if house.outside is not empty %}
+                <p class="col-4">Extérieur</p>
+                <div class="col-8">
+                    {% for outside in house.outside %}
+                        <p >{{outside}}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-6">
+                {% for icon in house.strongPoints %}
+                    <img height="110px" width="auto" src="/images/icones/{{icon}}.png" alt="{{icon}}" class="d-flex ms-auto">
+                {% endfor %}
+            </div>
+
+        </div> 
+                
+    
+        <div class="for_map" data-id={{house.id}}>
+            <div class="price-pop">{{ house.price }}</div>
+            <input type="hidden" class="pos" data-pos="lat" value="{{house.lat}}" />
+            <input type="hidden" class="pos" data-pos="lng" value="{{house.lng}}" />
+        </div>
+        
+        
+        
+        <div id="carousel-container">
+            <div id="mycarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#mycarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                    {% for image in house.attachments %}
+                        {% if house.attachments[0] is defined and  image.url != house.attachments[0].url %}
+                            <button type="button" data-bs-target="#mycarousel" data-bs-slide-to="{{loop.index0}}"></button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner text-center"  style="width:80vw; height:70vh !important;">
+                    <div class="carousel-item active align-items-center"  >
+                        <div class="d-flex align-items-center carousel-img-container">
+                            {% if house.attachments[0] is defined %}
+                            <img src="/images/houses/{{house.attachments[0].url}}" class="d-block carousel-imgs" alt="{{house.attachments[0].url}}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% for image in house.attachments %}
+                        {% if house.attachments[0] is defined and image.url != house.attachments[0].url %}
+                            <div class="carousel-item"  >
+                                <div class="d-flex align-items-center carousel-img-container" >
+                                    <img src="/images/houses/{{image.url}}" class="d-block carousel-imgs" alt="{{image.url}}" >
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#mycarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#mycarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
     </div>
 
+    <div id="info-container" class="py-5">
+        <div class="container">
+            <h2> Infos pratiques </h2>
+            <div class="ms-3">
+                <p>Horaire d'arrivée:{{house.arrivalTime|date('H:i')}} </p>
+                <p>Horaire de départ:{{house.departureTime|date('H:i')}} </p>
+                <p>Depot de garantie:{{house.guarantee}} (€)</p>
+                {% if house.breakfastDispo == 1 %}
+                    <p>Petit déjeuner: {{house.breakfastPrice}}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
     <div id="map"></div>
-    <script src="/raty-master/lib/jquery.raty.js"></script>
-    <script>
-    $(document).ready(function(){
 
-        const score = parseFloat($($('.rating-comment')).data('note'));
+    <div id="comment-container" class="py-5">
+        <h2 class="text-center mb-5">Ils parlent de leur séjour...</h2>
+        
+        <div class="multiple-items container pt-5">
+            {% for comment in house.comment %}
+                <div class="text-center">
+                    <div class="d-flex justify-content-center">
+                        {% if comment.guest.avatar is not null %}
+                            <img class="user-avatar" src="\images\users\{{comment.guest.avatar}}"/>
+                        {% else %} 
+                            <img class="user-avatar" src="\images\users\default.png"/> 
+                        {% endif %}
+                    </div>
+                    <p>{{comment.guest.firstname|capitalize}} .{{comment.guest.firstname|first|upper}}</p>
+                    <p>{{comment.message}}</p>
+                    <div class="d-flex justify-content-center rating-comment" data-note="{{comment.note}}" data-id="{{comment.id}}"></div>
+                </div>
+            {% endfor %}
+        </div>
 
-        $(".rating-comment").raty({
-            starOff:'/raty-master/lib/images/star-off.png',
-            starOn:'/raty-master/lib/images/star-on.png',
-            starHalf:'/raty-master/lib/images/star-half.png',
-            half: true,
-            readOnly: true, 
-            score: score
-        });
+    </div>
 
-        $('.add-to-favorite').click(function(){
-            const id = $('.add-to-favorite').data('id');
-            const currentUrl = window.location.origin;
+    <div id="proxi-houses-container" class="py-5">
+        <div class="container py-5">
+            <div id="proxi-houses" class="d-flex mx-auto justify-content-center my-5 px-3 col-8">
+                <h1> Les autres hébergements à proximité </h1>
+            </div>
             
-            $.ajax({
-                    url: currentUrl+'/house/'+id+'/favorite',
-                    method:'get'
-            }).done(function(res){
-                if(res.action == 'added'){
-                    $('.add-to-favorite').removeClass('btn-secondary');
-                    $('.add-to-favorite').addClass('btn-success');
-                }else{
-                    $('.add-to-favorite').removeClass('btn-success');
-                    $('.add-to-favorite').addClass('btn-secondary');
-                }
-            }).fail(function(res){
-                console.log(res);
+            {% for house in proximity_houses %}
+                <div class="row house-card mb-3 bg-white" data-id="{{house.id}}">
+                    <div class="col-3">
+                        {% if house.attachments is not empty %}
+                            <div class="images-carousel d-flex">
+                                {% for image in house.attachments %}
+                                        <div>
+                                            <img src="/images/houses/{{image.url}}" class="img-fluid"  max-height="248px"/>
+                                        </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <img src="/images/houses/default.jpg" class="img-fluid" max-height="250px"/>
+                        {% endif %}
+                    </div>
+                    <div class="col-6">
+                        <h3>{{house.name}}</h3>
+                        <small>{{house.cityName}}</small>
+                        <p>{{house.description}}</p>
+                    </div>
+                    <div class="col-3 d-flex flex-column justify-content-center">
+                        <p class="rating-comment text-center" data-note="{{ house.note }}" data-id="{{house.id}} ">Commentaire</p>
+                         <div class="mt-auto d-flex flex-column mx-3">
+                            <small class="ms-auto">à partir de </small>
+                            <p class="ms-auto">{{house.price}} € la nuit</p>
+                            <a class="btn rent-btn" href="{{ path('app_house_show', {'id': house.id}) }}">Découvrir</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div id="to-do">
+        <div class="container py-5">
+            <div class="d-flex mx-auto py-2 justify-content-center col-8 border border-4 mb-5 to-discover">
+                <h1> A découvrir dans la région </h1>
+            </div>
+
+            <div class="multiple-items container mb-5" data-slick='{"slidesToShow": 4, "infinite": false}'>
+                {% for i in 0..5 %}
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center">
+                            <img id="discover-img" src="https://fakeimg.pl/250x250/">
+                        </div>
+                        <p>Nom de la ville {{i}}</p>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ...</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <style>
+
+    .to-discover{
+        border-color:#707070 !important;
+    }
+    #to-do{
+        height:500px
+    }
+    .house-card{
+        cursor:pointer
+    }
+    
+    .dropdown-toggle{
+        background:white
+    }
+    .dropdown-toggle,#reservation_start_date,#reservation_end_date,.btn-reservation, .rent-btn{
+        padding:12px;
+    }
+    #proxi-houses-container{
+        background:url('/images/backgrounds/tipi.jpg');
+        height:1000px;
+        background-position:center
+    }
+    #reservation-form{
+        background:url('/images/backgrounds/heart.jpg');
+        height:162px;
+        background-position:center
+    }
+    #map {
+        height: 493px;
+    }
+    .user-avatar, #discover-img{
+        width:150px;
+        height: 150px;
+
+        background-size: cover;
+
+        background-position: top center;
+
+        border-radius: 50%;
+    }
+    .discover-house, .btn-reservation{
+        background-color:#F2B705;
+    }
+    #house-description-container, #info-container, #comment-container, #proxi-houses{
+        background-color:#F2EFBA;
+    }
+    #comment-container{
+        height:550px
+    }
+    #house-description-container,#info-container{
+        height:400px
+    }
+    .carousel-item, .carousel-img-container{
+        width:80vw !important; 
+        height:70vh !important;
+    }
+    .backdrop{
+        width:100vw; 
+        height:100vh; 
+        position:fixed; 
+        display:none; 
+        backdrop-filter: 
+        blur(10px); 
+        left:-20px;
+        overflow-y: none;
+        z-index: 99;
+    }
+    #carousel-container{
+        display:none; 
+        position:absolute; 
+        top:50px;
+        backdrop-filter: blur(10px);
+        z-index: 999;
+    }
+    .carousel-imgs{
+        display: block;
+        margin:auto; 
+    }  
+    .nextArrowBtn{
+        position: absolute;
+        z-index: 1000;
+        top: 33%;
+        right: -35px;
+        color: #BFAFB2;
+    }
+    .prevArrowBtn{
+        position: absolute;
+        z-index: 1000;
+        top: 33%;
+        left: -35px;
+        color: #BFAFB2;
+    }
+    .nextArrowBtnImg{
+        position: absolute;
+        z-index: 1000;
+        top: 33%;
+        right: -10px;
+        color: #BFAFB2;
+    }
+    .prevArrowBtnImg{
+        position: absolute;
+        z-index: 1000;
+        top: 33%;
+        left: -10px;
+        color: #BFAFB2;
+    }
+    </style>
+
+
+    <script>
+        $(document).ready(function(){
+            $('.multiple-items').slick({
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >"
             });
+
+            $('.images-carousel').slick({
+                nextArrow: "<img class='nextArrowBtnImg' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                prevArrow: "<img class='prevArrowBtnImg' width='25px' height='25px' src='/font/angle-left-solid.svg' >"
+            });
+
+            $('.multi-item-carousel').on('slide.bs.carousel', function (e) {
+            let $e = $(e.relatedTarget),
+                itemsPerSlide = 3,
+                totalItems = $('.carousel-item', this).length,
+                $itemsContainer = $('.carousel-inner', this),
+                it = itemsPerSlide - (totalItems - $e.index());
+            if (it > 0) {
+                for (var i = 0; i < it; i++) {
+                $('.carousel-item', this).eq(e.direction == "left" ? i : 0).
+                    // append slides to the end/beginning
+                    appendTo($itemsContainer);
+                }
+            }
+            });
+
+            var myCarousel = document.querySelector('#mycarousel')
+            var carousel = new bootstrap.Carousel(myCarousel,{pause:true, interval: 1000000,})
+            
+            
+            
+            
+            $(".rating-comment").each(function(e) {
+                let score = parseFloat($($(this)).data('note'));
+                let id=$(this).data('id');
+                $(".rating-comment[data-id='"+id+"']").raty({
+                    starOff:'/raty-master/lib/images/star-off.png',
+                    starOn:'/raty-master/lib/images/star-on.png',
+                    starHalf:'/raty-master/lib/images/star-half.png',
+                    half: true,
+                    readOnly: true, 
+                    score: score
+                });
+            })
+            
+         
+            
+            $('.add-to-favorite').click(function(){
+                const id = $('.add-to-favorite').data('id');
+                const currentUrl = window.location.origin;
+                
+                $.ajax({
+                        url: currentUrl+'/house/'+id+'/favorite',
+                        method:'get'
+                }).done(function(res){
+                    if(res.action == 'added'){
+                        $('.favoris-img').attr('src', "/images/favoris/on.svg");
+                    }else{
+                        $('.favoris-img').attr('src', "/images/favoris/off.svg");
+                    }
+                }).fail(function(res){
+                    console.log(res);
+                });
+            })
+
+            $('.less').click(function (){
+                let id = $(this).data('id');
+                if (id==1){
+                    valueA = $('#adults').html();
+                    if(valueA >1){
+                    valueA--;
+                    $('#adults').html(valueA);
+                    }
+                }  else if (id==2){
+                    value = $('#kids').html();
+                    if(value >0){
+                    value--;
+                    $('#kids').html(value);
+                    }
+                }
+            });
+
+            $('.select-voy').mousedown(function(e){
+                e.preventDefault();
+                $(this).focus();
+                $('#nbr-voygeurs-ad-kid').toggle();
+            });
+
+            $('.more').click(function (){
+                let id = $(this).data('id');
+                if (id==1){
+                    valueA = $('#adults').html();
+                    valueA++;
+                    $('#adults').html(valueA);
+                } else if (id==2){
+                    value = $('#kids').html();
+                    value++;
+                    $('#kids').html(value);
+                }
+            });
+
+            function countDays(start, end) {
+                return Math.abs(moment(start).diff(moment(end), 'd')) + 1;
+            }
+
+            $('#date-picker').bind('datepicker-change',function(event,obj)
+            {
+                nbr_of_nights=countDays(obj.date1, obj.date2);
+                $('.nbr_of_nights').html('Pour '+nbr_of_nights+' nuits');
+                total_price= nbr_of_nights * $('.total_price').data('price');
+                $('.total_price').html(total_price+' €');
+            })
+
+            $('.open-carousel').click(function(){
+                $('#carousel-container').css("display","block");
+                $(".backdrop").css("display","block");
+            });
+
+            $('.backdrop').click(function(){
+                $('#carousel-container').css("display","none");
+                $(".backdrop").css("display","none");
+            });
+
+            var myDropdown = document.getElementById('myDropdown')
+            myDropdown.addEventListener('hide.bs.dropdown', function () {
+                total = parseInt($('#kids').html())+parseInt($('#adults').html());
+                $('#reservation_nbr_voyagers').val(total);
+                $('#dropdownMenuLink').html($('#adults').html()+' adulte(s) '+$('#kids').html()+' enfant(s)' )
+            })
+            ;
         })
-    })
 
     </script>
+    <script src="/raty-master/lib/jquery.raty.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 {% endblock %}

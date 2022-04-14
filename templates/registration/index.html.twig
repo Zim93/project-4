@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RegistrationController!{% endblock %}
+{% block title %}S'inscrire{% endblock %}
 
 {% block body %}
     <style>
@@ -13,14 +13,28 @@
             background-color: white;
             border-right: 1px solid #5d5d5d;
         }
-
+        .register{
+            background:url('/images/backgrounds/register.jpg');
+            background-position:center;
+        }
+        .register-container{
+            background:rgba(255,255,255,0.9);
+        }
+        .register-btn{
+            background:rgba(36,36,36,0.9)
+        }
+        input{
+            border:1px solid rgba(112,112,112,0.9) !important;
+        }
         #phone-number{
             padding-left: 70px;
         }
+        select{
+            border:1px solid rgba(112,112,112,0.9) !important;
+        }
     </style>
-    <main class="container d-flex justify-content-center">
-        <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 register my-3">
-            <h3 class="text-center">S'inscrire</h1>
+    <div class="d-flex justify-content-center register">
+        <div class="col-8 col-md-6 col-lg-3 px-5 register-container my-5 py-5">
             {{ form_start(registrationForm) }}  
                 {{form_row(registrationForm.civility)}}
                 {{ form_row(registrationForm.firstname)}}
@@ -78,25 +92,26 @@
 
                 <div class="my-3">
                     <div class="mb-2">
-                        <input  type="checkbox"><a href="#" class="ms-2">Recevoir les actualités</a></input>
+                        <input  type="checkbox"><a href="#"  class="ms-2 text-dark">Recevoir les actualités</a></input>
                     </div>
                     <div>
-                        <input type="checkbox"><a href="#" class="ms-2">J'accepte les conditions générale de vente</a></input>
+                        <input type="checkbox"><a href="#" class="ms-2 text-dark">J'accepte les conditions générale de vente</a></input>
                     </div>
                 </div>
 
                 <div class="text-center">
-                {{ form_widget(registrationForm.submit, {'attr': {'class': 'btn btn-primary my-2'}})}}
+                {{ form_widget(registrationForm.submit, {'attr': {'class': 'register-btn text-white btn py-2 px-3'}})}}
                 </div>
                 <div class="text-center">
-                    <p>
+                    <small>
                         Vous avez déjà un compte ? 
-                        <a href="{{ path('login') }}"> Connectez-vous </a>
-                    </p>
+                        <a href="{{ path('login') }}" class="text-decoration-none text-dark"> Connectez-vous </a>
+                    </small>
                 </div>
             {{ form_end(registrationForm) }}
         </div>
-    </main>
+    </div>
+
     <script>
     $(document).ready(function(){
         const country_code= {

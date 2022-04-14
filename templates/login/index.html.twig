@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}Se connecter{% endblock %}
 
 {% block body %}
-    <main class="container">
-        <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 position-absolute top-50 start-50 translate-middle login">
+    <div class="login d-flex">
+        <div class="col-8 col-md-6 col-lg-4 px-3 border border-3 login-container mx-auto my-auto">
            <div>
                 <form action="{{ path('login') }}" method="post">
                     <h3 class="text-center">Bienvenu</h1>
@@ -25,7 +25,7 @@
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <div class="text-center">
-                        <button class="btn w-50 btn-primary mb-3" type="submit">login</button>
+                        <button class="btn px-5 login-btn mb-3 text-white" type="submit">login</button>
                     </div>    
                 </form>
                 <div class="text-center mb-3">
@@ -33,5 +33,18 @@
                 </div>
             </div>
         </diV>
-    </main>
+    </div>
+    <style>
+        .login{
+            background:url('/images/backgrounds/register.jpg');
+            height:800px;
+            background-position:center;
+        }
+        .login-btn{
+            background:rgba(36,36,36,0.9)
+        }
+        .login-container{
+            background:rgba(255,255,255,0.9);
+        }
+    </style>
 {% endblock %}

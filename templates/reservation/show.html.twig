@@ -3,79 +3,68 @@
 {% block title %}Reservation{% endblock %}
 
 {% block body %}
+    
     <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
+    <main class="container d-flex flex-column justify-content-center mt-4 w-75">
+        <h1>Reservation</h1>
 
-    <h1>Reservation</h1>
+        <table class="table">
+            <tbody>
+            <tr>
+                    <th>Nbr_voyagers</th>
+                    <td>{{ reservation.nbrVoyagers }}</td>
+                </tr>
+                <tr>
+                    <th>Date d'arrivée</th>
+                    <td>{{ reservation.startDate ? reservation.startDate|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Date de départ</th>
+                    <td>{{ reservation.endDate ? reservation.endDate|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre de nuit</th>
+                    <td>{{ reservation.nbrNights }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ reservation.total }} (€)</td>
+                </tr>
+                <tr>
+                    <th>House</th>
+                    <td>{{reservation.house.name}}</td>
+                </tr>
+                <tr>
+                    <th>Voyageurs</th>
+                    <td>{{reservation.guest.firstname}} {{reservation.guest.lastname}}</td>
+                </tr>
+                <tr>
+                    {% if reservation.comment is not null %}
+                        <th>Comment</th>
+                        <td>{{reservation.comment.message}}</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ reservation.id }}</td>
-            </tr>
-            <tr>
-                <th>Nbr_voyagers</th>
-                <td>{{ reservation.nbrVoyagers }}</td>
-            </tr>
-            <tr>
-                <th>Start_date</th>
-                <td>{{ reservation.startDate ? reservation.startDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>End_date</th>
-                <td>{{ reservation.endDate ? reservation.endDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <td>{{ reservation.total }}</td>
-            </tr>
-            <tr>
-                <th>Nbr_nights</th>
-                <td>{{ reservation.nbrNights }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ reservation.createdAt ? reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ reservation.updatedAt ? reservation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>House</th>
-                <td>{{reservation.house.name}}</td>
-            </tr>
-            <tr>
-                <th>Voyageurs</th>
-                <td>{{reservation.guest.firstname}}</td>
-            </tr>
-            <tr>
-                {% if reservation.comment is not null %}
-                    <th>Comment</th>
-                    <td>{{reservation.comment.message}}</td>
-                {% endif %}
-            </tr>
-        </tbody>
-    </table>
+        {% if form_comment is defined %}
+            <div class="w-50">
+                {{ form_start(form_comment, {'action':'/comment/new'}) }}
+                    <div  class="rating-comment"> </div>
 
-    {% if form_comment is defined %}
-        <div class="w-50">
-            {{ form_start(form_comment, {'action':'/comment/new'}) }}
-                <div  class="rating-comment"> </div>
-
-                {{form_row(form_comment.message)}}
-                {{form_widget(form_comment.note)}}
+                    {{form_row(form_comment.message)}}
+                    {{form_widget(form_comment.note)}}
 
 
-                <input type="hidden" name="house" value="{{reservation.house.id}}"/>
-                <input type="hidden" name="reservation" value="{{reservation.id}}"/>
+                    <input type="hidden" name="house" value="{{reservation.house.id}}"/>
+                    <input type="hidden" name="reservation" value="{{reservation.id}}"/>
 
-                <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
-            {{ form_end(form_comment)}}
-        </div>
-        
-    {% endif %}
-        
+                    <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+                {{ form_end(form_comment)}}
+            </div>
+            
+        {% endif %}
+            
         <script src="/raty-master/lib/jquery.raty.js"></script>
         <script>
             $(".rating-comment").raty({
@@ -84,16 +73,10 @@
                 starHalf:'/raty-master/lib/images/star-half.png',
                 half: true,
                 click: function(score) {
-                    console.log(score);
                     $('#comment_note').val(score);
                 }
             });
         </script>
+    </main>
     
-
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
-
-    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-
-    {{ include('reservation/_delete_form.html.twig') }}
 {% endblock %}

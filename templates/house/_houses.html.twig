@@ -1,6 +1,6 @@
 {% if houses is defined%}
-    <p>{{houses|length}} hébergements trouvés</p>
-    
+    {# <p>{{ houses.getTotalItemCount }} hébergements trouvés</p> #}
+    <a class="btn btn-primary sort-price">sort price</a>
     {% for id in page_ids %}
         <input type="hidden" class="page-id-input" name="ids[]" value="{{id}}" />
     {% endfor %}
@@ -8,26 +8,33 @@
 
     
     {% for house in houses %}
-        <div class="row house-card" data-id="{{house.id}}" style="cursor:pointer;">
-            <div class="col-3">
+        <div class="row house-card my-3 p-3" data-id="{{house.id}}">
+            <div class="col-3" style="height : 248px">
                 {% if house.attachments is not empty %}
-                    <div class="carousel">
+                    <div class="images-carousel">
                         {% for image in house.attachments %}
-                                <img src="/images/houses/{{image.url}}" class="carousel-cell img-fluid" max-height="auto"/>
+                                <img src="/images/houses/{{image.url}}" height="248px" class="carousel-cell" />
                         {% endfor %}
                     </div>
                 {% else %}
-                    <img src="/images/houses/default.jpg" class="img-fluid" max-height="auto"/>
+                    <div class="d-flex">
+                        <img src="/images/houses/default.jpg" height="248px" class="mx-auto"/>
+                    </div>
                 {% endif %}
             </div>
             <div class="col-6">
                 <h3>{{house.name}}</h3>
+                <small>{{house.cityName}}</small>
                 <p>{{house.description}}</p>
             </div>
-            <div class="col-3">
-                <p class="rating-comment" data-note="{{ house.note }}">Commentaire</p>
-                <p>{{house.price}}</p>
-                <a href="{{ path('app_house_show', {'id': house.id}) }}">Réserver</a>
+            <div class="col-3 d-flex flex-column justify-content-center">
+                <p class="rating-comment text-center" data-note="{{ house.note }}">Commentaire</p>
+                <div class="mt-auto d-flex flex-column mx-3">
+                    <small class="ms-auto">à partir de </small>
+                    <p class="ms-auto">{{house.price}} € la nuit</p>
+                    <a class="btn rent-btn" href="{{ path('app_house_show', {'id': house.id}) }}">Découvrir</a>
+                </div>
+                
             </div>
 
             <div class="for_map" data-id="{{house.id}}">
@@ -37,20 +44,53 @@
             </div>
         </div>
     {% endfor %}
-    {{ knp_pagination_render(houses) }}
+    <div class="d-flex">
+        <div class="navigation ms-auto">
+            {{ knp_pagination_render(houses) }}  
+        </div>
+    </div>
+    
+    
 {% else %}
     <p>Aucun résultat trouvé</p>
 {% endif %}
 
 <script>
+       
     $(document).ready(function(){
+
+         $('.images-carousel').slick({
+            nextArrow: "<img class='nextArrowBtnImg' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+            prevArrow: "<img class='prevArrowBtnImg' width='25px' height='25px' src='/font/angle-left-solid.svg' >"
+        });
+
+        const sortByPrice=[];
+        $('.sort-price').click(function(){
+            $('.page-id-input').each(function(){
+                sortByPrice.push($(this).val());
+            })
+            let page = $(this).find('a').html();
+            data={ids:sortByPrice, page: page}
+            const currentUrl = window.location.origin;
+            $.ajax({
+                url: currentUrl+'/house/sort',
+                data: data,
+                method:'post'
+            }).
+            done(function(res){
+                $('#houses-list').html(res);
+            }).
+            fail(function(res){
+                
+            });
+        })
+
         $('.pagination span').click(function(e){
             e.preventDefault();
             e.stopPropagation();
             
             let page_ids = [];
             $('.page-id-input').each((i,obj) => {
-                console.log($(obj));
                 page_ids.push($(obj).val());
             });
 

@@ -3,45 +3,39 @@
 {% block title %}Reservation index{% endblock %}
 
 {% block body %}
-    <h1>Reservation index</h1>
+<main class="container d-flex flex-column justify-content-center mt-4">
+    <h1>Réservation</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nbr_voyagers</th>
-                <th>Start_date</th>
-                <th>End_date</th>
-                <th>Total</th>
-                <th>Nbr_nights</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>actions</th>
+                <th>Maison</th>
+                <th>Nombre de voyageurs</th>
+                <th>Date d'entrée</th>
+                <th>Date de sortie</th>
+                <th>Nombre de nuit</th>
+                <th>Prix</th>
+                <th>Afficher</th>
+                
             </tr>
         </thead>
         <tbody>
-        {% for reservation in reservations %}
+        {% for reservation in reservations|sort((a, b) => b.createdAt <=> a.createdAt) %}
             <tr>
-                <td>{{ reservation.id }}</td>
+                <td><a href="{{ path('app_house_show', {'id': reservation.house.id}) }}">{{ reservation.house.name }}<a></td>
                 <td>{{ reservation.nbrVoyagers }}</td>
-                <td>{{ reservation.startDate ? reservation.startDate|date('Y-m-d') : '' }}</td>
-                <td>{{ reservation.endDate ? reservation.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ reservation.total }}</td>
-                <td>{{ reservation.nbrNights }}</td>
-                <td>{{ reservation.createdAt ? reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.updatedAt ? reservation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
-                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-                </td>
+                <td>{{ reservation.startDate ? reservation.startDate|date('d-m-Y') : '' }}</td>
+                <td>{{ reservation.endDate ? reservation.endDate|date('d-m-Y') : '' }}</td>
+                <td>{{ reservation.nbrNights }} </td>
+                <td>{{ reservation.total }} (€)</td>
+                <td><a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">Afficher<a></td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="10">Aucune réservation trouvée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_reservation_new') }}">Create new</a>
+</main>
 {% endblock %}

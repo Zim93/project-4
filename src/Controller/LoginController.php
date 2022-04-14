@@ -20,7 +20,7 @@ class LoginController extends AbstractController
             $request->getSession()
                     ->getFlashBag()
                     ->add('already-logged', 'Vous êtes déjà connecté');
-            return $this->redirectToRoute('app_house_index');
+            return $this->redirectToRoute('app_index');
         }else{
             // get the login error if there is one
             $error = $authenticationUtils->getLastAuthenticationError();

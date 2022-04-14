@@ -16,6 +16,7 @@ class ReservationType extends AbstractType
         $builder
             ->add('nbr_voyagers', IntegerType::class,[
                 'label' => 'Nombre de voyageurs',
+                'required'=>false,
                 'attr'=>[
                     'min'=>1,
                 ]

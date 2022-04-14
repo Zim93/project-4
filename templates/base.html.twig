@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Atypik home{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -14,6 +14,7 @@
             <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
             <link rel="stylesheet" href="/calendar/dist/daterangepicker.css">
             <script src="/calendar/dist/jquery.daterangepicker.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
             {{ encore_entry_script_tags('app') }}
             
         {% endblock %}
@@ -22,38 +23,121 @@
 
         {% endblock %}
     </head>
-    <header>
-
-    </header>
     <body>
-        <header>
-            <img alt="logo">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="btn" href="/house">Effectuer une réservation</a>
-                {% if is_granted('ROLE_HOST') %}
-                    {% set reservation_count = 0 %}
-                    {% set comment_count = 0 %}
+        <header class="navbar">
+            <a><img src="/font/logo.svg" class="navbar-brand" alt="logo" width="290" height="60"></a>
+            <div class="ms-auto d-flex">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="nav-link mx-3 px-4 border border-white text-dark make-reservation" href="/house">Effectuer une réservation</a>
+                    {% if is_granted('ROLE_HOST') %}
+                        {% set reservation_count = 0 %}
+                        {% set comment_count = 0 %}
 
-                    {% for notification in app.user.notifications %}
-                        {% if notification.type == "reservation" and notification.opened == 0 %}
-                           {% set reservation_count = reservation_count + 1  %}
-                        {% elseif   notification.type == "comment" and notification.opened == 0 %}
-                            {% set comment_count = comment_count + 1  %}
-                        {% endif %}
-                    {% endfor %}
-
-                    <a class="btn" href="#">Nouvelle réservation réservation {{reservation_count}}</a>
-                    <a class="btn" href="#">Nouveaux commentaires {{comment_count}}</a>
+                        {% for notification in app.user.notifications %}
+                            {% if notification.type == "reservation" and notification.opened == 0 %}
+                            {% set reservation_count = reservation_count + 1  %}
+                            {% elseif   notification.type == "comment" and notification.opened == 0 %}
+                                {% set comment_count = comment_count + 1  %}
+                            {% endif %}
+                        {% endfor %}
+                        <a class="nav-link btn" id="new_reservation">Nouvelle réservation réservation ({{reservation_count}})</a>
+                        <a class="nav-link btn" id="new_comment" >Nouveaux commentaires ({{comment_count}})</a>
+                    {% endif %}
+                    <a class="nav-link" href="/logout">Déconnexion</a>
+                {% else %}
+                    <a id="become-host" class="nav-link border text-dark" href="/register/host">Ajouter un hébergement</a>
+                    <a id="register" class="nav-link mx-3 px-4 border border-dark text-dark" href="/register">S'inscrire</a>
+                    <a id="login" class="nav-link mx-3 px-4 border border-dark text-dark" href="/login">Connexion</a>
                 {% endif %}
-                <a class="btn" href="/logout">Déconnexion</a>
-            {% else %}
-                <a class="btn" href="/register/host">Ajouter un hébergement</a>
-                <a class="btn" href="/register">S'inscrire</a>
-                <a class="btn" href="/login">Connexion</a>
-            {% endif %}
+            <div>
         </header>
         
         {% block body %}{% endblock %}
+        <footer class="py-5">
+            <div class="container py-5">
+                <div class="d-flex py-5">
+                    <img src="/font/logo.svg" width="290" length="auto">
+                    <div class="ms-auto">
+                        <img src="https://fakeimg.pl/290x100/">
+                    </div>
+                </div>
+                <div class="row py-5">
+                    <div class="col-4 py-5">
+                        <ul class="list-unstyled">
+                            <li><a class="text-decoration-none text-white" href="#">Qui somme nous</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Nous contacter</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Mentions légales</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">FAQ</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Confidentialité et cookies</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Conditions générales d'utilisation</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-4 py-5">
+                        <ul class="list-unstyled">
+                            <li><a class="text-decoration-none text-white" href="#">Mon compte</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Ajouter un hébergements</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Offrir un cadeau</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Espace partenaires</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Option d'annulation</a></li>
+                            <li><a class="text-decoration-none text-white" href="#">Accueillir de manière durable</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-4 py-5 text-white">
+                        <p>Ne rattez plus nos bon plans </p>
+                        <p>Inscrivez vous pour recevoir les meilleurs offre</p>
+                        <input type="text" class="w-75">.
+
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <style>
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            footer {
+                margin-top: auto;
+            }
+            #become-host:hover, .make-reservation:hover{
+                background-color:#F2EFBA;
+            }
+            #register:hover, #login:hover{
+                color:white !important;
+                border-color:white !important;
+            }
+            .navbar{
+                background-color:#F2B705;
+            }
+            footer{
+                background:url('/images/backgrounds/footer.jpg');
+                height:800px;
+                background-position: center;
+            }
+        </style>
+
+        <script>
+            $('#new_reservation').click(function(){
+                let currentUrl = window.location.origin;
+                $.ajax({
+                    url: currentUrl+'/notification/reservation',
+                    method:'get'
+                }).done(function(res){
+                   window.location.replace(currentUrl+'/reservation');
+                })
+            });
+            $('#new_comment').click(function(){
+                let currentUrl = window.location.origin;
+                $.ajax({
+                    url: currentUrl+'/notification/comment',
+                    method:'get'
+                }).done(function(res){
+                   window.location.replace(currentUrl+'/comment');
+                })
+            });
+        </script>
         <script src="/javascript/google_map.js" ></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3Bywnvy8j0eIl5zH4qwTmQ872S284u8E&libraries=places,geometry&callback=initMap"></script>
         <script src="/javascript/google_autocomplete.js" ></script>

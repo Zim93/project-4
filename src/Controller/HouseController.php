@@ -53,6 +53,92 @@ class HouseController extends AbstractController
         ]);
     }
 
+    private function array_sort($array, $on, $order=SORT_ASC)
+    {
+        $new_array = array();
+        $sortable_array = array();
+
+        if (count($array) > 0) {
+            foreach ($array as $k => $v) {
+                if (is_array($v)) {
+                    foreach ($v as $k2 => $v2) {
+                        if ($k2 == $on) {
+                            $sortable_array[$k] = $v2;
+                        }
+                    }
+                } else {
+                    $sortable_array[$k] = $v;
+                }
+            }
+
+            switch ($order) {
+                case SORT_ASC:
+                    asort($sortable_array,SORT_NUMERIC);
+                break;
+                case SORT_DESC:
+                    arsort($sortable_array,SORT_NUMERIC);
+                break;
+            }
+
+            foreach ($sortable_array as $k => $v) {
+                $new_array[$k] = $array[$k];
+            }
+        }
+
+        return $new_array;
+    }
+
+    #[Route('/sort', name: 'app_house_sort', methods: ['GET','POST'])]
+    public function sort(Request $request,HouseRepository $houseRepository,PaginatorInterface $paginator): Response
+    {
+        $ids = $request->get('ids');
+        if($ids != null){
+            $houses = [];
+            $from = null;
+            $array_to_sort = [];
+
+
+            if($request->get('page') !== null ){
+                $page = $request->get('page');
+            }
+            else{
+                $page = $request->query->getInt('page', 1);
+            }
+
+            forEach($ids as $id){
+                $house = $houseRepository->find($id);
+                $array_to_sort[] = ["id"=> $house->getId(), "price"=> $house->getPrice()];
+            }
+
+            $sorted = $this->array_sort($array_to_sort, 'price', $order=SORT_ASC);
+
+            forEach($sorted as $item){
+                $house = $houseRepository->find($item["id"]);
+                $houses[] = $house;
+            }
+
+            $houses_found = $paginator->paginate(
+                $houses, 
+                $page,
+                5
+            );
+           
+            return $this->render('house/_houses.html.twig', [
+                'houses' => $houses_found,
+                'page_ids' => $ids,
+                'page' => $request->query->getInt('page', 1)
+            ]);
+        }
+        else{
+            return $this->render('house/_houses.html.twig',[
+                'page_ids' => '',
+                'page' => $request->query->getInt('page', 1)
+            ]);
+        }
+    }
+
+    
+
     //Création d'un nouveau habitat
     #[Route('/new', name: 'app_house_new', methods: ['GET', 'POST'])]
     public function new(Request $request, HouseRepository $houseRepository, AttachmentRepository $attachmentRepository,SluggerInterface $slugger): Response
@@ -110,7 +196,7 @@ class HouseController extends AbstractController
 
     //Affichage d'un habitat
     #[Route('/{id}', name: 'app_house_show', methods: ['GET'])]
-    public function show(House $house, $id ,CommentRepository $commentRepository, FavoriteRepository $favoriteRepository): Response
+    public function show(House $house, $id ,CommentRepository $commentRepository, FavoriteRepository $favoriteRepository, HouseRepository $houseRepository): Response
     {
         //Création du formulaire de réservation
         $reservation= new Reservation();
@@ -119,7 +205,11 @@ class HouseController extends AbstractController
         $events = $house->getEvents();
         $toDisable = [];
         $toEnable = [];
-
+        $proximity_houses=$houseRepository->findBy(['city_name' => $house->getCityName()]);
+        if (($key = array_search($house, $proximity_houses)) !== false) {
+            unset($proximity_houses[$key]);
+            $proximity_houses=array_slice($proximity_houses, 0, 2);
+        }
         //Récupération des réservation disponible pour l'habitat pour les désactiver sur le calandrier affiché
         if(count($reservations) > 0){
             forEach($reservations as $reservation){
@@ -146,6 +236,7 @@ class HouseController extends AbstractController
                 'form_reservation' => $formReservation,
                 'reservation' => $reservation,
                 'house' => $house,
+                'proximity_houses'=>$proximity_houses,
                 'to_disable' => $toDisable,
                 'to_enable' => $toEnable,
                 'favorite' =>$favorite
@@ -157,6 +248,7 @@ class HouseController extends AbstractController
                 'form_reservation' => $formReservation,
                 'reservation' => $reservation,
                 'house' => $house,
+                'proximity_houses'=>$proximity_houses,
                 'to_disable' => $toDisable,
                 'to_enable' => $toEnable,
             ]);

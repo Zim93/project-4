@@ -186,13 +186,23 @@
                         {% for house in houses %}
                             <div class="row my-3">
                                 <div class="col-3">
-                                {% for image in house.attachments |slice(0,1)  %}
-                                    
-                                    <img src="/images/houses/{{image.url}}" height="112" width="auto" alt="{{house.name}}-img">
-                                {% endfor %} 
+                                {% if house.attachments is not empty %}
+                                    {% for image in house.attachments |slice(0,1)  %}
+                                        <img src="/images/houses/{{image.url}}" height="112" width="auto" alt="{{house.name}}-img">
+                                    {% endfor %} 
+                                {% else %}
+                                    <img src="/images/houses/default.jpg" class="img-fluid" max-height="auto"/>
+                                {% endif %}
                                 </div>
                                 <div class="col-6">
-                                    {{house.name}}
+                                    <p>{{house.name}}<p>
+                                    {% set reservation_count = 0 %}
+                                    {% for notification in house.notifications %}
+                                        {% if notification.type == "reservation" and notification.opened == 0 %}
+                                            {% set reservation_count = reservation_count + 1  %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <a class="btn btn-light user_new_reservation" data-id="{{house.id}}">{{reservation_count}} nouvelle(s) reservation(s)</a>
                                 </div>
                                 <div class="col-3">
                                     <a href="{{path('app_house_edit',{'id':house.id})}}" class="btn btn-white border">Gérer ce logement</a>
@@ -254,6 +264,17 @@
 
         $('.go-pro').click(function(){
             $('.compte[data-id=2]').trigger( "click" )
+        })
+
+        $('.user_new_reservation').click(function(){
+            let currentUrl = window.location.origin;
+            let id= $(this).data('id');
+            $.ajax({
+                url: currentUrl+'/notification/reservation/'+id,
+                method:'get'
+            }).done(function(res){
+                window.location.replace(currentUrl+'/reservation/');
+            })
         })
     })
 </script>
