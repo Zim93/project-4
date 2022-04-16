@@ -41,7 +41,9 @@ $(document).ready(function(){
         $('#date-picker-search').dateRangePicker(
             {
                 container:'.date-picker-container',
-                separator : ' to ',
+                separator : ' au ',
+                language: 'fr',
+                startOfWeek :"monday",
                 startDate: new Date(),
                 autoClose: true,
                 setValue: function(s,s1,s2)
@@ -56,10 +58,13 @@ $(document).ready(function(){
 
     //Affichage du calendrier pour réservation et disponibilité
     if($('#date-picker').is('div')){
+        console.log('ok');
         $('#date-picker').dateRangePicker(
             {
                 container:'.date-picker-container',
-                separator : ' to ',
+                separator : ' au ',
+                language: 'fr',
+                startOfWeek :"monday",
                 startDate: new Date(),
                 autoClose: true,
                 //Activation et désactivation des dates 

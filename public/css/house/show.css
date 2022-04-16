@@ -1,0 +1,124 @@
+@media only screen and (max-width: 768px) { 
+    #reservation_start_date{
+        margin-left: 0 !important;
+    }
+    .mobile-carousel{
+        display: block !important;
+    }
+    .more-images{
+        display: none !important;
+    }
+    #proxi-houses-container{
+        height: auto !important;
+    }
+}
+#proxi-houses-container > div > div:nth-child(2) > div:nth-child(1) > div > div > div > img.carousel-cell.slick-slide.slick-current.slick-active{
+    height: 248px !important;
+}   
+.mobile-carousel{
+    display: none;
+}
+#dropdownMenuLink {
+    overflow: hidden;
+}
+.to-discover{
+    border-color:#707070 !important;
+}
+#to-do{
+    height:500px
+}
+.house-card{
+    cursor:pointer
+}
+.dropdown-toggle,#reservation_start_date,#reservation_end_date,.btn-reservation, .rent-btn{
+    padding:12px;
+}
+#proxi-houses-container{
+    background:url('/images/backgrounds/tipi.jpg');
+    height:1000px;
+    background-position:center
+}
+#reservation-form{
+    background:url('/images/backgrounds/heart.jpg');
+    height:162px;
+    background-position:center
+}
+#map {
+    height: 493px;
+}
+.user-avatar, #discover-img{
+    width:150px;
+    height: 150px;
+
+    background-size: cover;
+
+    background-position: top center;
+
+    border-radius: 50%;
+}
+.discover-house, .btn-reservation, .rent-btn{
+    background-color:#F2B705;
+}
+#house-description-container, #info-container, #comment-container, #proxi-houses{
+    background-color:#F2EFBA;
+}
+#comment-container{
+    height:550px
+}
+#house-description-container,#info-container{
+    height:400px
+}
+.carousel-item, .carousel-img-container{
+    width:80vw !important; 
+    height:70vh !important;
+}
+.backdrop{
+    width:100vw; 
+    height:100vh; 
+    position:fixed; 
+    display:none; 
+    backdrop-filter: 
+    blur(10px); 
+    left:-20px;
+    overflow-y: none;
+    z-index: 99;
+}
+#carousel-container{
+    display:none; 
+    position:absolute; 
+    top:50px;
+    backdrop-filter: blur(10px);
+    z-index: 999;
+}
+.carousel-imgs{
+    display: block;
+    margin:auto; 
+}  
+.nextArrowBtn{
+    position: absolute;
+    z-index: 1000;
+    top: 33%;
+    right: -35px;
+    color: #BFAFB2;
+}
+.prevArrowBtn{
+    position: absolute;
+    z-index: 1000;
+    top: 33%;
+    left: -35px;
+    color: #BFAFB2;
+}
+.nextArrowBtnImg{
+    position: absolute;
+    z-index: 1000;
+    top: 33%;
+    right: -10px;
+    color: #BFAFB2;
+}
+.prevArrowBtnImg{
+    position: absolute;
+    z-index: 1000;
+    top: 33%;
+    left: -10px;
+    color: #BFAFB2;
+}

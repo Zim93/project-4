@@ -1,0 +1,85 @@
+@media only screen and (max-width: 768px) {
+    table.month1, table.month2{
+        width: 190px !important;
+    }
+    #edit-dispo-container{
+        height:auto !important;
+    }
+    span.next, span.prev{
+    position: relative;
+    top: 95px;
+    left: 30px;
+    }
+    span.prev{
+        position: relative;
+        top: 95px;
+        left:-30px;
+    }
+}
+@media only screen and (max-width: 576px) {
+    table.month1, table.month2{
+        width: 150px !important;
+    }
+    .month-wrapper{
+        width:auto;
+    }
+    #edit-dispo-container{
+        height:auto !important;
+    }
+    span.next, span.prev{
+    position: relative;
+    top: 95px;
+    left: 30px;
+    }
+    span.prev{
+        position: relative;
+        top: 95px;
+        left:-30px;
+    }
+}
+@media only screen and (min-width: 769px) {
+    .month-wrapper{
+        width:605px !important;
+    }
+    table.month1, table.month2{
+        width: 277px !important;
+        height: 277px;
+    }
+    span.next, span.prev{
+    position: relative;
+    top: 122px;
+    left: 55px;
+    }
+    span.prev{
+        position: relative;
+        top: 122px;
+        left: -55px;
+    }
+    #edit-dispo-container{
+        height:auto !important;
+    }
+}   
+.date-picker-wrapper{
+    width:auto !important;
+}
+#manage-houses{
+    background-color:rgba(255, 255, 255, 0.9);
+}
+.home-pro{
+    background:rgba(36, 36, 36, 1)
+}
+.compte{
+    cursor: pointer;
+    background-color:rgba(255, 255, 255, 0.6);
+    border-radius: 10px 10px 0px 0px;
+}
+.compte.active{
+    background-color: rgba(255, 255, 255, 0.9);
+}
+#edit-dispo-container{
+    height:80vh;
+    background:rgba(242, 239, 186, 0.9);
+}
+.add-range,.remove-range{
+background:rgba(242, 183, 5, 1)
+}

@@ -1,12 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New House{% endblock %}
+{% block title %}Ajouter un hébergements{% endblock %}
 
 {% block body %}
-    <h1>Create new House</h1>
-
-    {{ include('house/_form.html.twig') }}
-
-    <a href="{{ path('app_house_index') }}">back to list</a>
-
+    <div class="new-container p-5">
+        <h1 class="text-center my-5"> Ajouter un hébergement </h1>
+        <div class="container">
+            {{ include('house/_form.html.twig') }}
+        </div>
+    </div>
+    <style>
+        .new-container{
+            background:rgba(242, 239, 186, 0.9);
+        }
+    </style>
 {% endblock %}

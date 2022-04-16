@@ -1,0 +1,60 @@
+@media only screen and (max-width: 768px) { 
+    #map-container{
+        width: 100% !important;
+        position: inherit !important;
+    }
+    #map{
+        height: 276px !important;
+    }
+    #search-form-container{
+        height: auto !important;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    #houses-list{
+        padding-left: 0 !important;
+        padding-top: 0 !important;
+    }
+}
+.slick-slide{
+    height: 248px;
+}
+#search-form-container{
+    background:url('/images/backgrounds/heart.jpg');
+    height:162px;
+    background-position:center
+}
+.default-top, .normal-top >*{
+        color: rgba(255, 255, 0, 0) !important;
+}
+.rent-btn,.search-btn{
+    background-color:#F2B705;
+}
+.house-card{
+    background-color:white;
+    cursor:pointer;
+}
+#houses-list{
+    background-color:#f2f2f2;
+}
+#map-container{
+    position: fixed; 
+    width:33%;
+}
+.nextArrowBtnImg{
+    position: absolute;
+    z-index: 2;
+    top: 33%;
+    right: -10px;
+    color: #BFAFB2;
+}
+.prevArrowBtnImg{
+    position: absolute;
+    z-index: 2;
+    top: 33%;
+    left: -10px;
+    color: #BFAFB2;
+}
+#map {
+ height: 95vh;
+}

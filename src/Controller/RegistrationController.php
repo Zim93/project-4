@@ -22,10 +22,7 @@ class RegistrationController extends AbstractController
     {
         $user= $this->getUser();
         if(isset($user)){
-            $request->getSession()
-                    ->getFlashBag()
-                    ->add('already-registred', 'Vous êtes déjà enregistré');
-            return $this->redirectToRoute('app_house_index');
+            return $this->redirectToRoute('app_index');
         }
         else{
 
@@ -74,8 +71,10 @@ class RegistrationController extends AbstractController
     #[Route('/register/host', name: 'app_register_host')]
     public function registerHost(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        
-        if($this->getUser() && in_array("ROLE_USER",$this->getUser()->getRoles())){
+        if($this->getUser() && in_array("ROLE_USER",$this->getUser()->getRoles()) && $this->getUser()->getConfirmedHost()==1 ){
+            return $this->redirectToRoute('app_house_new');
+        }
+        elseif($this->getUser() && in_array("ROLE_USER",$this->getUser()->getRoles())){
             if($request->request->all() != []){
                 $user=$this->getUser();
                 $formData= $request->request->all()['registration_host_form'];

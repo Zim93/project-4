@@ -4,21 +4,21 @@
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
+    <link rel="stylesheet" href="/css/house/house.css">
 {% endblock %}
 
-{% block title %}House index{% endblock %}
+{% block title %}Rechercher un Atypik Home{% endblock %}
 
 {% block body %}
-    
 
     <div class="row mx-0">
-        <div class="col-4">
+        <div class="col-md-4">
             <div id="map-container">
                 <div id="map"></div>
             </div>
         </div>
-        <div class="col-8">
-            <div> 
+        <div class="col-md-8">
+            <div id="search-form-container" class="d-flex align-items-center px-3"> 
                 {{include("house/_search.html.twig")}}
             </div>
             <div id="houses-list" class="ps-5">
@@ -27,46 +27,21 @@
         </div>
     </div>
 
-    <style>
-        .default-top, .normal-top >*{
-                color: rgba(255, 255, 0, 0) !important;
-        }
-        .rent-btn,.search-btn{
-            background-color:#F2B705;
-        }
-        .house-card{
-            background-color:white;
-            cursor:pointer;
-        }
-        #houses-list{
-            background-color:#f2f2f2;
-        }
-        #map-container{
-            position: fixed; 
-            width:33%;
-        }
-        .nextArrowBtnImg{
-        position: absolute;
-        z-index: 2;
-        top: 33%;
-        right: -10px;
-        color: #BFAFB2;
-        }
-        .prevArrowBtnImg{
-            position: absolute;
-            z-index: 2;
-            top: 33%;
-            left: -10px;
-            color: #BFAFB2;
-        }
-        #map {
-        height: 95vh;
-        }
-
-    </style>
     <script src="/raty-master/lib/jquery.raty.js"></script>
     <script>
         $(document).ready(function(){
+
+            function checkOffset() {
+                if($('#map-container').offset().top + $('#map-container').height()
+                                                    >= $('#footer').offset().top - 5)
+                    $('#map-container').css('position', 'absolute');
+                if($(document).scrollTop() + window.innerHeight < $('#footer').offset().top)
+                    $('#map-container').css('position', 'fixed'); // restore when you scroll up
+                
+            }
+            $(document).scroll(function() {
+                checkOffset();
+            });
 
             $('.less').click(function (){
                 let id = $(this).data('id');

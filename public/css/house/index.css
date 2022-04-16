@@ -1,0 +1,160 @@
+@media screen and (max-width: 768px) { 
+    .village,.pont,.europe,.flowers,.windmills,.annecy,.sea{
+        height:200px !important;
+    }
+    .dest-text:hover {
+        height: 150px;
+    }
+    #atypik-presentation{
+        height:auto !important;
+    }
+    #banniere_mobile{
+        display: block !important;
+    }
+    #banniere{
+        display: none;
+    }
+    #date-picker-search{
+        padding-right: 0 !important;
+    }
+    #atypik-disc{
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+}
+@media screen and (max-width: 995px){
+    #atypik-disc{
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+}
+
+.index-search-container{
+    position: relative !important;
+    top:25% !important;
+}
+#banniere_mobile{
+    display: none;
+}
+#myDropdown{
+    background-color: white;
+    border-radius: 0.25rem;
+}
+#atypik-presentation{
+    background:url('/images/backgrounds/heart.jpg');
+    height:815px;
+    background-position: center;
+}
+#index-search-form{
+    background:url('/images/backgrounds/indexheader.jpg');
+    height:815px;
+    background-position: center;
+}
+#proxi-houses-container{
+    background:url('/images/backgrounds/wood.jpg');
+    height:1110px;
+    background-position: center;
+}
+#atypik-disc{
+    background-color: rgba(255,255,255,0.9);
+    padding-left: 7rem;
+    padding-right: 7rem 
+}
+
+.user-avatar{
+    width:150px;
+    height: 150px;
+
+    background-size: cover;
+
+    background-position: top center;
+
+    border-radius: 50%;
+}
+#comment-container{
+    height:600px;
+}
+#comment-container, #atypik-home{
+    background-color:rgba(242,239,186,0.9);
+}
+#slogan, #discover-houses{
+    background-color:rgba(36,36,36,0.9)
+}
+#proxi-houses{
+    background-color:#F2EFBA;
+}
+.village{
+    background:url('/images/places/village.jpg');
+    background-position:center;
+    background-size:cover;
+    height:500px;
+}
+.pont{
+    background:url('/images/places/pont.jpg');
+    background-position:center;
+    background-size:cover;
+    height:170px;
+}
+.europe{
+    background:url('/images/places/europe.jpg');
+    background-position:center;
+    background-size:cover;
+    height:300px;
+}
+.flowers{
+    background:url('/images/places/flowers.jpg');
+    background-position:center;
+    background-size:cover;
+    height:176px;
+}
+.windmills{
+    background:url('/images/places/windmills.jpg');
+    background-position:center;
+    background-size:cover;
+    height:170px;
+}
+.annecy{
+    background:url('/images/places/annecy.jpg');
+    background-position:center;
+    background-size:cover;
+    height:170px;
+}
+.sea{
+    background:url('/images/places/sea.jpg');
+    background-position:center;
+    background-size:cover;
+    height:500px;
+}
+.dest-text{
+    transition: height 0.3s;
+    background-color:rgba(255,255,255,0.6);
+}
+.dest-text:hover {
+    height: 80px;
+}
+#dropdownMenuLink{
+    overflow:hidden
+}
+.default-top, .normal-top >*{
+    color: rgba(255, 255, 0, 0) !important;
+}
+.search-btn{
+    background-color:#F2B705;
+}
+.nextArrowBtn{
+position: absolute;
+z-index: 1000;
+top: 33%;
+right: -35px;
+color: #BFAFB2;
+}
+.prevArrowBtn{
+    position: absolute;
+    z-index: 1000;
+    top: 33%;
+    left: -35px;
+    color: #BFAFB2;
+}
+#search_house_address, #search_house_type, #reservation_start_date, #reservation_end_date, .dropdown-toggle{
+    padding:12px    
+}

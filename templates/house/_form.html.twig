@@ -1,30 +1,37 @@
-
-<style>
-    #house_wc_type, #house_shower_room_type{
-        position:relative;
-        top:38px;
-        margin:0;
-    }
-    .to_hide_new_house{
-        display:none;
-    }
-</style>
-
 {{ form_start(form) }}
-    {{ form_row(form.name)}}
-    {{ form_row(form.full_address)}}
-    {{ form_row(form.street_number)}}
-    {{ form_row(form.street_sub_number)}}
-    {{ form_row(form.street_label)}}
-    {{ form_row(form.city_name)}}
-    {{ form_row(form.postal_code)}}
-    {{ form_row(form.country)}}
-    {{ form_row(form.type)}}
-    {{ form_row(form.nbr_accepted)}}
-    {{ form_row(form.nbr_beds)}}
-    {{ form_row(form.house_area)}}
-    {{ form_row(form.nbr_rooms)}}
-
+    
+    {% if house.id is not null %}
+        <div class="col-6 house-dispo-m mx-auto mb-2">
+            <a class="btn btn-edit-dispo text-white w-100" href="{{path('app_house_edit_dispo',{'id':house.id})}}">Gérer le planing de disponibilité</a>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-8">
+            {{ form_row(form.full_address)}}
+            <div class="row">
+                <div class="col-6">{{ form_row(form.street_number)}}</div>
+                <div class="col-6">{{ form_row(form.street_label)}}</div>
+            </div>
+        </div>
+        {% if house.id is not null %}
+            <div class="col-4 house-dispo">
+                <a class="btn btn-edit-dispo text-white py-3 w-100 px-3" href="{{path('app_house_edit_dispo',{'id':house.id})}}">Gérer le planing de disponibilité</a>
+            </div>
+        {% else %}
+            <div class="col-4"></div>
+        {% endif %}
+        <div class="col-md-4 col-8">{{ form_row(form.postal_code)}}</div>
+        <div class="col-4">{{ form_row(form.city_name)}}</div>
+        <div class="col-4">{{ form_row(form.country)}}</div>
+        <div class="col-8">{{ form_row(form.name)}}</div>
+        <div class="col-4">{{ form_row(form.price)}}</div>
+        <div class="col-6">{{ form_row(form.nbr_accepted)}}</div>
+        <div class="col-6">{{ form_row(form.nbr_beds)}}</div>
+        <div class="col-6">{{ form_row(form.nbr_rooms)}}</div>
+        <div class="col-6">{{ form_row(form.house_area)}}</div>
+    </div>
+    {{ form_row(form.description)}}
+    
     <div class ="row">
         <div class="col-4">
             {{ form_row(form.nbr_wc)}}
@@ -58,198 +65,121 @@
         </div>
     </div>
 
-    {{ form_row(form.description)}}
-    {{ form_row(form.price)}}
+   
 
-    <div>
+    <div class="my-3">
         <legend class="h3">Logement avec cuisine</legend>
         <div id="house_equiments" class="row ms-1">
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_0" name="house[equiments][]" class="form-check-input" value="Four">
-                <label class="form-check-label" for="house_equiments_0">Four</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_1" name="house[equiments][]" class="form-check-input" value="Plaque de cuission">
-                <label class="form-check-label" for="house_equiments_1">Plaque de cuission</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_2" name="house[equiments][]" class="form-check-input" value="Micro onde">
-                <label class="form-check-label" for="house_equiments_2">Micro onde</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_3" name="house[equiments][]" class="form-check-input" value="Réfrigérateur">
-                <label class="form-check-label" for="house_equiments_3">Réfrigérateur</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_4" name="house[equiments][]" class="form-check-input" value="Cafetiere">
-                <label class="form-check-label" for="house_equiments_4">Cafetiere</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_5" name="house[equiments][]" class="form-check-input" value="Bouilloire">
-                <label class="form-check-label" for="house_equiments_5">Bouilloire</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_6" name="house[equiments][]" class="form-check-input" value="Table et chaise">
-                <label class="form-check-label" for="house_equiments_6">Table et chaise</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_7" name="house[equiments][]" class="form-check-input" value="Lave vaisselle">
-                <label class="form-check-label" for="house_equiments_7">Lave vaisselle</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_equiments_8" name="house[equiments][]" class="form-check-input" value="Vaisselle">
-                <label class="form-check-label" for="house_equiments_8">Vaisselle</label>
+            <div class="row">
+                {% for child in form.equiments.children %}
+                    <div class="col-4 my-2">
+                        <label class="expanded" for="{{ child.vars.id }}">
+                            {{ form_widget(child)}}
+                        </label>
+                    </div>
+                {% endfor %}
             </div>
         </div>
                
     </div>
 
-    <div>
+    <div class="my-3">
         <legend class="h3">Extérieur</legend>
         <div id="house_outside" class="row ms-1">
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_outside_0" name="house[outside][]" class="form-check-input" value="0">
-                <label class="form-check-label" for="house_outside_0">Terrasse</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_outside_1" name="house[outside][]" class="form-check-input" value="1">
-                <label class="form-check-label" for="house_outside_1">Barbecue</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_outside_2" name="house[outside][]" class="form-check-input" value="2">
-                <label class="form-check-label" for="house_outside_2">Balcon</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_outside_3" name="house[outside][]" class="form-check-input" value="3">
-                <label class="form-check-label" for="house_outside_3">Mobilier de jardin</label>
-            </div>
-                <div class="form-check col-4"><input type="checkbox" id="house_outside_4" name="house[outside][]" class="form-check-input" value="4">
-                <label class="form-check-label" for="house_outside_4">Chaise longues</label>
+            <div class="row">
+                {% for child in form.outside.children %}
+                    <div class="col-4 my-2">
+                        <label class="expanded" for="{{ child.vars.id }}">
+                            {{ form_widget(child)}}
+                        </label>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 
-    <div>
+    <div class="my-3">
         <legend>Confort</legend>
         <div id="house_confort" class="row ms-1">
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_0" name="house[confort][]" class="form-check-input" value="Piscine partagé">        
-                <label class="form-check-label" for="house_confort_0">Piscine partagé</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_1" name="house[confort][]" class="form-check-input" value="Piscine privative">
-                <label class="form-check-label" for="house_confort_1">Piscine privative</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_2" name="house[confort][]" class="form-check-input" value="Spa partagé">
-                <label class="form-check-label" for="house_confort_2">Spa partagé</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_3" name="house[confort][]" class="form-check-input" value="Spa privatif">
-                <label class="form-check-label" for="house_confort_3">Spa privatif</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_4" name="house[confort][]" class="form-check-input" value="Sauna">
-                <label class="form-check-label" for="house_confort_4">Sauna</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_5" name="house[confort][]" class="form-check-input" value="Air conditionné">
-                <label class="form-check-label" for="house_confort_5">Air conditionné</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_6" name="house[confort][]" class="form-check-input" value="Wifi">
-                <label class="form-check-label" for="house_confort_6">Wifi</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_7" name="house[confort][]" class="form-check-input" value="TV">
-                <label class="form-check-label" for="house_confort_7">TV</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_8" name="house[confort][]" class="form-check-input" value="Chauffage">
-                <label class="form-check-label" for="house_confort_8">Chauffage</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_9" name="house[confort][]" class="form-check-input" value="Lit bébé">
-                <label class="form-check-label" for="house_confort_9">Lit bébé</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_10" name="house[confort][]" class="form-check-input" value="Chaise bébé">
-                <label class="form-check-label" for="house_confort_10">Chaise bébé</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_11" name="house[confort][]" class="form-check-input" value="Douche">
-                <label class="form-check-label" for="house_confort_11">Douche</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_12" name="house[confort][]" class="form-check-input" value="Baignoire">
-                <label class="form-check-label" for="house_confort_12">Baignoire</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_13" name="house[confort][]" class="form-check-input" value="Serviette fournis">
-                <label class="form-check-label" for="house_confort_13">Serviette fournis</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_14" name="house[confort][]" class="form-check-input" value="Lave linges">
-                <label class="form-check-label" for="house_confort_14">Lave linges</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_15" name="house[confort][]" class="form-check-input" value="Linge de lit">
-                <label class="form-check-label" for="house_confort_15">Linge de lit</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_16" name="house[confort][]" class="form-check-input" value="Linge de lit non fournis">
-                <label class="form-check-label" for="house_confort_16">Linge de lit non fournis</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_17" name="house[confort][]" class="form-check-input" value="Aspirateur">
-                <label class="form-check-label" for="house_confort_17">Aspirateur</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_18" name="house[confort][]" class="form-check-input" value="Parking en supplément">
-                <label class="form-check-label" for="house_confort_18">Parking gratuit</label>
-            </div>
-            <div class="form-check col-4">
-                <input type="checkbox" id="house_confort_19" name="house[confort][]" class="form-check-input" value="Air de jeux">
-                <label class="form-check-label" for="house_confort_19">Air de jeux</label>
+            <div class="row">
+                {% for child in form.confort.children %}
+                    <div class="col-4 my-2">
+                        <label class="expanded" for="{{ child.vars.id }}">
+                            {{ form_widget(child)}}
+                        </label>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
-    {{ form_row(form.arrival_time)}}
-    {{ form_row(form.arrival_time_max)}}
-    {{ form_row(form.departure_time)}}
-    {{ form_row(form.breakfast_dispo)}}
-    {{ form_row(form.strong_points)}}
+
+    <div class="row">
+        <div class="col-4">{{ form_row(form.arrival_time)}}</div>
+        <div class="col-4">{{ form_row(form.arrival_time_max)}}</div>
+        <div class="col-4">{{ form_row(form.departure_time)}}</div>
+        <div class="col-4">{{ form_row(form.guarantee)}}</div>
+        <div class="col-4">{{ form_row(form.breakfast_dispo)}}</div>
+        <div class="col-4"></div>
+    </div>
+    
+    <div class="strong_points_container p-3">
+        <legend>Point fort en évidence (max 5)</legend>
+            <div id="house_strong_points" class="row ms-1">
+                <div class="row count-check">
+                    {% for child in form.strong_points.children %}
+                        <div class="col-4 my-2">
+                            <label class="expanded" for="{{ child.vars.id }}">
+                                {{ form_widget(child)}}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+    
+    <div class="form-group">
+        {{ form_label(form.type) }}
+        <div class="row">
+            {% for child in form.type.children %}
+                <div class="col-4 my-2">
+                    <label class="expanded" for="{{ child.vars.id }}">
+                        {{ form_widget(child)}}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+    
     {{ form_row(form.images)}}
     {{ form_row(form.lat)}}
     {{ form_row(form.lng)}}
+
     
     <div class="to_hide_new_house">
-        {{form_row(form.equiments)}}
+        {{ form_row(form.street_sub_number)}}
         {{form_row(form.wc_type)}}
         {{form_row(form.shower_room_type)}}
-        {{form_row(form.confort)}} 
-        {{form_row(form.outside)}}
     </div>
+
     <input type="hidden" name="delete_attach" id="delete-attach"/>
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div id="images mb-4">
+        {{ include('house/_edit_images.html.twig')}}
+    </div>
+    <div class="d-flex my-4">
+        <button class="btn btn-save mx-auto text-white">{{ button_label|default('Enregistrer') }}</button>
+    </div>
 {{ form_end(form) }}
 
 <script>
 $(document).ready(function(){
-    $('input.strong_points').on('change', function(evt) {
-        const checkedNbr = parseInt($('#house_strong_points').attr('data-checked-nbr'));
-        if($(this).is(':checked') === false){
-                $('#house_strong_points').attr('data-checked-nbr',checkedNbr - 1);
-            }
-        if(checkedNbr < 5){
-            if($(this).is(':checked') === true){
-                $('#house_strong_points').attr('data-checked-nbr',checkedNbr + 1);
-            }
+    $('input.strong_points').on('change', function(){
+        const checkedNbr= $('input.strong_points[type="checkbox"]:checked').length;
+        if(checkedNbr>5){
+            this.checked=false;
         }
-        else{
-            this.checked = false;
-        }
-    });
+    })
 });
 
 </script>

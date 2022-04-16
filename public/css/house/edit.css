@@ -1,0 +1,61 @@
+body{
+    background:rgba(242, 239, 186, 0.9);
+}
+#manage-houses{
+background-color:rgba(255, 255, 255, 0.9);
+}
+.home-pro{
+    background:rgba(36, 36, 36, 1)
+}
+.compte{
+    cursor: pointer;
+    background-color:rgba(255, 255, 255, 0.6);
+    border-radius: 10px 10px 0px 0px;
+}
+.compte.active{
+    background-color: rgba(255, 255, 255, 0.9);
+}
+@media only screen and (max-width: 768px) { 
+    .house-dispo{
+        display:none;
+    } 
+    .house-dispo-m{
+        display:block !important;
+    }
+    #manage-houses{
+        margin-bottom:0 !important;
+    }
+}
+.house-dispo-m{
+    display:none;
+}
+#house_wc_type, #house_shower_room_type{
+    position:relative;
+    top:38px;
+    margin:0;
+}
+.to_hide_new_house{
+    display:none;
+}
+.btn-save{
+    background:rgba(36, 36, 36, 0.9);
+}
+
+.btn-edit-dispo {
+    margin-top:2rem;
+    background:rgba(242, 183, 5, 1)
+}
+.strong_points_container{
+    background:rgba(255, 255, 255, 1);
+}
+ .close-cross{
+    cursor:pointer;
+} 
+
+.close-cross{
+    position: relative;
+    width: 20px;
+    margin: 0 !important;
+    top: 0px;
+    left: 0px;
+}

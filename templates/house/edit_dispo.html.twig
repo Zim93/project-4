@@ -1,16 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit House Disponibility{% endblock %}
+{% block title %}Gérer les disponibilité{% endblock %}
 
 {% block body %}
-    <h1>Edit Disponibility</h1>
+    <link rel="stylesheet" href="/css/house/edit-dispo.css">
+    <div id="edit-dispo-container">
+        <h1 class="text-center my-5">Planing de disponibilité</h1>
+        <div class="container px-5">
+            <input id="house-id" type="hidden" value="{{house.id}}" />
+            
+            <div>
+                <div class="row text-center">
+                    <span class="col-md-2 col-sm-4 py-2 me-1 compte" data-id="1"><a href="/user" class="text-decoration-none text-dark">Mon compte client </a></span>
+                    {% if is_granted('ROLE_HOST') %}
+                        <span class="col-md-2 col-sm-4 py-2 ms-1 compte active" data-id="2">Mon compte Pro </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="manage-houses" class="row mb-5 pb-5 pt-2">
+                <div class="d-flex mt-3">
+                    <span class="btn home-pro text-white go-pro">Accueil mon compte pro</span>
+                    <span class="btn"><a href="/user?id=1" class="text-dark">Mes logements</a></span>
+                    <span class="btn"><a class="text-dark" href="{{path('app_house_edit',{'id':house.id})}}">Gérer votre logement</a></span>
+                </div>
+            </div>
 
+            <div id="events-table">{{include("house/_events_table.html.twig",{'events': events,'to_disable': to_disable, 'success': success})}}</div>
 
-    <input id="house-id" type="hidden" value="{{house.id}}" />
-
-    <div id="events-table">{{include("house/_events_table.html.twig",{'events': events,'to_disable': to_disable, 'success': success})}}</div>
-
-    <a href="{{ path('app_house_index') }}">back to list</a>
-
-
+        </div>
+    </div>
 {% endblock %}

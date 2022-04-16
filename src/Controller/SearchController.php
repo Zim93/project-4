@@ -9,6 +9,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
@@ -39,25 +40,22 @@ class SearchController extends AbstractController
                 5
             );
            
-            if($request->get('source') == NULL){
-                return $this->render('house/_houses.html.twig', [
-                    'houses' => $houses_found,
-                    'page_ids' => $ids,
-                    'page' => $request->query->getInt('page', 1)
-                ]);
-            } 
+            
+            return $this->render('house/_houses.html.twig', [
+                'houses' => $houses_found,
+                'page_ids' => $ids,
+                'page' => $request->query->getInt('page', 1)
+            ]);
+          
         }
-
         else{
-            if($request->get('source') == NULL){
-                return $this->render('house/_houses.html.twig',[
-                    'page_ids' => '',
-                    'page' => $request->query->getInt('page', 1)
-                ]);
-            } 
-        }
-        
+            return $this->render('house/_houses.html.twig',[
+                'page_ids' => '',
+                'page' => $request->query->getInt('page', 1)
+            ]);
+        } 
     }
+   
 
     #[Route('/search-primary', name: 'app_house_search_primary', methods: ['POST','GET'])]
     public function searchPrimary(Request $request, HouseRepository $houseRepository): Response
@@ -71,5 +69,16 @@ class SearchController extends AbstractController
         $houses = $houseRepository->findAvailbleHouses($start_date,$end_date,$nbr_voyagers,$type);
 
         return $this->json($houses);
+    }
+
+
+    #[Route('/search-index', name: 'app_house_search_index', methods: ['POST','GET'])]
+    public function searchIndex(Request $request, HouseRepository $houseRepository, PaginatorInterface $paginator): RedirectResponse
+    {
+        $ids = $request->get('ids');
+
+        $arrayIds = explode(',',$ids);
+        
+        return $this->redirectToRoute('app_house_index', ['ids' => $arrayIds]);
     }
 }

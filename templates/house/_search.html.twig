@@ -1,32 +1,32 @@
 {{ form_start(search_form,{'action':'/house/search'}) }}
     <div class="row">
-        <div class="col-6 mb-3">
+        <div class="col-md-6 mb-md-3 mb-1">
             {{form_widget(search_form.address,{'attr': {'placeholder': 'Destination'}})}}
         </div>
 
-        <div class="col-2">
+        <div class="col-md-2 mb-1">
             {{form_widget(search_form.type)}}
         </div>
 
-        <div class="col-4">
-            <div class="dropdown w-100 me-3" id="myDropdown">
-                <a class="btn btn-white border dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
+        <div class="col-md-4 mb-1">
+           <div class="dropdown w-100 me-3" id="myDropdown">
+                <a class="btn btn-white border dropdown-toggle w-100 bg-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
                     Nombre de voyageurs
                 </a>
-                <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink" >
+                <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center w-100" aria-labelledby="dropdownMenuLink" >
                     <p>Adulte(s)à(12 et +)</p>
-                    <span class="less btn btn-danger" data-id="1">-</span>
-                    <span id="adults">1</span>
-                    <span class="more btn btn-success" data-id="1">+</span>
+                    <img class="less img-fluid" data-id="1" src="/font/minus.svg" width="25px" height="25px">
+                    <span id="adults" class="px-3">1</span>
+                    <img class="more img-fluid" data-id="1" src="/font/plus.svg" width="25px" height="25px">
                     <p>Enfants (- de 12)</p>
-                    <span class="less btn btn-danger" data-id="2">-</span>
-                    <span id="kids">0</span>
-                    <span class="more btn btn-success" data-id="2">+</span>
+                    <img class="less img-fluid" data-id="2" src="/font/minus.svg" width="25px" height="25px">
+                    <span id="kids" class="px-3">0</span>
+                    <img class="more img-fluid" data-id="2" src="/font/plus.svg" width="25px" height="25px">
                 </div>
             </div>
         </div>
 
-        <div id="date-picker-search" class="row col-6 pe-0">
+        <div id="date-picker-search" class="row col-md-6 mb-1 pe-0">
             <div class="col-6">
                 <input id="reservation_start_date" name="start_date" autoComplete="off" class="form-control" placeholder="Arrivée" />
             </div>
@@ -40,11 +40,11 @@
         </div>
 
         
-        <div class="col-2 ms-4">
+        <div class="col-md-2 mb-1 ms-4">
             <input type="hidden" id="search_lat" name="search_lat"/>
             <input type="hidden" id="search_lng" name="search_lng"/>
         </div>
-        <div class="col-4">
+        <div class="col-md-4">
             <button  class="btn search-btn w-100">{{ button_label|default('Rechercher un atypik home') }}</button>
         </div>
 

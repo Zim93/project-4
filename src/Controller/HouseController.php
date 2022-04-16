@@ -22,6 +22,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -31,15 +32,32 @@ class HouseController extends AbstractController
     #[Route('/', name: 'app_house_index', methods: ['GET'])]
     public function index(Request $request,HouseRepository $houseRepository, PaginatorInterface $paginator): Response
     {
-        $houses = $paginator->paginate(
-            $houseRepository->findAll(), 
-            $request->query->getInt('page', 1), 
-            5 
-        );
-
+        $redirectIds = $request->get('ids');
         $ids = [];
-        
-        $housesIds = $houseRepository->findAll();
+
+        if($redirectIds != null){
+
+            $housesIds = [];
+            forEach($redirectIds as $id){
+                $housesIds[] = $houseRepository->find($id);
+            }
+
+            $houses = $paginator->paginate(
+                $housesIds, 
+                $request->query->getInt('page', 1),
+                5
+            );
+        }
+        else{
+            $houses = $paginator->paginate(
+                $houseRepository->findAll(), 
+                $request->query->getInt('page', 1), 
+                5 
+            );
+    
+            $housesIds = $houseRepository->findAll();
+        }
+
         foreach($housesIds as $house){
             array_push($ids,$house->getId());
         }
@@ -136,8 +154,6 @@ class HouseController extends AbstractController
             ]);
         }
     }
-
-    
 
     //Création d'un nouveau habitat
     #[Route('/new', name: 'app_house_new', methods: ['GET', 'POST'])]

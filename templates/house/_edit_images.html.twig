@@ -1,24 +1,10 @@
 <div>
     <div class="d-flex row">
         {% for image in house.attachments %}
-            <div class="col-3 d-flex justify-content-center image-upload" data-id="{{image.id}}">
+            <div class="col-md-3 col-6 mb-3 d-flex justify-content-center image-upload" data-id="{{image.id}}">
                 <img data-id="{{image.id}}" src="/images/houses/{{image.url}}" height="auto" width="200px" />
-                <span data-id="{{image.id}}" class="close-cross text-center">X</span>
+                <span data-id="{{image.id}}" class="close-cross text-center"><img src="/font/xmark.svg" height="15px" width="15px"></span>
             </div>
         {% endfor %}
     </div>
 </div>
-
-<style>
-    .close-cross{
-        cursor:pointer;
-    } 
-    
-    .close-cross{
-        position: relative;
-        width: 20px;
-        margin: 0 !important;
-        top: 0px;
-        left: 0px;
-    }
-</style>

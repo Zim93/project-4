@@ -4,225 +4,309 @@
 
 {% block body %}
 <style>
+    @media screen and (max-width: 768px) {
+        .hide-mobile{
+            display:none;
+        }
+        #client div, #pro div{
+            height:130px;
+            margin: 0 !important;
+        }
+        #client{
+            padding-top:1.5rem
+        }
+    }
     .compte, .pointer{
-          cursor: pointer;
+        cursor: pointer;
+    }
+    .pointer{
+        border-radius: 10px 10px 10px 10px;
+        background: rgba(242, 183, 5, 1);
+        color:white;
     }
     .compte.active{
-        background-color: green;
+        background-color: rgba(255, 255, 255, 0.9);
     }
     .compte{
-        background-color:yellow;
+        background-color:rgba(255, 255, 255, 0.6);
+        border-radius: 10px 10px 0px 0px;
     }
     #pro, #client, #reservation, #user-info, #favorite, #manage-houses {
-        background-color:aqua;
+        background-color:rgba(255, 255, 255, 0.9);
     }   
     #reservation, #user-info, #favorite, #manage-houses, #pro{
         display:none;
     }
-    body{
+    .user-page{
         background-image:url("/images/backgrounds/contemporaine-salon.jpg");
+        height:1000px;
         background-size:cover;
+        background-position:center;
+    }
+    .add-house{
+        background:rgba(242, 183, 5, 1);
+    }
+    .hide{
+        height:650px;
+        overflow: auto;
+        width:100%;
+        border-radius:0px 10px 10px 10px;
+        padding-bottom: 3rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+    .user-btn{
+        background:rgba(36, 36, 36, 1)
+    }
+    .houses-container{
+        background:rgba(242, 242, 242, 1)
+    }
+    .user_new_reservation{
+        background:rgba(255, 255, 255, 0.9);
+        color:rgba(242, 183, 5, 1);
+    }
+    .home-pro{
+        background:rgba(36, 36, 36, 1)
     }
 </style>
+<main class="user-page">
+    <div class="container">
+        <h1 class="text-center text-white">Bienvenu sur votre compte client</h1>
+        
+        <div>
+            <div class="row text-center">
+                    <span class="col-md-3 col-lg-2 py-2 me-1 compte" data-id="1">Mon compte client </span>
+                    {% if is_granted('ROLE_HOST') %}
+                    <span class="col-md-3 col-lg-2 py-2 ms-1 compte" data-id="2">Mon compte Pro </span>
+                    {% endif %}
+            </div>
 
-<main class="container d-flex flex-column justify-content-center">
-    
-    <div class="row ">
-            <span class="col-2 me-1 compte" data-id="1">Mon compte client </span>
-            {% if is_granted('ROLE_HOST') %}
-            <span class="col-2 ms-1 compte" data-id="2">Mon compte Pro </span>
-            {% endif %}
-    </div>
-    <div>
-        <div id="client" class="col-10 row hide">
-            
-            <div class="col-6 pointer" id="my-reservation">
-                <h3>Mes voyages</h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+            <div id="client" class="col-10 row hide">
+                
+                <div class="col-6 d-flex align-items-center">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column" id="my-reservation">
+                        <h3>Mes voyages</h3>
+                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    </div>
+                </div>
+                <div class="col-6 my-user-info d-flex align-items-center">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                        <h3>Mes informations personnelles</h3>
+                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column" id="">
+                        <h3>Commentaires</h3>
+                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                        <a href="{{ path('app_user_change_password')}}" class="text-decoration-none text-white">
+                            <h3>Sécurité et mot de passe</h3>
+                            <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column" id="my-favorite">
+                        <h3>Mes favoris</h3>
+                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                        <h3>informations de paiement</h3>
+                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-6 pointer my-user-info">
-                <h3>Mes informations personnelles</h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-            </div>
-            <div class="col-6 pointer">
-                <h3>Commentaires</h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-            </div>
-            <div class="col-6 pointer">
-                <a href="{{ path('app_user_change_password')}}" class="text-decoration-none text-dark">
-                    <h3>Sécurité et mot de passe</h3>
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                </a>
-            </div>
-            <div class="col-6 pointer" id="my-favorite">
-                <h3>Mes favoris</h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-            </div>
-            <div class="col-6 pointer">
-                <h3>informations de paiement</h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-            </div>
-        </div>
 
-        <div id="reservation" class="col-10 row hide">
-            {% if reservations is not empty %}
-                <div>Mes voyages</div>
-                <table class="table">
-                    <tbody>
-                        {% for reservation in reservations %}
-                            <tr>
-                                <th><a href="{{ path('app_house_show', {'id': reservation.house.id}) }}">{{reservation.house.name}}</a></th>
-                                <td>Date d'arrivée: {{ reservation.startDate ? reservation.startDate|date('d-m-Y') : '' }}</td>
-                                <td>Data de départ: {{ reservation.endDate ? reservation.endDate|date('d-m-Y') : '' }}</td>
-                                <td><a href="{{ path('app_reservation_show', {'id':reservation.id}) }}">Plus d'informations</a></td>
+            <div id="reservation" class="col-10 row hide">
+                {% if reservations is not empty %}
+                    <h3 class="mb-3">Mes voyages</h3>
+                    <table class="table text-center table-striped table-hover">
+                        <tbody>
+                            <tr class="table-dark">
+                                <th>Logement</th>
+                                <td>Date d'arrivée</td>
+                                <td>Data de départ</td>
+                                <td>Réservation</td>
                             </tr>
-                        {% endfor %}
+                            {% for reservation in reservations %}
+                                <tr >
+                                    <th><a class="text-dark" href="{{ path('app_house_show', {'id': reservation.house.id}) }}">{{reservation.house.name}}</a></th>
+                                    <td>{{ reservation.startDate ? reservation.startDate|date('d-m-Y') : '' }}</td>
+                                    <td>{{ reservation.endDate ? reservation.endDate|date('d-m-Y') : '' }}</td>
+                                    <td><a class="text-dark" href="{{ path('app_reservation_show', {'id':reservation.id}) }}">Plus d'informations</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                <p> Pas de réservations disponible</p>
+                {% endif %}
+            </div>
+
+            <div id="user-info" class="col-10 row hide">
+                <table class="table text-center table-striped table-hover mb-3">
+                    <tbody>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ user.firstname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prénom</th>
+                            <td>{{ user.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <th>E-mail</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Avatar</th>
+                            {% if user.avatar is not null %}
+                                <td><img src="\images\users\{{user.avatar}}" height="200px" width="auto"/></td>
+                            {% else %} 
+                                <td> <img src="\images\users\default.png" height="200px" width="auto"/> </td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <th >Description</th>
+                            <td>{{ user.description }}</td>
+                        </tr>
                     </tbody>
                 </table>
-            {% else %}
-            <p> Pas de réservations disponible</p>
-            {% endif %}
-        </div>
-
-        <div id="user-info" class="col-10 row hide">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Nom</th>
-                        <td>{{ user.firstname }}</td>
-                    </tr>
-                    <tr>
-                        <th>Prénom</th>
-                        <td>{{ user.lastname }}</td>
-                    </tr>
-                    <tr>
-                        <th>E-mail</th>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                    <tr>
-                        <th>Avatar</th>
-                        {% if user.avatar is not null %}
-                        <td><img src="\images\users\{{user.avatar}}" height="200px" width="auto"/></td>
-                        {% else %} 
-                        <td> <img src="\images\users\default.png" height="200px" width="auto"/> </td>
-                        {% endif %}
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td>{{ user.description }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="text-center">
-                <a class="btn btn-primary text-decoration-none text-white my-2" href="{{ path('app_user_edit')}}">Modifier</a>
-                <a  class="btn btn-primary text-decoration-none text-white my-2" href="{{ path('app_user_change_password')}}">Modifier mot de passe</a>
-                
+                <div class="text-center">
+                    <a class="btn user-btn text-decoration-none text-white my-2" href="{{ path('app_user_edit')}}">Modifier</a>
+                    <a class="btn user-btn text-decoration-none text-white my-2" href="{{ path('app_user_change_password')}}">Modifier mot de passe</a>
+                    
+                </div>
             </div>
-        </div>
 
-        <div id="favorite" class="col-10 row hide">
-            <div>Mes favoris</div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mes favoris</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for favorite in favorites %}
-                    <tr>
-                        <td>{{ favorite.house.name }}</td>
-                        <th><a href="{{path('app_house_show',{'id': favorite.house.id})}}">Afficher<a></th>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="10">Aucun favori trouvé</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        {% if is_granted('ROLE_HOST') %}
-            <div>
-                <div id="pro" class="col-10 row hide">
-                    {% if user.confirmedHost ==1%}
-                        <div id="my-houses" class="col-6 pointer">
-                            <h3>Gérer mes logements</h3>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                        </div>
-                        <div class="col-6 pointer">
-                            <h3>Gerer les réservations</h3>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                        </div>
-                        <div class="col-6 pointer">
-                            <h3>Gestion des commentaires</h3>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                        </div>
-                        <div class="col-6 pointer my-user-info">
-                            <h3>Info personnelles et mot de passe</h3>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                        </div>
-                        <div class="col-6 pointer">
-                            <h3>Paiements clients</h3>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                        </div>
-                        <div class="col-6 pointer">
-                            <h3>Paiements clients</h3>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
-                        </div>
+            <div id="favorite" class="col-10 row hide">
+                <div>Mes favoris</div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mes favoris</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for favorite in favorites %}
+                        <tr>
+                            <td>{{ favorite.house.name }}</td>
+                            <th><a class="text-dark" href="{{path('app_house_show',{'id': favorite.house.id})}}">Afficher<a></th>
+                        </tr>
                     {% else %}
-                        <p>Votre compte n'a pas été confimé encore</p>
-                    {% endif %}
-                </div>
-
-                <div id="manage-houses" class="col-10 row hide">
-                    <div class="d-flex justify-content-between">
-                        <span class="btn btn-dark text-white go-pro">Accueil mon compte pro</span>
-                        <a href="{{path('app_house_new')}}" class="btn btn-warning text-white">Ajouter un logement</a>
-                    </div>
-                    <div>
-                        {% for house in houses %}
-                            <div class="row my-3">
-                                <div class="col-3">
-                                {% if house.attachments is not empty %}
-                                    {% for image in house.attachments |slice(0,1)  %}
-                                        <img src="/images/houses/{{image.url}}" height="112" width="auto" alt="{{house.name}}-img">
-                                    {% endfor %} 
-                                {% else %}
-                                    <img src="/images/houses/default.jpg" class="img-fluid" max-height="auto"/>
-                                {% endif %}
-                                </div>
-                                <div class="col-6">
-                                    <p>{{house.name}}<p>
-                                    {% set reservation_count = 0 %}
-                                    {% for notification in house.notifications %}
-                                        {% if notification.type == "reservation" and notification.opened == 0 %}
-                                            {% set reservation_count = reservation_count + 1  %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <a class="btn btn-light user_new_reservation" data-id="{{house.id}}">{{reservation_count}} nouvelle(s) reservation(s)</a>
-                                </div>
-                                <div class="col-3">
-                                    <a href="{{path('app_house_edit',{'id':house.id})}}" class="btn btn-white border">Gérer ce logement</a>
-                                </div>                            
-                            </div>
-                        {% endfor %}
-                    <div>
-                </div>
-
-                <div id="manage-comment" class="col-10 row hide">
-
-                </div>
+                        <tr>
+                            <td colspan="10">Aucun favori trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        {% endif %}
-        
-    </div>
+
+            {% if is_granted('ROLE_HOST') %}
+                <div>
+                    <div id="pro" class="col-10 row hide">
+                        {% if user.confirmedHost ==1%}
+                            <div id="my-houses" class="col-6 d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                                    <h3>Gérer mes logements</h3>
+                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                                    <h3>Gerer les réservations</h3>
+                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                                    <h3>Gestion des commentaires</h3>
+                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                </div>
+                            </div>
+                            <div class="col-6 my-user-info d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                                    <h3>Info personnelles et mot de passe</h3>
+                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                                    <h3>Paiements clients</h3>
+                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                                    <h3>Paiements clients</h3>
+                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p>Votre compte n'a pas été confimé encore</p>
+                        {% endif %}
+                    </div>
+
+                    <div id="manage-houses" class="col-10 row hide">
+                        <div class="d-flex mt-3">
+                            <span class="btn home-pro text-white go-pro">Accueil mon compte pro</span>
+                            <span class="btn">Mes logements</span>
+                        </div>
+                        <div class="d-flex">
+                            <a href="{{path('app_house_new')}}" class="btn ms-auto text-white add-house mb-3">Ajouter un logement</a>
+                        </div>
+                        <div>
+                            {% for house in houses %}
+                                <div class="row my-4 houses-container">
+                                    <div class="col-2 d-flex justify-content-center">
+                                    {% if house.attachments is not empty %}
+                                        {% for image in house.attachments |slice(0,1)  %}
+                                            <img src="/images/houses/{{image.url}}" height="112" width="auto" alt="{{house.name}}-img">
+                                        {% endfor %} 
+                                    {% else %}
+                                        <img src="/images/houses/default.jpg" height="112" width="auto"/>
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-6 d-flex flex-column">
+                                        <p>{{house.name}}</p>
+                                        {% set reservation_count = 0 %}
+                                        {% for notification in house.notifications %}
+                                            {% if notification.type == "reservation" and notification.opened == 0 %}
+                                                {% set reservation_count = reservation_count + 1  %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="btn btn-ligdarht mt-auto user_new_reservation w-50 mb-3" data-id="{{house.id}}">{{reservation_count}} nouvelle(s) reservation(s)</span>
+                                    </div>
+                                    <div class="col-4 d-flex">
+                                        <a href="{{path('app_house_edit',{'id':house.id})}}" class="btn btn-white border mt-auto ms-auto">Gérer ce logement</a>
+                                    </div>                            
+                                </div>
+                            {% endfor %}
+                        <div>
+                    </div>
+
+                    <div id="manage-comment" class="col-10 row hide">
+
+                    </div>
+                </div>
+            {% endif %}
+            
+        </div>
+    <div>
 </main>
 
 <script>
     $(document).ready(function(){
+        const url= new URL(window.location.href);
+        urlparams = url.searchParams.get("id");
+        
         $('.compte').click(function(){
             const id = $(this).data('id');
             if(id == 1 ){
@@ -261,7 +345,10 @@
             $('.hide').attr('style','display:none;');
             $('#manage-houses').attr('style','display:block;');
         })
-
+        if(urlparams=='1'){
+            $('.compte[data-id=2]').trigger( "click" );
+            $('#my-houses').trigger( "click" );
+        }
         $('.go-pro').click(function(){
             $('.compte[data-id=2]').trigger( "click" )
         })

@@ -1,8 +1,11 @@
 <form action="{{ path('app_house_edit_dispo', {'id': house.id}) }}" method="post">
 
-    <div class="flex row align-items-center">
-        <div class="range-picker-container col-5"></div>
-        <a class="btn-success btn add-range col-3">Ajouter un créneau</a>
+    <div class="flex row">
+        <div class="range-picker-container col-md-12 col-lg-8 bg-white d-flex justify-content-center "></div>
+        <div class="col-md-4">
+            <a class="btn add-range text-white px-5 py-2">Ajouter un créneau</a>
+        </div>
+        
     </div>
 
     <div class="date-picker d-flex flex-row justify-content-between" style="display:none;" >
@@ -34,14 +37,17 @@
             {
                 container:'.range-picker-container',
                 alwaysOpen:true,
+                separator: ' au ',
                 startDate: new Date(),
+                language: 'fr',
+                startOfWeek :"monday",
+                stickyMonths :true,
                 beforeShowDay: function(t)
                 {
                     const date = moment(t.toJSON()).format('YYYY-MM-DD');
                     var valid = !(dateTable.includes(date));  //disable dates
                     var _class = '';
-                    var _tooltip = valid ? '' : 'Date indisponible';
-                    return [valid,_class,_tooltip];
+                    return [valid,_class];
                 },
                 setValue: function(s,s1,s2)
                 {
@@ -51,7 +57,15 @@
             }
         );
 
-        
+        $('span.next').html('<img src="/font/angle-right-solid.svg">');
+        $('span.prev').html('<img src="/font/angle-left-solid.svg">');
+
+        if (window.matchMedia('(max-width: 768px)').matches)
+        {
+            $('span.next').html('>');
+            $('span.prev').html('<');
+        }
+
         $('.add-range').click(function(e){
             e.preventDefault();
 

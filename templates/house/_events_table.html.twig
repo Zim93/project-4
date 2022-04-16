@@ -7,32 +7,37 @@
 {% endif %}
 
 <input id="disabled-date" type="hidden" data-dates="{{to_disable | json_encode}}" />
+
 {{include("house/_calendar.html.twig")}}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Début</th>
-            <th>Fin</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if events is not empty %}
-            {% for event in events %}
-                <tr>
-                    <td>{{ event.startAt  | format_datetime() }}</td>
-                    <td>{{ event.endAt | format_datetime()  }}</td>
-                    <td><a class="btn btn-danger remove-range" data-id="{{event.id}}">X</a></td>
-                </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td><p>Aucune disponibilité trouvée</p><td>
-            </tr>
-        {% endif %}
-    </tbody>
-</table>
+
+    {% if events is not empty %}
+        {% for event in events %}
+            <div class="row mb-3 bg-white">
+                <div class="col-4 py-2">
+                    Du  {{ event.startAt  | format_date( locale='fr') }}
+                    au: {{ event.endAt | format_date( locale='fr')  }}
+                </div>
+                <div class="col-4 py-2">
+                    {% set difference = date(event.endAt).diff(date(event.startAt)) %}
+                    {% set leftDays = difference.days %}
+                    {% if leftDays == 1 %}
+                        1 nuit
+                    {% else %}
+                        {{ leftDays }} nuités disponible
+                    {% endif %}
+                </div>
+                <div class="col-4 py-2">
+                    Annler la disponibilité  <a class="ms-2 btn remove-range border" data-id="{{event.id}}"><img src="/font/xmark.svg" height="15" width="15"></a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="bg-white my-5">
+            <p class="py-4 px-3">Aucune disponibilité trouvée</p>
+        </div>
+    {% endif %}
+
 
 <script>
     $(document).ready(function(){

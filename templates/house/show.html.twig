@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
-
+    <link rel="stylesheet" href="/css/house/show.css">
     
         
     <div class="backdrop"></div>
@@ -18,25 +18,25 @@
         <div class="container">
             {{ form_start(form_reservation, {'action':'/reservation/new'}) }}
                 <div class="row d-flex align-items-center justify-content-center">
-                    <div class="col-2">
-                        <div class="dropdown" id="myDropdown">
-                            <a class="btn btn-white border dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
+                    <div class="col-md-2 mb-1">
+                        <div class="dropdown w-100 me-3" id="myDropdown">
+                            <a class="btn btn-white border dropdown-toggle bg-white w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
                                 Nombre de voyageurs
                             </a>
-                            <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink" >
+                            <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center w-100" aria-labelledby="dropdownMenuLink" >
                                 <p>Adulte(s)à(12 et +)</p>
-                                <span class="less btn btn-danger" data-id="1">-</span>
-                                <span id="adults">1</span>
-                                <span class="more btn btn-success" data-id="1">+</span>
+                                <img class="less img-fluid" data-id="1" src="/font/minus.svg" width="25px" height="25px">
+                                <span id="adults" class="px-3">1</span>
+                                <img class="more img-fluid" data-id="1" src="/font/plus.svg" width="25px" height="25px">
                                 <p>Enfants (- de 12)</p>
-                                <span class="less btn btn-danger" data-id="2">-</span>
-                                <span id="kids">0</span>
-                                <span class="more btn btn-success" data-id="2">+</span>
+                                <img class="less img-fluid" data-id="2" src="/font/minus.svg" width="25px" height="25px">
+                                <span id="kids" class="px-3">0</span>
+                                <img class="more img-fluid" data-id="2" src="/font/plus.svg" width="25px" height="25px">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-4" >
+                    <div class="col-md-4 mb-1" >
                         <div style="display:none;">
                             {{form_row(form_reservation.nbr_voyagers)}}
                         </div>
@@ -47,7 +47,7 @@
                         <div class="date-picker-container"  style="position:absolute; background-color:white; z-index: 3;"></div>
                         <input type="hidden" name="house" value="{{house.id}}"/>
                     </div>
-                    <button class="btn btn-reservation col-2">{{ button_label|default('Je reserve') }}</button>
+                    <button class="btn btn-reservation col-8 col-md-2">{{ button_label|default('Je reserve') }}</button>
                 </div>
             {{ form_end(form_reservation)}}
         </div>
@@ -83,20 +83,27 @@
             </div>
         </div>
         <div class="row" id="house-images">
-            <div class="col-9 d-flex justify-content-center">
+            <div class="col-md-9 mb-1 d-flex justify-content-center">
                 {% if house.attachments[0] is defined %}
-                    <img height="595px" width="auto" src="/images/houses/{{house.attachments[0].url}}">
+                    <img height="595px" width="auto" class="img-fluid" src="/images/houses/{{house.attachments[0].url}}">
                 {% else %}
                     <img height="595px" width="auto" src="/images/houses/default.jpg">
                 {% endif %}
             </div>
-            <div class="col-3">
+            <div class="col-md-3 more-images">
                 {% for image in house.attachments|slice(1,3) %}
-                    <img class="open-carousel" height="185px" width="auto" src="/images/houses/{{image.url}}">
+                    <img class="open-carousel" class="img-fluid" height="185px" width="auto" src="/images/houses/{{image.url}}">
                 {% endfor %}
             </div>
         </div>
     </div>
+
+    <div class="mobile-carousel container py-5 my-5">
+        {% for image in house.attachments|slice(1,3) %}
+            <img class="open-carousel" height="185px" width="auto" src="/images/houses/{{image.url}}">
+        {% endfor %}
+    </div>
+
     <h1 class="my-5 container">Le logement</h1>
     <div id="house-description-container" class="py-3">
         <div class="container">
@@ -234,32 +241,32 @@
     <div id="proxi-houses-container" class="py-5">
         <div class="container py-5">
             <div id="proxi-houses" class="d-flex mx-auto justify-content-center my-5 px-3 col-8">
-                <h1> Les autres hébergements à proximité </h1>
+                <h1 class="text-center"> Les autres hébergements à proximité </h1>
             </div>
             
             {% for house in proximity_houses %}
-                <div class="row house-card mb-3 bg-white" data-id="{{house.id}}">
-                    <div class="col-3">
+                <div class="row house-card my-3 p-3 bg-white" data-id="{{house.id}}">
+                    <div class="col-md-3" style="height : 248px">
                         {% if house.attachments is not empty %}
-                            <div class="images-carousel d-flex">
+                            <div class="images-carousel">
                                 {% for image in house.attachments %}
-                                        <div>
-                                            <img src="/images/houses/{{image.url}}" class="img-fluid"  max-height="248px"/>
-                                        </div>
+                                        <img src="/images/houses/{{image.url}}" height="248px" class="carousel-cell" />
                                 {% endfor %}
                             </div>
                         {% else %}
-                            <img src="/images/houses/default.jpg" class="img-fluid" max-height="250px"/>
+                            <div class="d-flex">
+                                <img src="/images/houses/default.jpg" height="248px" class="mx-auto"/>
+                            </div>
                         {% endif %}
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <h3>{{house.name}}</h3>
                         <small>{{house.cityName}}</small>
                         <p>{{house.description}}</p>
                     </div>
-                    <div class="col-3 d-flex flex-column justify-content-center">
-                        <p class="rating-comment text-center" data-note="{{ house.note }}" data-id="{{house.id}} ">Commentaire</p>
-                         <div class="mt-auto d-flex flex-column mx-3">
+                    <div class="col-md-3 d-flex flex-column justify-content-center">
+                        <p class="rating-comment text-center" data-note="{{ house.note }}" data-id={{house.id}}>Commentaire</p>
+                        <div class="mt-auto d-flex flex-column mx-3">
                             <small class="ms-auto">à partir de </small>
                             <p class="ms-auto">{{house.price}} € la nuit</p>
                             <a class="btn rent-btn" href="{{ path('app_house_show', {'id': house.id}) }}">Découvrir</a>
@@ -274,7 +281,7 @@
     <div id="to-do">
         <div class="container py-5">
             <div class="d-flex mx-auto py-2 justify-content-center col-8 border border-4 mb-5 to-discover">
-                <h1> A découvrir dans la région </h1>
+                <h1 class="text-center"> A découvrir dans la région </h1>
             </div>
 
             <div class="multiple-items container mb-5" data-slick='{"slidesToShow": 4, "infinite": false}'>
@@ -291,116 +298,6 @@
         </div>
     </div>
     
-    <style>
-
-    .to-discover{
-        border-color:#707070 !important;
-    }
-    #to-do{
-        height:500px
-    }
-    .house-card{
-        cursor:pointer
-    }
-    
-    .dropdown-toggle{
-        background:white
-    }
-    .dropdown-toggle,#reservation_start_date,#reservation_end_date,.btn-reservation, .rent-btn{
-        padding:12px;
-    }
-    #proxi-houses-container{
-        background:url('/images/backgrounds/tipi.jpg');
-        height:1000px;
-        background-position:center
-    }
-    #reservation-form{
-        background:url('/images/backgrounds/heart.jpg');
-        height:162px;
-        background-position:center
-    }
-    #map {
-        height: 493px;
-    }
-    .user-avatar, #discover-img{
-        width:150px;
-        height: 150px;
-
-        background-size: cover;
-
-        background-position: top center;
-
-        border-radius: 50%;
-    }
-    .discover-house, .btn-reservation{
-        background-color:#F2B705;
-    }
-    #house-description-container, #info-container, #comment-container, #proxi-houses{
-        background-color:#F2EFBA;
-    }
-    #comment-container{
-        height:550px
-    }
-    #house-description-container,#info-container{
-        height:400px
-    }
-    .carousel-item, .carousel-img-container{
-        width:80vw !important; 
-        height:70vh !important;
-    }
-    .backdrop{
-        width:100vw; 
-        height:100vh; 
-        position:fixed; 
-        display:none; 
-        backdrop-filter: 
-        blur(10px); 
-        left:-20px;
-        overflow-y: none;
-        z-index: 99;
-    }
-    #carousel-container{
-        display:none; 
-        position:absolute; 
-        top:50px;
-        backdrop-filter: blur(10px);
-        z-index: 999;
-    }
-    .carousel-imgs{
-        display: block;
-        margin:auto; 
-    }  
-    .nextArrowBtn{
-        position: absolute;
-        z-index: 1000;
-        top: 33%;
-        right: -35px;
-        color: #BFAFB2;
-    }
-    .prevArrowBtn{
-        position: absolute;
-        z-index: 1000;
-        top: 33%;
-        left: -35px;
-        color: #BFAFB2;
-    }
-    .nextArrowBtnImg{
-        position: absolute;
-        z-index: 1000;
-        top: 33%;
-        right: -10px;
-        color: #BFAFB2;
-    }
-    .prevArrowBtnImg{
-        position: absolute;
-        z-index: 1000;
-        top: 33%;
-        left: -10px;
-        color: #BFAFB2;
-    }
-    </style>
-
-
     <script>
         $(document).ready(function(){
             $('.multiple-items').slick({
@@ -408,12 +305,49 @@
                 slidesToShow: 4,
                 slidesToScroll: 1,
                 nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
-                prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >"
+                prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                responsive:[
+                {
+                breakpoint: 900,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                        nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                        prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                }
+                },
+                {
+                breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                        prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                    }
+                }]
             });
 
             $('.images-carousel').slick({
                 nextArrow: "<img class='nextArrowBtnImg' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
-                prevArrow: "<img class='prevArrowBtnImg' width='25px' height='25px' src='/font/angle-left-solid.svg' >"
+                prevArrow: "<img class='prevArrowBtnImg' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+            });
+
+            $('.mobile-carousel').slick({
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                responsive:[
+                {
+                breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                        prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                    }
+                }]
             });
 
             $('.multi-item-carousel').on('slide.bs.carousel', function (e) {
@@ -437,10 +371,9 @@
             
             
             
-            $(".rating-comment").each(function(e) {
-                let score = parseFloat($($(this)).data('note'));
-                let id=$(this).data('id');
-                $(".rating-comment[data-id='"+id+"']").raty({
+            $(".rating-comment").each(function(){
+                let score = parseFloat($(this).data('note'));
+                $(this).raty({
                     starOff:'/raty-master/lib/images/star-off.png',
                     starOn:'/raty-master/lib/images/star-on.png',
                     starHalf:'/raty-master/lib/images/star-half.png',
@@ -448,7 +381,7 @@
                     readOnly: true, 
                     score: score
                 });
-            })
+            });
             
          
             

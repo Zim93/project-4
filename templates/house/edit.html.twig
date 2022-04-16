@@ -1,15 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit House{% endblock %}
+{% block title %}Gérer votre logement{% endblock %}
 
 {% block body %}
-    <h1>Edit House</h1>
-
-    {{ include('house/_form.html.twig', {'button_label': 'Update'}) }}
-    <div id="images">
-        {{ include('house/_edit_images.html.twig')}}
+    <link rel="stylesheet" href="/css/house/edit.css">
+    <h1 class="text-center my-5">Gérer votre hébergement</h1>
+    
+    <div class="container mb-3 p-3">
+    <div>
+        <div class="row text-center">
+                <span class="col-md-2 col-sm-4 py-2 me-1 compte" data-id="1"><a href="/user" class="text-decoration-none text-dark">Mon compte client </a></span>
+                {% if is_granted('ROLE_HOST') %}
+                <span class="col-md-2 col-sm-4 py-2 ms-1 compte active" data-id="2">Mon compte Pro </span>
+                {% endif %}
+        </div>
     </div>
-    <a href="{{ path('app_house_index') }}">back to list</a>
-
-    {{ include('house/_delete_form.html.twig') }}
+    <div id="manage-houses" class="row mb-5 pb-5 pt-2">
+        <div class="d-flex mt-3">
+            <span class="btn home-pro text-white go-pro">Accueil mon compte pro</span>
+            <span class="btn"><a href="/user?id=1" class="text-dark">Mes logements</a></span>
+        </div>
+    </div>
+        {{ include('house/_form.html.twig', {'button_label': 'Valider les modification'}) }}
+        
+        <div class="mt-4">
+            {{ include('house/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

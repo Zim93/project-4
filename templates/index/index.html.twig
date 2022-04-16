@@ -1,29 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Atypik Home{% endblock %}
 
 {% block body %}
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
-
+    <link rel="stylesheet" type="text/css" href="/css/house/index.css"/>
     <div id="index-search-form">
-        <div class="container position-relative top-50" >
+        <div class="container index-search-container">  
+            <h1 class="text-center text-white mb-5">Découvrez les meilleurs hébergements insolites</h1>
             {{ form_start(search_form,{'action':'/house/search'}) }}
                 <div class="row">
-                    <div class="col-4 mb-3">
+                    <div class="col-md-4 mb-3">
                         {{form_widget(search_form.address,{'attr': {'placeholder': 'Destination'}})}}
                     </div>
 
-                    <div class="col-2">
+                    <div class="col-md-2 mb-3">
                         {{form_widget(search_form.type)}}
                     </div>
 
-                    <div id="date-picker-search" class="row col-4 ">
+                    <div id="date-picker-search" class="row col-md-4 mb-3">
                         <div class="col-6">
                             <input id="reservation_start_date" name="start_date" autoComplete="off" class="form-control" placeholder="Arrivée" />
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <input id="reservation_end_date" name="end_date" autoComplete="off" class="form-control w-100" placeholder="Départ"/>
                         </div>
                         <div class="date-picker-container ps-0" style="position:absolute;  z-index: 3;"></div>
@@ -32,9 +33,9 @@
                         </div>         
                     </div>
 
-                    <div class="col-2">
+                    <div class="col-md-2 mb-3">
                         <div class="dropdown w-100 me-3" id="myDropdown">
-                            <a class="btn btn-white border dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
+                            <a class="btn btn-white border dropdown-toggle bg-white w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
                                 Nombre de voyageurs
                             </a>
                             <div id="nbr-voygeurs-ad-kid" class="dropdown-menu text-center w-100" aria-labelledby="dropdownMenuLink" >
@@ -66,7 +67,7 @@
     <div id="proxi-houses-container">
         <div class="container py-3" >
             <div id="proxi-houses" class="d-flex mx-auto justify-content-center col-8 my-5 py-3">
-                <h1> Les autres hébergements à proximité </h1>
+                <h1 class="text-center"> Les autres hébergements à proximité </h1>
             </div>
             <div class="row my-5">
                 <div class="col-4">
@@ -106,7 +107,7 @@
                     </div>
                     <div class="sea d-flex">
                         <div class="dest-text mt-auto w-100 py-3 d-flex align-items-center">
-                            <p  class="mb-0 mx-auto">Séjour au bord de la Méditeranée</p>
+                            <p class="mb-0 texty">Séjour au bord de la Méditeranée</p>
                         </div>
                     </div>
                 </div>
@@ -158,132 +159,12 @@
         </div>
     </div>
     <div>
-        <img src="/vdo/banniere.gif" width="100%" height="auto">
+        <img id="banniere" src="/vdo/banniere.gif" width="100%" height="auto">
+        <img id="banniere_mobile" src="/vdo/bannierem.gif" width="100%" height="auto">
     </div>
 
     <style>
-        #myDropdown{
-            background-color: white;
-            border-radius: 0.25rem;
-        }
-        #atypik-presentation{
-            background:url('/images/backgrounds/heart.jpg');
-            height:815px;
-            background-position: center;
-        }
-        #index-search-form{
-            background:url('/images/backgrounds/indexheader.jpg');
-            height:815px;
-            background-position: center;
-        }
-        #proxi-houses-container{
-            background:url('/images/backgrounds/wood.jpg');
-            height:1110px;
-            background-position: center;
-        }
-        #atypik-disc{
-            background-color: rgba(255,255,255,0.9);
-            padding-left: 7rem;
-            padding-right: 7rem 
-        }
-
-        .user-avatar{
-            width:150px;
-            height: 150px;
-
-            background-size: cover;
-
-            background-position: top center;
-
-            border-radius: 50%;
-        }
-        #comment-container{
-            height:600px;
-        }
-        #comment-container, #atypik-home{
-            background-color:rgba(242,239,186,0.9);
-        }
-        #slogan, #discover-houses{
-            background-color:rgba(36,36,36,0.9)
-        }
-        #proxi-houses{
-            background-color:#F2EFBA;
-        }
-        .village{
-            background:url('/images/places/village.jpg');
-            background-position:center;
-            background-size:cover;
-            height:500px;
-        }
-        .pont{
-            background:url('/images/places/pont.jpg');
-            background-position:center;
-            background-size:cover;
-            height:170px;
-        }
-        .europe{
-            background:url('/images/places/europe.jpg');
-            background-position:center;
-            background-size:cover;
-            height:300px;
-        }
-        .flowers{
-            background:url('/images/places/flowers.jpg');
-            background-position:center;
-            background-size:cover;
-            height:176px;
-        }
-        .windmills{
-            background:url('/images/places/windmills.jpg');
-            background-position:center;
-            background-size:cover;
-            height:170px;
-        }
-        .annecy{
-            background:url('/images/places/annecy.jpg');
-            background-position:center;
-            background-size:cover;
-            height:170px;
-        }
-        .sea{
-            background:url('/images/places/sea.jpg');
-            background-position:center;
-            background-size:cover;
-            height:500px;
-        }
-        .dest-text{
-            transition: height 0.3s;
-            background-color:rgba(255,255,255,0.6);
-        }
-        .dest-text:hover {
-            height: 80px;
-        }
-        #dropdownMenuLink{
-            overflow:hidden
-        }
-        .default-top, .normal-top >*{
-            color: rgba(255, 255, 0, 0) !important;
-        }
-        .search-btn{
-            background-color:#F2B705;
-        }
-        .nextArrowBtn{
-        position: absolute;
-        z-index: 1000;
-        top: 33%;
-        right: -35px;
-        color: #BFAFB2;
-        }
-        .prevArrowBtn{
-            position: absolute;
-            z-index: 1000;
-            top: 33%;
-            left: -35px;
-            color: #BFAFB2;
-        }
-        #search_house_address, #search_house_type, #reservation_start_date, #reservation_end_date, .dropdown-toggle{
-            padding:12px    
-        }
+        
     </style>
     <script>
         $(document).ready(function(){
@@ -306,7 +187,17 @@
                 slidesToShow: 3,
                 slidesToScroll: 1,
                 nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
-                prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >"
+                prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                responsive:[
+                {
+                breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        nextArrow: "<img class='nextArrowBtn' width='25px' height='25px'  src='/font/angle-right-solid.svg' >",
+                        prevArrow: "<img class='prevArrowBtn' width='25px' height='25px' src='/font/angle-left-solid.svg' >",
+                    }
+                }]
             });
             
             $('.less').click(function (){
@@ -378,23 +269,9 @@
                             }
                         });
 
-                        const dataRender = {ids: houseIdList, source:'index'};
-                        $.ajax({
+                        const ids = houseIdList.join(',');
 
-                            url: currentUrl+'/search-render',
-                            data: dataRender,
-                            method:'post'
-
-                        }).
-                        done(function(res){
-                            searchCenter=({lat: parseFloat($('#search_lat').val()) , lng: parseFloat($('#search_lng').val()) });
-                            window.location.replace(currentUrl+'/house');
-                            $('houses-list').html(res);
-                            initMap(searchCenter);
-                        }).
-                        fail(function(res){
-                            console.log('ko')
-                        });
+                        window.location.href =  currentUrl+'/search-index?ids='+ids;
                     })
                     .fail(function(res){
 

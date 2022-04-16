@@ -6,7 +6,6 @@ use App\Entity\House;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,10 +22,10 @@ class HouseType extends AbstractType
     {
         $builder
             ->add('name', TextType::class,[
-                'label'=>'Nom'
+                'label'=>'Titre de votre hébergement'
             ])
             ->add('full_address', TextType::class,[
-                'label'=>'Adresse compléte'
+                'label'=>'Adresse du logement'
             ])
             ->add('street_number', IntegerType::class,[
                 'label'=>'Numéro de voie',
@@ -58,12 +57,6 @@ class HouseType extends AbstractType
                 'label'=>'Code postal',
                 'attr' => [
                     'readonly'=>"readonly",
-                ],
-                'constraints'=>[
-                    new Regex([
-                        'pattern' => '/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/', 
-                        'message' => 'Veuiller entrer un code postal correcte'
-                        ])
                 ]
             ])
             ->add('country', TextType::class,[
@@ -75,7 +68,7 @@ class HouseType extends AbstractType
             ->add('type',ChoiceType::class,[
                 'label'=>'Type d\'habitation',
                 'placeholder' => 'Choisissez un type d\'habitation',
-                'expanded' => true,
+                'expanded'=>true,
                 'choices'  => [
                     'Cabane dans les arbres' => 'Cabane dans les arbres',
                     'Cabane sur pilotis' => 'Cabane sur pilotis',
@@ -140,7 +133,14 @@ class HouseType extends AbstractType
                 'required'=>false,
             ])
             ->add('price',IntegerType::class,[
-                'label'=>'Prix',
+                'label'=>'Tarif de la nuité (en €)',
+                'attr' => [
+                    'min' => 1
+                    ]
+            ])
+            ->add('guarantee',IntegerType::class,[
+                'label'=>'Montant dépot de garantie',
+                'required'=>false,
                 'attr' => [
                     'min' => 1
                     ]
@@ -231,9 +231,6 @@ class HouseType extends AbstractType
                     'Chauffage'=> 'chauffage',
                     'Restauration sur place'=> 'resto',
                     'Parking'=> 'parking'
-                ],
-                'attr' => [
-                    'data-checked-nbr' => 0
                 ],
                 'choice_attr' => function($choice) {
                     return ['class' => 'strong_points'];
