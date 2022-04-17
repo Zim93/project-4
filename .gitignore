@@ -7,6 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
+.env
+.gitignore
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
@@ -16,7 +18,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-/public/images/houses/*
-!/public/images/houses/default.png
-/public/images/users/*
-!/public/images/users/default.png
+public/images/houses/*
+!public/images/houses/default.jpg
+public/images/users/*
+!public/images/users/default.jpg
