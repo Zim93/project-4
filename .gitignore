@@ -16,7 +16,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-/public/images/houses
+/public/images/houses/*
 !/public/images/houses/default.png
-/public/images/houses
-!/public/images/houses/default.png
+/public/images/users/*
+!/public/images/users/default.png
