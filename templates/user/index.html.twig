@@ -3,122 +3,88 @@
 {% block title %}{{ user.firstname }}{% endblock %}
 
 {% block body %}
-<style>
-    @media screen and (max-width: 768px) {
-        .hide-mobile{
-            display:none;
-        }
-        #client div, #pro div{
-            height:130px;
-            margin: 0 !important;
-        }
-        #client{
-            padding-top:1.5rem
-        }
-    }
-    .compte, .pointer{
-        cursor: pointer;
-    }
-    .pointer{
-        border-radius: 10px 10px 10px 10px;
-        background: rgba(242, 183, 5, 1);
-        color:white;
-    }
-    .compte.active{
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-    .compte{
-        background-color:rgba(255, 255, 255, 0.6);
-        border-radius: 10px 10px 0px 0px;
-    }
-    #pro, #client, #reservation, #user-info, #favorite, #manage-houses {
-        background-color:rgba(255, 255, 255, 0.9);
-    }   
-    #reservation, #user-info, #favorite, #manage-houses, #pro{
-        display:none;
-    }
-    .user-page{
-        background-image:url("/images/backgrounds/contemporaine-salon.jpg");
-        height:1000px;
-        background-size:cover;
-        background-position:center;
-    }
-    .add-house{
-        background:rgba(242, 183, 5, 1);
-    }
-    .hide{
-        height:650px;
-        overflow: auto;
-        width:100%;
-        border-radius:0px 10px 10px 10px;
-        padding-bottom: 3rem;
-        padding-right: 1rem;
-        padding-left: 1rem;
-    }
-    .user-btn{
-        background:rgba(36, 36, 36, 1)
-    }
-    .houses-container{
-        background:rgba(242, 242, 242, 1)
-    }
-    .user_new_reservation{
-        background:rgba(255, 255, 255, 0.9);
-        color:rgba(242, 183, 5, 1);
-    }
-    .home-pro{
-        background:rgba(36, 36, 36, 1)
-    }
-</style>
+
+<link rel="stylesheet" href="/css/user/index.css">
 <main class="user-page">
     <div class="container">
         <h1 class="text-center text-white">Bienvenu sur votre compte client</h1>
         
         <div>
             <div class="row text-center">
-                    <span class="col-md-3 col-lg-2 py-2 me-1 compte" data-id="1">Mon compte client </span>
+                    <span class="col-md-3 col-sm-4 col-4 py-2 me-1 compte" data-id="1">Mon compte client </span>
                     {% if is_granted('ROLE_HOST') %}
-                    <span class="col-md-3 col-lg-2 py-2 ms-1 compte" data-id="2">Mon compte Pro </span>
+                    <span class="col-md-3 col-sm-4 col-4 py-2 ms-1 compte" data-id="2">Mon compte Pro </span>
                     {% endif %}
             </div>
 
             <div id="client" class="col-10 row hide">
                 
                 <div class="col-6 d-flex align-items-center">
-                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column" id="my-reservation">
-                        <h3>Mes voyages</h3>
-                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center" id="my-reservation">
+                        <div class="m-2">
+                            <img src="/font/user/voyage.png" class="img-fluid hide-mobile" width="101" height="auto">
+                        </div>
+                        <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                            <h3>Mes voyages</h3>
+                            <p class="hide-mobile text-center">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6 my-user-info d-flex align-items-center">
-                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                        <h3>Mes informations personnelles</h3>
-                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                        <div class="m-2">
+                            <img src="/font/user/user.png" class="img-fluid hide-mobile" width="101" height="auto">
+                        </div>
+                        <div class="mx-2 text-center d-flex justify-content-center align-items-center flex-column">
+                            <h3>Mes informations personnelles</h3>
+                            <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column" id="">
-                        <h3>Commentaires</h3>
-                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center" id="my-comments">
+                        <div class="m-2">
+                            <img src="/font/user/comment.png" class="img-fluid hide-mobile" width="101" height="auto">
+                        </div>
+                        <div class="d-flex align-items-center flex-column justify-content-center">
+                            <h3>Commentaires</h3>
+                            <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                        <div class="m-2">
+                            <img src="/font/user/security.png" class="img-fluid hide-mobile" width="101" height="auto">
+                        </div>
+                        <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
                         <a href="{{ path('app_user_change_password')}}" class="text-decoration-none text-white">
                             <h3>Sécurité et mot de passe</h3>
                             <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
                         </a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column" id="my-favorite">
-                        <h3>Mes favoris</h3>
-                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center" id="my-favorite">
+                        <div class="m-2">
+                            <img src="/font/user/favoris.png" class="img-fluid hide-mobile" width="101" height="auto">
+                        </div>
+                        <div class="mx-2 w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center align-items-center flex-column justify-content-center">
+                            <h3>Mes favoris</h3>
+                            <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                    <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                        <h3>informations de paiement</h3>
-                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                    <div class="w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center pointer">
+                        <div class="m-2">
+                            <img src="/font/user/paiement.png" class="img-fluid hide-mobile" width="101" height="auto">
+                        </div>
+                        <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                            <h3>informations de paiement</h3>
+                            <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -209,44 +175,102 @@
                 </table>
             </div>
 
+            <div id="user-comment" class="col-10 row hide">
+                <h1>Mes commentaire</h1>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Maison</th>
+                            <th>Commentaire</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for comment in comments %}
+                        <tr>
+                            <td><a href="{{ path('app_house_show', {'id': comment.house.id}) }}">{{ comment.house.name }}<a></td>
+                            <td>{{ comment.message }}</td>
+                            <td>{{ comment.note }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">Aucun commentaire trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>           
+
             {% if is_granted('ROLE_HOST') %}
                 <div>
                     <div id="pro" class="col-10 row hide">
                         {% if user.confirmedHost ==1%}
                             <div id="my-houses" class="col-6 d-flex align-items-center">
-                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <h3>Gérer mes logements</h3>
-                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                                    <div class="m-2 hide-mobile">
+                                        <img src="/font/user/logement.png" class="img-fluid hide-mobile" width="101" height="auto">
+                                    </div>
+                                    <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                                        <h3>Gérer mes logements</h3>
+                                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6 d-flex align-items-center">
-                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <h3>Gerer les réservations</h3>
-                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                            <div id="my-houses-reservation"  class="col-6 d-flex align-items-center">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                                    <div class="m-2 hide-mobile">
+                                        <img src="/font/user/reservation.png" class="img-fluid hide-mobile" width="101" height="auto">
+                                    </div>
+                                    <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                                        <h3>Gerer les réservations</h3>
+                                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6 d-flex align-items-center">
-                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <h3>Gestion des commentaires</h3>
-                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                            <div class="col-6 d-flex align-items-center" id="my-houses-comments">
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                                    <div class="m-2 hide-mobile">
+                                        <img src="/font/user/comment-pro.png" class="img-fluid hide-mobile" width="101" height="auto">
+                                    </div>
+                                    <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                                        <h3>Gestion des commentaires</h3>
+                                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6 my-user-info d-flex align-items-center">
-                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <h3>Info personnelles et mot de passe</h3>
-                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                                    <div class="m-2 hide-mobile">
+                                        <img src="/font/user/security.png" class="img-fluid hide-mobile" width="101" height="auto">
+                                    </div>
+                                    <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                                        <h3>Info personnelles et mot de passe</h3>
+                                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6 d-flex align-items-center">
-                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <h3>Paiements clients</h3>
-                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                                    <div class="m-2 hide-mobile">
+                                        <img src="/font/user/paiement.png" class="img-fluid hide-mobile" width="101" height="auto">
+                                    </div>
+                                    <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                                        <h3>Paiements clients</h3>
+                                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6 d-flex align-items-center">
-                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <h3>Paiements clients</h3>
-                                    <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                <div class="pointer w-100 px-4 py-3 mx-3 text-center d-flex justify-content-center align-items-center">
+                                    <div class="m-2 hide-mobile">
+                                        <img src="/font/user/facture.png" class="img-fluid hide-mobile" width="101" height="auto">
+                                    </div>
+                                    <div class="mx-2 d-flex align-items-center flex-column justify-content-center">
+                                        <h3>Paiements clients</h3>
+                                        <p class="hide-mobile">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</p>
+                                    </div>
                                 </div>
                             </div>
                         {% else %}
@@ -268,7 +292,7 @@
                                     <div class="col-2 d-flex justify-content-center">
                                     {% if house.attachments is not empty %}
                                         {% for image in house.attachments |slice(0,1)  %}
-                                            <img src="/images/houses/{{image.url}}" height="112" width="auto" alt="{{house.name}}-img">
+                                            <img src="/images/houses/{{image.url}}" class="img-fluid" height="112" width="auto" alt="{{house.name}}-img">
                                         {% endfor %} 
                                     {% else %}
                                         <img src="/images/houses/default.jpg" height="112" width="auto"/>
@@ -289,13 +313,93 @@
                                     </div>                            
                                 </div>
                             {% endfor %}
-                        <div>
+                        </div>
+                    </div>
+                    
+                    <div id="house-comment" class="col-10 row hide">
+                        <h1>Commentaire reçu</h1>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Maison</th>
+                                    <th>Commentaire</th>
+                                    <th>Note</th>
+                                    <th>Voyageurs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for house in houses %}
+                                {% if house.comment is not empty %}
+                                    <tr>
+                                        <td rowspan="{{house.comment|length + 1}}">
+                                            <a class="text-dark" href="{{ path('app_house_show', {'id': house.id}) }}">{{ house.name }}</a>
+                                        </td>
+                                    </tr>
+                                        {% for comment in house.comment %}
+                                    <tr>    
+                                            <td>{{ comment.message }}</td>
+                                            <td>{{ comment.note }}</td>
+                                            <td>{{comment.guest.firstname|capitalize}} .{{comment.guest.firstname|first|upper}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">Aucun commentaire trouvé</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div id="manage-comment" class="col-10 row hide">
+                    <div id="house-reservation" class="col-10 row hide">
+                        <h1>Réservation</h1>
 
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Maison</th>
+                                    <th>Nombre de voyageurs</th>
+                                    <th>Date d'entrée</th>
+                                    <th>Date de sortie</th>
+                                    <th>Nombre de nuit</th>
+                                    <th>Prix</th>
+                                    <th>Afficher</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for house in houses %}
+                                {% if house.reservation is not empty %}
+                                    <tr>
+                                        <td rowspan="7">
+                                            <a class="text-dark" href="{{ path('app_house_show', {'id': house.id}) }}">{{ house.name }}</a>
+                                        </td>
+                                    </tr>
+                                    
+                                    {% for reservation in house.reservation|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                                    <tr>
+                                        <td>{{ reservation.nbrVoyagers }}</td>
+                                        <td>{{ reservation.startDate ? reservation.startDate|date('d-m-Y') : '' }}</td>
+                                        <td>{{ reservation.endDate ? reservation.endDate|date('d-m-Y') : '' }}</td>
+                                        <td>{{ reservation.nbrNights }} </td>
+                                        <td>{{ reservation.total }} (€)</td>
+                                        <td><a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">Afficher<a></td>
+                                    {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="10">Aucune réservation trouvée</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
+
                 </div>
+
             {% endif %}
             
         </div>
@@ -325,10 +429,19 @@
         });
         $('.compte[data-id=1]').trigger( "click" );
 
+        $('#my-houses-reservation').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#house-reservation').attr('style','display:block;');
+        })
+
+        $('#my-houses-comments').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#house-comment').attr('style','display:block;');
+        })
+
         $('#my-reservation').click(function(){
             $('.hide').attr('style','display:none;');
             $('#reservation').attr('style','display:block;');
-            
         })
         
         $('.my-user-info').click(function(){
@@ -339,6 +452,11 @@
         $('#my-favorite').click(function(){
             $('.hide').attr('style','display:none;');
             $('#favorite').attr('style','display:block;');
+        })
+
+        $('#my-comments').click(function(){
+            $('.hide').attr('style','display:none;');
+            $('#user-comment').attr('style','display:block;');
         })
 
         $('#my-houses').click(function(){

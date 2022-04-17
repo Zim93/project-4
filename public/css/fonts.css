@@ -1,0 +1,12 @@
+@font-face {font-family: "Bree Lt"; src: url("//db.onlinewebfonts.com/t/b681501d38bdc1749c2c35ea6527e7e8.eot"); src: url("//db.onlinewebfonts.com/t/b681501d38bdc1749c2c35ea6527e7e8.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/b681501d38bdc1749c2c35ea6527e7e8.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/b681501d38bdc1749c2c35ea6527e7e8.woff") format("woff"), url("//db.onlinewebfonts.com/t/b681501d38bdc1749c2c35ea6527e7e8.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/b681501d38bdc1749c2c35ea6527e7e8.svg#Bree Lt") format("svg"); }
+
+h1{
+    font-family: "Bree Lt", sans-serif;
+}
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.footer-sg{
+    font-family: "Bree Lt", sans-serif;
+    color:#f2b705;
+}

@@ -26,6 +26,7 @@ class UserController extends AbstractController
         $favorites= $user->getFavorites();
         $houses= $user->getHouse();
         $reservations = $user->getReservation();
+        $comments = $user->getComment();
         //vérification si l'utilisateurs est bien un hôte 
         if(in_array('ROLE_HOST',$user->getRoles())){
             $host = true;
@@ -38,7 +39,8 @@ class UserController extends AbstractController
             'favorites'=>$favorites,
             'houses' => $houses,
             'reservations' => $reservations,
-            'host' => $host
+            'host' => $host,
+            'comments'=>$comments,
         ]);
     }
 

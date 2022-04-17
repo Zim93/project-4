@@ -3,7 +3,11 @@
 {% block title %}Reservation{% endblock %}
 
 {% block body %}
-    
+    <style>
+        main{
+            height:70vh;
+        }
+    </style>
     <link rel="stylesheet" href="/raty-master/lib/jquery.raty.css">
     <main class="container d-flex flex-column justify-content-center mt-4 w-75">
         <h1>Reservation</h1>
@@ -11,7 +15,7 @@
         <table class="table">
             <tbody>
             <tr>
-                    <th>Nbr_voyagers</th>
+                    <th>Nombre de voyageurs</th>
                     <td>{{ reservation.nbrVoyagers }}</td>
                 </tr>
                 <tr>

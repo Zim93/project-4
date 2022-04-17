@@ -3,14 +3,19 @@
 {% block title %}{{user.firstname}}{% endblock %}
 
 {% block body %}
-<div class="col-10 col-md-8 col-lg-6 mx-2">
-    {{ form_start(editForm, {'action':'/user/edit'})}} 
-        {{ form_widget(editForm) }}   
-        <input type="hidden" name="delete_avatar" id="delete-avatar"/>
-        <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(editForm) }}
-    <div id="images">
-        {{ include('user/_edit_avatar.html.twig')}}
+    <link rel="stylesheet" href="/css/user/edit.css">
+    <div class="py-5">
+        <div class="container">
+            <div class="col-10 col-md-8 col-lg-6 mx-2 mx-auto">
+                {{ form_start(editForm, {'action':'/user/edit'})}} 
+                    {{ form_widget(editForm) }}   
+                    <input type="hidden" name="delete_avatar" id="delete-avatar"/>
+                    <div id="images">
+                        {{ include('user/_edit_avatar.html.twig')}}
+                    </div>
+                    <button class="btn text-white btn-save py-2 px-3 d-flex mx-auto mt-5">{{ button_label|default('Enregistrer les modification') }}</button>
+                {{ form_end(editForm) }}
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}

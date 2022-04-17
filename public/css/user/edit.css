@@ -1,0 +1,15 @@
+.close-cross-avatar{
+    cursor:pointer;
+} 
+
+.close-cross-avatar{
+    position: relative;
+    width: 20px;
+    margin: 0 !important;
+    top: 0px;
+    left: 0px;
+}
+
+.btn-save{
+    background:rgba(36, 36, 36, 0.9);
+}

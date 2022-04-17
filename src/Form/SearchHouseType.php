@@ -20,6 +20,7 @@ class SearchHouseType extends AbstractType
             ])
             ->add('nbr_voyagers', IntegerType::class,[
                 'label' => 'Nombre de voyageurs',
+                'empty_data' => 'Default value',
                 'attr'=>[
                     'min'=>1,
                     'value'=>1,

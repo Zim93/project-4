@@ -18,12 +18,12 @@
                     </div>
                 {% else %}
                     <div class="d-flex">
-                        <img src="/images/houses/default.jpg" height="248px" class="mx-auto"/>
+                        <img src="/images/houses/default.jpg" class="img-fluid" height="248px" class="mx-auto"/>
                     </div>
                 {% endif %}
             </div>
             <div class="col-md-5">
-                <h3>{{house.name}}</h3>
+                <h3 class="fw-bold">{{house.name}}</h3>
                 <small>{{house.cityName}}</small>
                 <p>{{house.description}}</p>
             </div>
@@ -31,7 +31,7 @@
                 <p class="rating-comment text-center" data-note="{{ house.note }}">Commentaire</p>
                 <div class="mt-auto d-flex flex-column mx-3">
                     <small class="ms-auto">à partir de </small>
-                    <p class="ms-auto">{{house.price}} € la nuit</p>
+                    <p class="ms-auto fw-bold">{{house.price}} € la nuit</p>
                     <a class="btn rent-btn" href="{{ path('app_house_show', {'id': house.id}) }}">Découvrir</a>
                 </div>
                 

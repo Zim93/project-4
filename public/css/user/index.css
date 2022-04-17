@@ -1,0 +1,67 @@
+@media screen and (max-width: 768px) {
+    .hide-mobile{
+        display:none;
+    }
+    #client div, #pro div{
+        height:130px;
+        margin: 0 !important;
+    }
+    #pro{
+        padding-top:1.5rem
+    }
+    #client{
+        padding-top:1.5rem
+    }
+}
+.compte, .pointer{
+    cursor: pointer;
+}
+.pointer{
+    border-radius: 10px 10px 10px 10px;
+    background: rgba(242, 183, 5, 1);
+    color:white;
+}
+.compte.active{
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.compte{
+    background-color:rgba(255, 255, 255, 0.6);
+    border-radius: 10px 10px 0px 0px;
+}
+#pro, #client, #reservation, #user-info, #favorite, #manage-houses, #user-comment, #house-comment, #house-reservation{
+    background-color:rgba(255, 255, 255, 0.9);
+}   
+#reservation, #user-info, #favorite, #manage-houses, #pro{
+    display:none;
+}
+.user-page{
+    background-image:url("/images/backgrounds/contemporaine-salon.jpg");
+    height:1000px;
+    background-size:cover;
+    background-position:center;
+}
+.add-house{
+    background:rgba(242, 183, 5, 1);
+}
+.hide{
+    height:650px;
+    overflow: auto;
+    width:100%;
+    border-radius:0px 10px 10px 10px;
+    padding-bottom: 3rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+.user-btn{
+    background:rgba(36, 36, 36, 1)
+}
+.houses-container{
+    background:rgba(242, 242, 242, 1)
+}
+.user_new_reservation{
+    background:rgba(255, 255, 255, 0.9);
+    color:rgba(242, 183, 5, 1);
+}
+.home-pro{
+    background:rgba(36, 36, 36, 1)
+}

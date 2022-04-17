@@ -19,7 +19,7 @@
             {{ form_start(form_reservation, {'action':'/reservation/new'}) }}
                 <div class="row d-flex align-items-center justify-content-center">
                     <div class="col-md-2 mb-1">
-                        <div class="dropdown w-100 me-3" id="myDropdown">
+                        <div class="dropdown w-100 me-3">
                             <a class="btn btn-white border dropdown-toggle bg-white w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" aria-expanded="true">
                                 Nombre de voyageurs
                             </a>
@@ -41,8 +41,8 @@
                             {{form_row(form_reservation.nbr_voyagers)}}
                         </div>
                         <div id="date-picker" class="d-flex flex-inline">
-                            <input id="reservation_start_date" class="form-control mx-3" name="start_date" autoComplete="off" placeholder="Arrivé"/>
-                            <input id="reservation_end_date" class="form-control" name="end_date" autoComplete="off" placeholder="Départ"/>
+                            <input id="reservation_start_date" class="form-control mx-3" name="start_date" autoComplete="off" placeholder="Arrivé" required/>
+                            <input id="reservation_end_date" class="form-control" name="end_date" autoComplete="off" placeholder="Départ" required/>
                         </div>
                         <div class="date-picker-container"  style="position:absolute; background-color:white; z-index: 3;"></div>
                         <input type="hidden" name="house" value="{{house.id}}"/>
@@ -107,14 +107,14 @@
     <h1 class="my-5 container">Le logement</h1>
     <div id="house-description-container" class="py-3">
         <div class="container">
-            <p>Description du logement</p>
+            <h3>Description du logement</h3>
             <p>{{house.description}}</p>
         </div>
     </div>
     
     <div class="container my-5">
         <div class="row">
-            <h2 class="mb-3">Equiments et services</h2>
+            <h3 class="mb-3">Equiments et services</h3>
             <div class="col-6 row">
                 {% if house.confort is not empty %}
                     <p class="col-4">Confort</p>
@@ -202,7 +202,7 @@
 
     <div id="info-container" class="py-5">
         <div class="container">
-            <h2> Infos pratiques </h2>
+            <h3> Infos pratiques </h3>
             <div class="ms-3">
                 <p>Horaire d'arrivée:{{house.arrivalTime|date('H:i')}} </p>
                 <p>Horaire de départ:{{house.departureTime|date('H:i')}} </p>
@@ -215,29 +215,29 @@
     </div>
 
     <div id="map"></div>
-
-    <div id="comment-container" class="py-5">
-        <h2 class="text-center mb-5">Ils parlent de leur séjour...</h2>
-        
-        <div class="multiple-items container pt-5">
-            {% for comment in house.comment %}
-                <div class="text-center">
-                    <div class="d-flex justify-content-center">
-                        {% if comment.guest.avatar is not null %}
-                            <img class="user-avatar" src="\images\users\{{comment.guest.avatar}}"/>
-                        {% else %} 
-                            <img class="user-avatar" src="\images\users\default.png"/> 
-                        {% endif %}
+    {% if comments is defined %}
+        <div id="comment-container" class="py-5">
+            <h1 class="text-center mb-5">Ils parlent de leur séjour...</h1>
+            
+            <div class="multiple-items container pt-5">
+                {% for comment in house.comment %}
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center">
+                            {% if comment.guest.avatar is not null %}
+                                <img class="user-avatar" src="\images\users\{{comment.guest.avatar}}"/>
+                            {% else %} 
+                                <img class="user-avatar" src="\images\users\default.png"/> 
+                            {% endif %}
+                        </div>
+                        <h3>{{comment.guest.firstname|capitalize}} .{{comment.guest.firstname|first|upper}}</h3>
+                        <p>{{comment.message}}</p>
+                        <div class="d-flex justify-content-center rating-comment" data-note="{{comment.note}}" data-id="{{comment.id}}"></div>
                     </div>
-                    <p>{{comment.guest.firstname|capitalize}} .{{comment.guest.firstname|first|upper}}</p>
-                    <p>{{comment.message}}</p>
-                    <div class="d-flex justify-content-center rating-comment" data-note="{{comment.note}}" data-id="{{comment.id}}"></div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+
         </div>
-
-    </div>
-
+    {% endif %}
     <div id="proxi-houses-container" class="py-5">
         <div class="container py-5">
             <div id="proxi-houses" class="d-flex mx-auto justify-content-center my-5 px-3 col-8">
@@ -300,6 +300,12 @@
     
     <script>
         $(document).ready(function(){
+            $('.btn-reservation').click(function(e)
+            {
+                if($('#reservation_nbr_voyagers').val()==""){
+                    $('#reservation_nbr_voyagers').val(1);
+                }
+            })
             $('.multiple-items').slick({
                 infinite: true,
                 slidesToShow: 4,

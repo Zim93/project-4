@@ -8,6 +8,7 @@
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+           
         {% endblock %}
 
         {% block javascripts %}
@@ -25,6 +26,7 @@
         {% endblock %}
     </head>
     <body>
+     <link rel="stylesheet" href="/css/fonts.css">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
                 <a href="/"><img src="/font/logo.svg" class="navbar-brand" alt="logo" width="290" height="60"></a>
@@ -63,36 +65,39 @@
         {% block body %}{% endblock %}
         <footer id="footer" class="py-5">
             <div class="container py-5">
-                <div class="d-flex py-5">
+                <div class="d-flex py-5 log-social">
                     <img src="/font/logo.svg" width="290" length="auto">
-                    <div class="ms-auto">
-                        <img src="">
+                    <div class="ms-auto d-flex align-items-center">
+                        <img class="mx-2" width="30" length="auto" src="/font/social/fb.svg">
+                        <img class="mx-2" width="30" length="auto" src="/font/social/twitter.svg">
+                        <img class="mx-2" width="30" length="auto" src="/font/social/insta.svg">
+                        <img class="mx-2" width="30" length="auto" src="/font/social/tiktok.svg">
                     </div>
                 </div>
                 <div class="row py-5">
                     <div class="col-4 py-5">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white" href="#">Qui somme nous</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Nous contacter</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Mentions légales</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">FAQ</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Confidentialité et cookies</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Conditions générales d'utilisation</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Qui somme nous</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Nous contacter</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Mentions légales</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">FAQ</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Confidentialité et cookies</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Conditions générales d'utilisation</a></li>
                         </ul>
                     </div>
                     <div class="col-4 py-5">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white" href="#">Mon compte</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Ajouter un hébergements</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Offrir un cadeau</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Espace partenaires</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Option d'annulation</a></li>
-                            <li><a class="text-decoration-none text-white" href="#">Accueillir de manière durable</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Mon compte</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Ajouter un hébergements</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Offrir un cadeau</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Espace partenaires</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Option d'annulation</a></li>
+                            <li class="mb-2"><a class="text-decoration-none text-white" href="#">Accueillir de manière durable</a></li>
                         </ul>
                     </div>
                     <div class="col-4 py-5 text-white">
-                        <p>Ne rattez plus nos bon plans </p>
-                        <p>Inscrivez vous pour recevoir les meilleurs offre</p>
+                        <p class="footer-sg h4 mb-2">Ne rattez plus nos bon plans </p>
+                        <p class="mb-2">Inscrivez vous pour recevoir les meilleurs offre</p>
                         <input type="text" class="w-75">.
 
                     </div>

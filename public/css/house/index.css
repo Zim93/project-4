@@ -21,6 +21,22 @@
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
+    .proxi-screen{
+        display: none;
+    }
+    .log-social{
+        display: block !important;
+    }
+    .log-social > div{
+        margin-top: 1rem;
+    }
+    .proxi-mobile{
+        display: flex !important;
+        height: 90vw;
+    }
+    .proxi-mobile >div{
+        height:200px;
+    }
 }
 @media screen and (max-width: 995px){
     #atypik-disc{
@@ -28,7 +44,9 @@
         padding-right: 2rem !important;
     }
 }
-
+.proxi-mobile{
+    display: none;
+}
 .index-search-container{
     position: relative !important;
     top:25% !important;
