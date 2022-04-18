@@ -1,6 +1,6 @@
 {% if houses is defined%}
-    {# <p>{{ houses.getTotalItemCount }} hébergements trouvés</p> #}
-    <a class="btn btn-primary sort-price">sort price</a>
+    <p>{{ houses.getTotalItemCount }} hébergements trouvés</p>
+   
     {% for id in page_ids %}
         <input type="hidden" class="page-id-input" name="ids[]" value="{{id}}" />
     {% endfor %}

@@ -40,6 +40,7 @@
                     <div class="navbar-nav ms-auto">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <a id="become-host" class="nav-link text-center d-flex align-items-center btn mx-3 mb-1 px-4 border text-dark" href="/register/host">Ajouter un hébergement</a>
+                            <a id="user-acount" class="nav-link text-center d-flex align-items-center btn mx-3 mb-1 px-4 border text-dark" href="/user">Mon compte</a>
                             {% if is_granted('ROLE_HOST') %}
                                 {% set reservation_count = 0 %}
                                 {% set comment_count = 0 %}
@@ -116,7 +117,7 @@
             footer {
                 margin-top: auto;
             }
-            #become-host, .make-reservation:hover,#new_reservation:hover, #new_comment:hover {
+            #become-host, .make-reservation:hover,#new_reservation:hover, #new_comment:hover, #user-acount:hover {
                 background-color:#F2EFBA;
             }
             #register:hover, #login:hover, #logout:hover{
